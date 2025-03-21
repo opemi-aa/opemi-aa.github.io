@@ -17,4 +17,4 @@ PicoCTF Writeups.
 <hr>
 <hr>
 
-- ##work in progress..##
+- 
