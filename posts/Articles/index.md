@@ -8,7 +8,7 @@ href="/index.html">Main</a>&#xA0;&#xA0;&#xA0;<a
 href="/posts/Hackmyvm/index.html">Hackmyvm</a>&#xA0;&#xA0;&#xA0;<a
 href="/posts/VulnHub/index.html">VulnHub</a>&#xA0;&#xA0;&#xA0;<a 
 href="/posts/PTD/index.html">PwnTillDawn</a>&#xA0;&#xA0;&#xA0;<a 
-href="/posts/echoCTF/index.html">picoCTF</a>&#xA0;&#xA0;&#xA0;<a
+href="/posts/picoCTF/index.html">picoCTF</a>&#xA0;&#xA0;&#xA0;<a
 href="/posts/Articles/index.html">Article</a></h2>
 <hr>
 
