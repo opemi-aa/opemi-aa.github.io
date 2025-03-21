@@ -17,4 +17,4 @@ awscloud Writeups.
 <hr>
 <hr>
 
-- ##still in progress...##
+- ##work in progress..##
