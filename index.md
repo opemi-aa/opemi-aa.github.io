@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-<h2 class="mume-header" id="mainindexhtml-nbspnbsp-contactcontacthtml"><a href="./index.md">Main</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Hackmyvm/index.html">HackMyVm</a>&#xA0;&#xA0;&#xA0;<a href="/posts/vulnhub/index.html">VulnHub</a>&#xA0;&#xA0;&#xA0;<a href="/posts/PTD/index.html">PwnTillDawn</a>&#xA0;&#xA0;&#xA0;<a href="/posts/echoCTF/index.html">picoCTF</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Articles/index.html">Articles</a></h2>
+<h2 class="mume-header" id="mainindexhtml-nbspnbsp-contactcontacthtml"><a href="/index.html">Main</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Hackmyvm/index.html">HackMyVm</a>&#xA0;&#xA0;&#xA0;<a href="/posts/vulnhub/index.html">VulnHub</a>&#xA0;&#xA0;&#xA0;<a href="/posts/PTD/index.html">PwnTillDawn</a>&#xA0;&#xA0;&#xA0;<a href="/posts/echoCTF/index.html">picoCTF</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Articles/index.html">Articles</a></h2>
 
 * * *
 ### Welcome To My Cyber Security Blog, 093m1
@@ -20,7 +20,7 @@ title: Home
 <p><strong>What Do I Do :</strong> <a href="#">CTF / Red Teaming / Penetration testing</a></p>
 <p><strong>GitHub :</strong> <a href="https://github.com/opemi-aa/">github.com/opemi-aa</a></p>
 <p><strong>Twitter :</strong> <a href="https://x.com/opemi_aa">twitter.com/opemi_aa</a></p>
-<p><strong>Certifications :</strong> <a href="#">Security + (in view) </a></p>
+<p><strong>Certifications :</strong> <a href="#">CERTIFIED ETHICAL HACKER (CEH) in view </a></p>
 <br clear="left">
 <br clear="left">
 
