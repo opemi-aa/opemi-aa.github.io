@@ -13,11 +13,11 @@ title: Home
 
 <hr>
 <br>
-<img style="padding-right: 30px;" align="left"  width="500" height="300" src="/home/boch/Documents/about-web/my-personal-web/images/72deb5beee025dbf6e2a2350f8f04edb.jpg">
+<img style="padding-right: 30px;" align="left"  width="500" height="300" src="images/72deb5beee025dbf6e2a2350f8f04edb.jpg">
 <br>
 <p><strong>Name :</strong> <a href="#">Opeyemi Ariyo</a></p>
 <p><strong>Known as :</strong> <a href="#">the.opemi.aa</a></p>
-<p><strong>What Do I Do :</stron/home/boch/Documents/about-web/my-personal-web/images/72deb5beee025dbf6e2a2350f8f04edb.jpgg> <a href="#">Ethical Hacker / Red Teamer / Offensive Security</a></p>
+<p><strong>What Do I Do :</stron/home/boch/Documents/about-web/my-personal-web/images/72deb5beee025dbf6e2a2350f8f04edb.jpg> <a href="#">Ethical Hacker / Red Teamer / Offensive Security</a></p>
 <p><strong>GitHub :</strong> <a href="https://github.com/n16hth4wk07">github.com/opemi-aa</a></p>
 <p><strong>Twitter :</strong> <a href="https://twitter.com/n16h7hawk">twitter.com/opemi_aa</a></p>
 <p><strong>Certifications :</strong> <a href="#">Security + (in view) </a></p>
@@ -26,10 +26,14 @@ title: Home
 
 
 * * *
-### **Box Pwning Grounds:~#**
+### **Metasploitable Writeups:~#**
 * * *
 
--
+- [[Nov 25, 2024]] Attacking FTP Using Metasploit <a href="https://medium.com/@the.opemi.aa/metasploitable-3-ub1404-attacking-ftp-using-metasploit-8599cce53e6c" target="_blank">Visit Medium!</a>
+- [[Nov 23, 2024]] Attacking SMB PSExec using metasploit <a href="https://medium.com/@the.opemi.aa/metasploitable-3-windows-server-2008-attacking-smb-psexec-using-metasploit-cc59ab488c5d" target="_blank">Visit Medium!</a>
+- [[Nov 23, 2024]] Brute Forcing SSH Using Metasploit <a href="https://medium.com/@the.opemi.aa/metasploitable-2-brute-forcing-ssh-using-metasploit-8a74356271e6" target="_blank">Visit Medium!</a>
+
+
 
 * * *
 ### **TryHackMe Writeups:~#**
