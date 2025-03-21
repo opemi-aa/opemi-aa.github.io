@@ -6,20 +6,20 @@ title: Home
 <h2 class="mume-header" id="mainindexhtml-nbspnbsp-contactcontacthtml"><a href="./index.html">Main</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Hackmyvm/index.html">HackMyVm</a>&#xA0;&#xA0;&#xA0;<a href="/posts/vulnhub/index.html">VulnHub</a>&#xA0;&#xA0;&#xA0;<a href="/posts/PTD/index.html">PwnTillDawn</a>&#xA0;&#xA0;&#xA0;<a href="/posts/echoCTF/index.html">echoCTF</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Article/index.html">Articles</a></h2>
 
 * * *
-### Welcome To My Cyber Security Blog, H4X0r
+### Welcome To My Cyber Security Blog, 093m1
 * * *
 
 "Hey there 👋, and welcome to my little corner of the web! I’m the.opemi.aa — a cybersecurity enthusiast on a mission to uncover the fascinating world of hacking. Here, you’ll find tips, tricks, write-ups, and insights into everything I’m learning about ethical hacking and cybersecurity. Stick around, and let’s explore the art of securing the digital world together. 😉  
 
 <hr>
 <br>
-<img style="padding-right: 30px;" align="left"  width="500" height="300" src="images/72deb5beee025dbf6e2a2350f8f04edb.jpg">
+<img style="padding-right: 30px;" align="left"  width="500" height="300" src="images/avatar.jpg">
 <br>
 <p><strong>Name :</strong> <a href="#">Opeyemi Ariyo</a></p>
 <p><strong>Known as :</strong> <a href="#">the.opemi.aa</a></p>
-<p><strong>What Do I Do :</stron/home/boch/Documents/about-web/my-personal-web/images/72deb5beee025dbf6e2a2350f8f04edb.jpg> <a href="#">Ethical Hacker / Red Teamer / Offensive Security</a></p>
-<p><strong>GitHub :</strong> <a href="https://github.com/n16hth4wk07">github.com/opemi-aa</a></p>
-<p><strong>Twitter :</strong> <a href="https://twitter.com/n16h7hawk">twitter.com/opemi_aa</a></p>
+<p><strong>What Do I Do :</strong> <a href="#">CTF / Red Teaming / Penetration testing</a></p>
+<p><strong>GitHub :</strong> <a href="https://github.com/opemi-aa/">github.com/opemi-aa</a></p>
+<p><strong>Twitter :</strong> <a href="https://x.com/opemi_aa">twitter.com/opemi_aa</a></p>
 <p><strong>Certifications :</strong> <a href="#">Security + (in view) </a></p>
 <br clear="left">
 <br clear="left">
