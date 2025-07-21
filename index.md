@@ -26,32 +26,13 @@ title: Home
 
 
 * * *
-### **Metasploitable Writeups:~#**
+### **Posts**
 * * *
 
-- [[Nov 25, 2024]] Attacking FTP Using Metasploit <a href="https://medium.com/@the.opemi.aa/metasploitable-3-ub1404-attacking-ftp-using-metasploit-8599cce53e6c" target="_blank">Visit Medium!</a>
-- [[Nov 23, 2024]] Attacking SMB PSExec using metasploit <a href="https://medium.com/@the.opemi.aa/metasploitable-3-windows-server-2008-attacking-smb-psexec-using-metasploit-cc59ab488c5d" target="_blank">Visit Medium!</a>
-- [[Nov 23, 2024]] Brute Forcing SSH Using Metasploit <a href="https://medium.com/@the.opemi.aa/metasploitable-2-brute-forcing-ssh-using-metasploit-8a74356271e6" target="_blank">Visit Medium!</a>
-
-
-
-* * *
-### **TryHackMe Writeups:~#**
-* * *
-
-- [[### ## ####]] [HTB -- #####](#####) `#####`
-
-* * *
-<h4 class="mume-header" id="pg">PG Play/PG Practice:</h4>
-Practice your pentesting skills in a standalone, private lab environment with the additions of PG Play and PG Practice to Offensive Security’s Proving Grounds. 
-<hr>
-<hr>
-
-- [[### ## ####]] [HTB -- #####](#####) `#####`
-
-* * *
-### **Hack The Box Writeups:~#**
-* * *
-
-- [[### ## ####]] [HTB -- #####](#####) `#####`
-
+<ul>
+  {% for post in site.posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a> - {{ post.date | date: "%B %d, %Y" }}
+    </li>
+  {% endfor %}
+</ul>
