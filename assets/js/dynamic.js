@@ -71,14 +71,26 @@ document.addEventListener('DOMContentLoaded', function() {
     cursorDot.classList.add('cursor-dot');
     document.body.appendChild(cursorDot);
 
-    const cursorTrail = document.createElement('div');
-    cursorTrail.classList.add('cursor-trail');
-    document.body.appendChild(cursorTrail);
+    // Remove the single cursorTrail element
+    // const cursorTrail = document.createElement('div');
+    // cursorTrail.classList.add('cursor-trail');
+    // document.body.appendChild(cursorTrail);
 
     document.addEventListener('mousemove', function(e) {
         cursorDot.style.left = e.clientX + 'px';
         cursorDot.style.top = e.clientY + 'px';
-        cursorTrail.style.left = e.clientX + 'px';
-        cursorTrail.style.top = e.clientY + 'px';
+
+        // Create trail dots
+        const trailDot = document.createElement('div');
+        trailDot.classList.add('cursor-trail-dot');
+        document.body.appendChild(trailDot);
+
+        trailDot.style.left = e.clientX + 'px';
+        trailDot.style.top = e.clientY + 'px';
+
+        // Remove trail dot after a delay
+        setTimeout(() => {
+            trailDot.remove();
+        }, 500); // Adjust delay for desired trail length
     });
 });

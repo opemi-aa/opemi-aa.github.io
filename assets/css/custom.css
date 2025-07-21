@@ -916,33 +916,32 @@
         }
 
         /* Cursor Animation */
-        .cursor-trail {
-            position: fixed;
-            pointer-events: none;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: #00dc82;
-            mix-blend-mode: screen;
-            z-index: 9999;
-            will-change: transform;
-            transition: background-color 0.3s ease, transform 0.1s ease;
-            filter: blur(1px);
-            box-shadow: 0 0 8px rgba(0, 220, 130, 0.8);
-        }
-
         .cursor-dot {
             position: fixed;
             pointer-events: none;
-            width: 6px; 
-            height: 6px;
+            width: 15px; /* Larger size */
+            height: 15px; /* Larger size */
             border-radius: 50%;
             background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 220, 130, 0.9);
+            box-shadow: 0 0 25px rgba(0, 220, 130, 0.9), 0 0 10px rgba(0, 220, 130, 0.7); /* Larger green shadow */
             z-index: 10000;
             will-change: transform, opacity;
             transition: opacity 0.5s ease;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%); /* Center the dot */
+        }
+
+        .cursor-trail-dot {
+            position: fixed;
+            pointer-events: none;
+            width: 5px; /* Size of trail dots */
+            height: 5px; /* Size of trail dots */
+            border-radius: 50%;
+            background-color: rgba(0, 220, 130, 0.7); /* Greenish color for trail */
+            mix-blend-mode: screen;
+            z-index: 9999;
+            opacity: 1;
+            transform: translate(-50%, -50%); /* Center the dot */
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Smooth fade out */
         }
 
         /* Hide native cursor option */
