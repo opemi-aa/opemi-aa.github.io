@@ -1,0 +1,68 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to check if an element is in viewport
+    function isInViewport(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+
+    // Function to handle scroll animations
+    function handleScrollAnimations() {
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        animatedElements.forEach(element => {
+            if (isInViewport(element)) {
+                element.classList.add('animated');
+            }
+        });
+
+        const toolCards = document.querySelectorAll('.tools-container .tool-card');
+        toolCards.forEach((card, index) => {
+            if (isInViewport(card)) {
+                card.style.setProperty('--animation-order', index);
+                card.classList.add('animated');
+            }
+        });
+
+        const toolCategories = document.querySelectorAll('.tool-category');
+        toolCategories.forEach(category => {
+            if (isInViewport(category)) {
+                category.classList.add('animated');
+            }
+        });
+
+        const searchContainer = document.querySelector('.search-container');
+        if (searchContainer && isInViewport(searchContainer)) {
+            searchContainer.classList.add('animated');
+        }
+    }
+
+    // Initial check on load
+    handleScrollAnimations();
+
+    // Listen for scroll events
+    window.addEventListener('scroll', handleScrollAnimations);
+
+    // Background animations (Cyber Grid and Particles)
+    const body = document.body;
+    const cyberGrid = document.createElement('div');
+    cyberGrid.classList.add('cyber-grid');
+    body.prepend(cyberGrid);
+
+    const particlesContainer = document.createElement('div');
+    particlesContainer.classList.add('particles-container');
+    body.prepend(particlesContainer);
+
+    const numParticles = 50; // Number of particles
+    for (let i = 0; i < numParticles; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 5}s`; // Random delay for varied animation
+        particlesContainer.appendChild(particle);
+    }
+});
