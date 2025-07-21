@@ -13,7 +13,7 @@ title: Home
 
 <hr>
 <br>
-<img style="padding-right: 30px;" align="left"  width="500" height="300" src="images/avatar.jpg">
+<img class="animate-on-scroll" style="padding-right: 30px;" align="left"  width="500" height="300" src="images/avatar.jpg">
 <br>
 <p><strong>Name :</strong> <a href="#">Opeyemi Ariyo</a></p>
 <p><strong>Known as :</strong> <a href="#">the.opemi.aa</a></p>

@@ -65,4 +65,20 @@ document.addEventListener('DOMContentLoaded', function() {
         particle.style.animationDelay = `${Math.random() * 5}s`; // Random delay for varied animation
         particlesContainer.appendChild(particle);
     }
+
+    // Cursor Effect
+    const cursorDot = document.createElement('div');
+    cursorDot.classList.add('cursor-dot');
+    document.body.appendChild(cursorDot);
+
+    const cursorTrail = document.createElement('div');
+    cursorTrail.classList.add('cursor-trail');
+    document.body.appendChild(cursorTrail);
+
+    document.addEventListener('mousemove', function(e) {
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+        cursorTrail.style.left = e.clientX + 'px';
+        cursorTrail.style.top = e.clientY + 'px';
+    });
 });
