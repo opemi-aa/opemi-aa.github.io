@@ -17,10 +17,13 @@ title: Home
 <br>
 <p><strong>Name :</strong> <a href="#">Opeyemi Ariyo</a></p>
 <p><strong>Known as :</strong> <a href="#">the.opemi.aa</a></p>
-<p><strong>What Do I Do :</strong> <a href="#">CTF / Red Teaming / Penetration testing</a></p>
+<p><strong>What Do I Do :</strong> <a href="#">Red teaming, Bug Bounty and CTFs</a></p>
 <p><strong>GitHub :</strong> <a href="https://github.com/opemi-aa/">github.com/opemi-aa</a></p>
 <p><strong>Twitter :</strong> <a href="https://x.com/opemi_aa">twitter.com/opemi_aa</a></p>
-<p><strong>Certifications :</strong> <a href="#">CERTIFIED ETHICAL HACKER (CEH) in view </a></p>
+<p><strong>Certifications :</strong></p>
+<ul>
+  <li><a href="/assets/opeyemi%20ariyo%20red%20team%20analyst.pdf">Certified Red Team Analyst (CRTA)</a></li>
+</ul>
 <br clear="left">
 <br clear="left">
 
