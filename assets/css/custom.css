@@ -1022,27 +1022,33 @@
             background-color: #555; /* Add a dark-grey background on hover */
         }
 
-        /* Back to Home Button */
-        #backToHomeBtn {
-            display: block; /* Ensure it behaves as a block-level element for proper clicking */
-            position: fixed; /* Fixed position */
-            top: 20px; /* 20px from the top */
-            left: 20px; /* 20px from the left */
-            z-index: 9999; /* Very high z-index to be on top of everything */
-            border: none; /* Remove borders */
-            outline: none; /* Remove outline */
-            background-color: var(--primary); /* Set a background color */
-            color: white; /* Text color */
-            cursor: pointer; /* Add a mouse pointer on hover */
-            padding: 10px 15px; /* Some padding */
-            border-radius: 10px; /* Rounded corners */
-            font-size: 16px; /* Font size */
-            text-decoration: none; /* Remove underline */
-            transition: background-color 0.3s;
+        /* Game Button */
+        #gameButton {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            border: none;
+            outline: none;
+            background-color: var(--primary);
+            color: white;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            animation: gameButtonBlink 1s infinite alternate;
         }
 
-        #backToHomeBtn:hover {
-            background-color: #555; /* Add a dark-grey background on hover */
+        #gameButton:hover {
+            background-color: var(--secondary);
+        }
+
+        @keyframes gameButtonBlink {
+            0%   { background-color: var(--primary); color: white; }
+            50%  { background-color: var(--secondary); color: black; }
+            100% { background-color: var(--primary); color: white; }
         }
 
         ::-webkit-scrollbar-track {
