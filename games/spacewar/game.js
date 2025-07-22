@@ -3,19 +3,56 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = canvas.getContext('2d');
     const scoreElement = document.getElementById('score');
 
+    // Define the size of a single pixel unit for your pixel art
+    const PIXEL_UNIT = 8; // Each "pixel" in your art is 8px by 8px
+
     let player, bullets, enemies, score, gameOver, enemyIntervalId;
 
-    const playerWidth = 50, playerHeight = 50, playerSpeed = 5;
+    const playerSpeed = 5;
     const bulletSpeed = 7;
-    const enemyWidth = 50, enemyHeight = 50, enemySpeed = 2;
+    const enemySpeed = 2;
     const enemySpawnInterval = 2000;
+
+    /**
+     * Draws the pixel-art shooter (player) character.
+     * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
+     * @param {number} x - The x-coordinate for the top-left corner of the shooter.
+     * @param {number} y - The y-coordinate for the top-left corner of the shooter.
+     */
+    function drawPixelShooter(ctx, x, y) {
+        ctx.fillStyle = 'white';
+        // The shooter is a single 1x1 pixel unit block
+        ctx.fillRect(x, y, PIXEL_UNIT, PIXEL_UNIT);
+    }
+
+    /**
+     * Draws the pixel-art enemy character (cross shape).
+     * The enemy occupies a 3x3 conceptual grid of pixel units.
+     * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
+     * @param {number} x - The x-coordinate for the top-left corner of the enemy's 3x3 conceptual grid.
+     * @param {number} y - The y-coordinate for the top-left corner of the enemy's 3x3 conceptual grid.
+     */
+    function drawPixelEnemy(ctx, x, y) {
+        ctx.fillStyle = 'red';
+
+        // Row 1: [empty] [filled] [empty]
+        ctx.fillRect(x + PIXEL_UNIT, y, PIXEL_UNIT, PIXEL_UNIT);
+
+        // Row 2: [filled] [filled] [filled]
+        ctx.fillRect(x, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        ctx.fillRect(x + PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        ctx.fillRect(x + 2 * PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+
+        // Row 3: [empty] [filled] [empty]
+        ctx.fillRect(x + PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+    }
 
     function init() {
         player = {
-            x: canvas.width / 2 - playerWidth / 2,
-            y: canvas.height - playerHeight - 20,
-            width: playerWidth,
-            height: playerHeight,
+            x: canvas.width / 2 - PIXEL_UNIT / 2,
+            y: canvas.height - PIXEL_UNIT - 20,
+            width: PIXEL_UNIT,
+            height: PIXEL_UNIT,
             color: 'white',
             speed: playerSpeed,
             dx: 0
@@ -31,8 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function drawPlayer() {
-        ctx.fillStyle = player.color;
-        ctx.fillRect(player.x, player.y, player.width, player.height);
+        drawPixelShooter(ctx, player.x, player.y);
     }
 
     function drawBullets() {
@@ -44,8 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawEnemies() {
         enemies.forEach(enemy => {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(enemy.x, enemy.y, enemyWidth, enemyHeight);
+            drawPixelEnemy(ctx, enemy.x, enemy.y);
         });
     }
 
@@ -70,8 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function spawnEnemy() {
-        const x = Math.random() * (canvas.width - enemyWidth);
-        enemies.push({ x, y: -enemyHeight });
+        const enemyPixelWidth = 3 * PIXEL_UNIT;
+        const enemyPixelHeight = 3 * PIXEL_UNIT;
+        const x = Math.random() * (canvas.width - enemyPixelWidth);
+        enemies.push({ x, y: -enemyPixelHeight, width: enemyPixelWidth, height: enemyPixelHeight });
     }
 
     function detectCollisions() {
@@ -79,9 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = bullets.length - 1; i >= 0; i--) {
             for (let j = enemies.length - 1; j >= 0; j--) {
                 if (bullets[i] && enemies[j] &&
-                    bullets[i].x < enemies[j].x + enemyWidth &&
+                    bullets[i].x < enemies[j].x + enemies[j].width &&
                     bullets[i].x + 5 > enemies[j].x &&
-                    bullets[i].y < enemies[j].y + enemyHeight &&
+                    bullets[i].y < enemies[j].y + enemies[j].height &&
                     bullets[i].y + 10 > enemies[j].y
                 ) {
                     bullets.splice(i, 1);
@@ -96,9 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Player and enemies
         for (let i = enemies.length - 1; i >= 0; i--) {
             if (
-                player.x < enemies[i].x + enemyWidth &&
+                player.x < enemies[i].x + enemies[i].width &&
                 player.x + player.width > enemies[i].x &&
-                player.y < enemies[i].y + enemyHeight &&
+                player.y < enemies[i].y + enemies[i].height &&
                 player.y + player.height > enemies[i].y
             ) {
                 gameOver = true;
