@@ -19,24 +19,33 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {number} x - The x-coordinate for the top-left corner of the character's 3x4 conceptual grid.
      * @param {number} y - The y-coordinate for the top-left corner of the character's 3x4 conceptual grid.
      * @param {string} color - The color of the character.
+     * @param {string} orientation - 'up' or 'down' to control the character's facing direction.
      */
-    function drawPixelCharacter(ctx, x, y, color) {
+    function drawPixelCharacter(ctx, x, y, color, orientation) {
         ctx.fillStyle = color;
 
-        // Row 1: [empty] [filled] [empty]
-        ctx.fillRect(x + PIXEL_UNIT, y, PIXEL_UNIT, PIXEL_UNIT);
+        // Define pixel positions relative to the top-left of the 3x4 grid
+        // (col, row) where row is 0-indexed from the top of the character's grid
+        const pixels = [
+            [1, 0], // Row 1: [empty] [filled] [empty]
+            [0, 1], [1, 1], [2, 1], // Row 2: [filled] [filled] [filled]
+            [1, 2], // Row 3: [empty] [filled] [empty]
+            [0, 3], [2, 3]  // Row 4: [filled] [empty] [filled]
+        ];
 
-        // Row 2: [filled] [filled] [filled]
-        ctx.fillRect(x, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-        ctx.fillRect(x + PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-        ctx.fillRect(x + 2 * PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        pixels.forEach(p => {
+            let pixelX = x + p[0] * PIXEL_UNIT;
+            let pixelY;
 
-        // Row 3: [empty] [filled] [empty]
-        ctx.fillRect(x + PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-
-        // Row 4: [filled] [empty] [filled]
-        ctx.fillRect(x, y + 3 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-        ctx.fillRect(x + 2 * PIXEL_UNIT, y + 3 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+            if (orientation === 'up') {
+                pixelY = y + p[1] * PIXEL_UNIT;
+            } else { // orientation === 'down'
+                // Flip vertically: (MAX_ROW - current_row) * PIXEL_UNIT
+                // Max row index for a 4-row character (0-indexed) is 3
+                pixelY = y + (3 - p[1]) * PIXEL_UNIT;
+            }
+            ctx.fillRect(pixelX, pixelY, PIXEL_UNIT, PIXEL_UNIT);
+        });
     }
 
     function init() {
@@ -62,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function drawPlayer() {
-        drawPixelCharacter(ctx, player.x, player.y, player.color);
+        drawPixelCharacter(ctx, player.x, player.y, player.color, 'up');
     }
 
     function drawBullets() {
@@ -74,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawEnemies() {
         enemies.forEach(enemy => {
-            drawPixelCharacter(ctx, enemy.x, enemy.y, enemy.color);
+            drawPixelCharacter(ctx, enemy.x, enemy.y, enemy.color, 'down');
         });
     }
 
