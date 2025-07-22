@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreElement = document.getElementById('score');
 
     const gridSize = 20;
-    let snake, food, score, direction, gameInterval, gameOver;
+    let snake, food, score, direction, gameOver, animationFrameId;
 
     function init() {
         snake = [{ x: 10, y: 10 }];
@@ -14,8 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
         gameOver = false;
         scoreElement.innerText = score;
         placeFood();
-        if (gameInterval) clearInterval(gameInterval);
-        gameInterval = setInterval(update, 100);
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        update();
     }
 
     function placeFood() {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check for collision with walls
         if (head.x < 0 || head.x * gridSize >= canvas.width || head.y < 0 || head.y * gridSize >= canvas.height) {
             gameOver = true;
-            clearInterval(gameInterval);
+            showGameOver();
             return;
         }
 
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 1; i < snake.length; i++) {
             if (head.x === snake[i].x && head.y === snake[i].y) {
                 gameOver = true;
-                clearInterval(gameInterval);
+                showGameOver();
                 return;
             }
         }
@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         draw();
+        animationFrameId = requestAnimationFrame(update);
     }
 
     function showGameOver() {
