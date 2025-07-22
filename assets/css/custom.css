@@ -163,11 +163,13 @@
         }
 
         body {
-            font-family: var(--font-primary);
-            background-color: var(--dark);
-            color: var(--light);
-            line-height: 1.6;
-            transition: background-color var(--transition-speed), color var(--transition-speed);
+            margin: 0;
+            background-color: #1a1a2e; /* Dark background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
+            color: white;
         }
 
         .navbar {
