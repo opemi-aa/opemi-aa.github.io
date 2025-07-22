@@ -894,6 +894,12 @@
             border: 0;
         }
 
+        /* Hide vertical scrollbar, allow horizontal if needed */
+        html {
+            overflow-y: hidden;
+            overflow-x: auto;
+        }
+
         /* Styling for the mume-header navigation */
         .mume-header {
             position: fixed;
