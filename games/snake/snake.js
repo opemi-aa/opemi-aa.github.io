@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const gridSize = 20;
     let snake, food, score, direction, gameOver, animationFrameId;
+    let lastRenderTime = 0;
+    const gameSpeed = 100; // Milliseconds per frame (lower is faster)
 
     function init() {
         snake = [{ x: 10, y: 10 }];
@@ -15,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreElement.innerText = score;
         placeFood();
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
-        update();
+        animationFrameId = requestAnimationFrame(gameLoop);
     }
 
     function placeFood() {
@@ -37,12 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
     }
 
-    function update() {
-        if (gameOver) {
-            showGameOver();
-            return;
-        }
-
+    function updateGameLogic() {
         const head = { x: snake[0].x, y: snake[0].y };
 
         switch (direction) {
@@ -55,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Check for collision with walls
         if (head.x < 0 || head.x * gridSize >= canvas.width || head.y < 0 || head.y * gridSize >= canvas.height) {
             gameOver = true;
-            showGameOver();
             return;
         }
 
@@ -63,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 1; i < snake.length; i++) {
             if (head.x === snake[i].x && head.y === snake[i].y) {
                 gameOver = true;
-                showGameOver();
                 return;
             }
         }
@@ -78,9 +73,24 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             snake.pop();
         }
+    }
 
+    function gameLoop(currentTime) {
+        if (gameOver) {
+            showGameOver();
+            return;
+        }
+
+        animationFrameId = requestAnimationFrame(gameLoop);
+
+        const secondsSinceLastRender = (currentTime - lastRenderTime);
+
+        if (secondsSinceLastRender < gameSpeed) return;
+
+        lastRenderTime = currentTime;
+
+        updateGameLogic();
         draw();
-        animationFrameId = requestAnimationFrame(update);
     }
 
     function showGameOver() {

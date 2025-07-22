@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const scoreElement = document.getElementById('score');
 
     let player, bullets, enemies, score, gameOver, enemyIntervalId;
 
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         enemies = [];
         score = 0;
         gameOver = false;
+        scoreElement.innerText = score;
         if (enemyIntervalId) clearInterval(enemyIntervalId);
         enemyIntervalId = setInterval(spawnEnemy, enemySpawnInterval);
         update();
@@ -85,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     bullets.splice(i, 1);
                     enemies.splice(j, 1);
                     score++;
+                    scoreElement.innerText = score;
                     break; 
                 }
             }
@@ -103,12 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
         }
-    }
-
-    function drawScore() {
-        ctx.fillStyle = 'white';
-        ctx.font = '20px Arial';
-        ctx.fillText(`Score: ${score}`, 10, 30);
     }
 
     function showGameOver() {
@@ -133,7 +130,6 @@ document.addEventListener('DOMContentLoaded', () => {
         drawPlayer();
         drawBullets();
         drawEnemies();
-        drawScore();
         movePlayer();
         moveBullets();
         moveEnemies();
