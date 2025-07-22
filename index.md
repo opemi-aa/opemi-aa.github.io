@@ -6,7 +6,7 @@ title: Home
 
 
 * * *
-### Welcome To My Cyber Security Blog, OPEMI
+### Welcome To My Cyber Security Blog!
 * * *
 
 Hey there 👋, and welcome to my little corner of the web! I’m the.opemi.aa — a cybersecurity enthusiast on a mission to uncover the fascinating world of hacking. Here, you’ll find tips, tricks, write-ups, and insights into everything I’m learning about ethical hacking and cybersecurity. Stick around, and let’s explore the art of securing the digital world together. 😉  
