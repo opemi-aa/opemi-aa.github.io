@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="{{ "/assets/css/custom.css" | relative_url }}">
+    <link rel="stylesheet" href="{{ "/assets/css/floating-dots.css" | relative_url }}">
 
     {% seo %}
   </head>
   <body>
+    <div class="floating-dots-container" id="dots-container"></div>
     <div class="container">
       {{ content }}
     </div>
     <script src="{{ "/assets/js/dynamic.js" | relative_url }}"></script>
+    <script src="{{ "/assets/js/floating-dots.js" | relative_url }}"></script>
   </body>
 </html>
