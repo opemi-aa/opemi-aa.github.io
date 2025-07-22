@@ -1067,6 +1067,28 @@
             background-color: var(--secondary);
         }
 
+        /* Game Menu Button */
+        #gameMenuButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1001;
+            border: none;
+            outline: none;
+            background-color: var(--primary);
+            color: white;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        #gameMenuButton:hover {
+            background-color: var(--secondary);
+        }
+
         @keyframes gameButtonBlink {
             0%   { background-color: var(--primary); color: white; }
             50%  { background-color: #8B0000; color: white; }
