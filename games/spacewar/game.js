@@ -14,20 +14,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const enemySpawnInterval = 2000;
 
     /**
-     * Draws the pixel-art shooter (player) character.
+     * Draws the pixel-art shooter (player) character as a 3x3 spaceship.
      * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
-     * @param {number} x - The x-coordinate for the top-left corner of the shooter.
-     * @param {number} y - The y-coordinate for the top-left corner of the shooter.
+     * @param {number} x - The x-coordinate for the top-left corner of the shooter's 3x3 conceptual grid.
+     * @param {number} y - The y-coordinate for the top-left corner of the shooter's 3x3 conceptual grid.
      */
     function drawPixelShooter(ctx, x, y) {
         ctx.fillStyle = 'white';
-        // The shooter is a single 1x1 pixel unit block
-        ctx.fillRect(x, y, PIXEL_UNIT, PIXEL_UNIT);
+
+        // Row 1: [empty] [filled] [empty]
+        ctx.fillRect(x + PIXEL_UNIT, y, PIXEL_UNIT, PIXEL_UNIT);
+
+        // Row 2: [filled] [filled] [filled]
+        ctx.fillRect(x, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        ctx.fillRect(x + PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        ctx.fillRect(x + 2 * PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+
+        // Row 3: [filled] [empty] [filled]
+        ctx.fillRect(x, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        ctx.fillRect(x + 2 * PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
     }
 
     /**
-     * Draws the pixel-art enemy character (cross shape).
-     * The enemy occupies a 3x3 conceptual grid of pixel units.
+     * Draws the pixel-art enemy character as a 3x3 spaceship.
      * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
      * @param {number} x - The x-coordinate for the top-left corner of the enemy's 3x3 conceptual grid.
      * @param {number} y - The y-coordinate for the top-left corner of the enemy's 3x3 conceptual grid.
@@ -43,16 +52,19 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillRect(x + PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
         ctx.fillRect(x + 2 * PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
 
-        // Row 3: [empty] [filled] [empty]
-        ctx.fillRect(x + PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        // Row 3: [filled] [empty] [filled]
+        ctx.fillRect(x, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        ctx.fillRect(x + 2 * PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
     }
 
     function init() {
+        const playerPixelWidth = 3 * PIXEL_UNIT;
+        const playerPixelHeight = 3 * PIXEL_UNIT;
         player = {
-            x: canvas.width / 2 - PIXEL_UNIT / 2,
-            y: canvas.height - PIXEL_UNIT - 20,
-            width: PIXEL_UNIT,
-            height: PIXEL_UNIT,
+            x: canvas.width / 2 - playerPixelWidth / 2,
+            y: canvas.height - playerPixelHeight - 20,
+            width: playerPixelWidth,
+            height: playerPixelHeight,
             color: 'white',
             speed: playerSpeed,
             dx: 0
