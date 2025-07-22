@@ -1024,6 +1024,7 @@
 
         /* Back to Home Button */
         #backToHomeBtn {
+            display: block; /* Ensure it behaves as a block-level element for proper clicking */
             position: fixed; /* Fixed position */
             top: 20px; /* 20px from the top */
             left: 20px; /* 20px from the left */
@@ -1036,6 +1037,7 @@
             padding: 10px 15px; /* Some padding */
             border-radius: 10px; /* Rounded corners */
             font-size: 16px; /* Font size */
+            text-decoration: none; /* Remove underline */
             transition: background-color 0.3s;
         }
 

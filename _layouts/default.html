@@ -16,11 +16,10 @@
     {% if page.url == '/' or page.url == '/index.html' %}
       <h2 class="mume-header" id="mainindexhtml-nbspnbsp-contactcontacthtml"><a href="/index.html">Main</a>&#xA0;&#xA0;&#xA0;<a href="/posts/awscloud/index.html">awscloud</a>&#xA0;&#xA0;&#xA0;<a href="/posts/VulnHub/index.html">VulnHub</a>&#xA0;&#xA0;&#xA0;<a href="/posts/pwnedlabs/index.html">PwnedLabs</a>&#xA0;&#xA0;&#xA0;<a href="/posts/picoCTF/index.html">picoCTF</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Articles/index.html">Articles</a></h2>
     {% else %}
-      <button id="backToHomeBtn" title="Back to Home">&#x2190; Home</button>
+      <a href="/" id="backToHomeBtn" title="Back to Home">&#x2190; Home</a>
     {% endif %}
 
     <div class="container">
-      <p>DEBUG: page.url = {{ page.url }}</p>
       {{ content }}
     </div>
     <script src="{{ "/assets/js/dynamic.js" | relative_url }}"></script>
