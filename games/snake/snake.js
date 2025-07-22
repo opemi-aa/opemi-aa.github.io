@@ -36,7 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Draw food
         ctx.fillStyle = 'red';
-        ctx.fillRect(food.x * gridSize, food.y * gridSize, gridSize, gridSize);
+        ctx.beginPath();
+        ctx.arc(food.x * gridSize + gridSize / 2, food.y * gridSize + gridSize / 2, gridSize / 2, 0, Math.PI * 2);
+        ctx.fill();
     }
 
     function updateGameLogic() {
