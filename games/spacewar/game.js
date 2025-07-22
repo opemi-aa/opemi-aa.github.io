@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreElement = document.getElementById('score');
 
     // Define the size of a single pixel unit for your pixel art
-    const PIXEL_UNIT = 8; // Each "pixel" in your art is 8px by 8px
+    const PIXEL_UNIT = 12; // Increased size for larger characters
 
     let player, bullets, enemies, score, gameOver, enemyIntervalId;
 
@@ -14,13 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const enemySpawnInterval = 2000;
 
     /**
-     * Draws the pixel-art shooter (player) character as a 3x3 spaceship.
+     * Draws the pixel-art character as a 3x4 spaceship.
      * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
-     * @param {number} x - The x-coordinate for the top-left corner of the shooter's 3x3 conceptual grid.
-     * @param {number} y - The y-coordinate for the top-left corner of the shooter's 3x3 conceptual grid.
+     * @param {number} x - The x-coordinate for the top-left corner of the character's 3x4 conceptual grid.
+     * @param {number} y - The y-coordinate for the top-left corner of the character's 3x4 conceptual grid.
+     * @param {string} color - The color of the character.
      */
-    function drawPixelShooter(ctx, x, y) {
-        ctx.fillStyle = 'white';
+    function drawPixelCharacter(ctx, x, y, color) {
+        ctx.fillStyle = color;
 
         // Row 1: [empty] [filled] [empty]
         ctx.fillRect(x + PIXEL_UNIT, y, PIXEL_UNIT, PIXEL_UNIT);
@@ -30,41 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillRect(x + PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
         ctx.fillRect(x + 2 * PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
 
-        // Row 3: [filled] [empty] [filled]
-        ctx.fillRect(x, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-        ctx.fillRect(x + 2 * PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-    }
+        // Row 3: [empty] [filled] [empty]
+        ctx.fillRect(x + PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
 
-    /**
-     * Draws the pixel-art enemy character as a 3x3 spaceship.
-     * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
-     * @param {number} x - The x-coordinate for the top-left corner of the enemy's 3x3 conceptual grid.
-     * @param {number} y - The y-coordinate for the top-left corner of the enemy's 3x3 conceptual grid.
-     */
-    function drawPixelEnemy(ctx, x, y) {
-        ctx.fillStyle = 'red';
-
-        // Row 1: [empty] [filled] [empty]
-        ctx.fillRect(x + PIXEL_UNIT, y, PIXEL_UNIT, PIXEL_UNIT);
-
-        // Row 2: [filled] [filled] [filled]
-        ctx.fillRect(x, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-        ctx.fillRect(x + PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-        ctx.fillRect(x + 2 * PIXEL_UNIT, y + PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-
-        // Row 3: [filled] [empty] [filled]
-        ctx.fillRect(x, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
-        ctx.fillRect(x + 2 * PIXEL_UNIT, y + 2 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        // Row 4: [filled] [empty] [filled]
+        ctx.fillRect(x, y + 3 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
+        ctx.fillRect(x + 2 * PIXEL_UNIT, y + 3 * PIXEL_UNIT, PIXEL_UNIT, PIXEL_UNIT);
     }
 
     function init() {
-        const playerPixelWidth = 3 * PIXEL_UNIT;
-        const playerPixelHeight = 3 * PIXEL_UNIT;
+        const characterPixelWidth = 3 * PIXEL_UNIT;
+        const characterPixelHeight = 4 * PIXEL_UNIT;
         player = {
-            x: canvas.width / 2 - playerPixelWidth / 2,
-            y: canvas.height - playerPixelHeight - 20,
-            width: playerPixelWidth,
-            height: playerPixelHeight,
+            x: canvas.width / 2 - characterPixelWidth / 2,
+            y: canvas.height - characterPixelHeight - 20,
+            width: characterPixelWidth,
+            height: characterPixelHeight,
             color: 'white',
             speed: playerSpeed,
             dx: 0
@@ -80,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function drawPlayer() {
-        drawPixelShooter(ctx, player.x, player.y);
+        drawPixelCharacter(ctx, player.x, player.y, player.color);
     }
 
     function drawBullets() {
@@ -92,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawEnemies() {
         enemies.forEach(enemy => {
-            drawPixelEnemy(ctx, enemy.x, enemy.y);
+            drawPixelCharacter(ctx, enemy.x, enemy.y, enemy.color);
         });
     }
 
@@ -118,9 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function spawnEnemy() {
         const enemyPixelWidth = 3 * PIXEL_UNIT;
-        const enemyPixelHeight = 3 * PIXEL_UNIT;
+        const enemyPixelHeight = 4 * PIXEL_UNIT;
         const x = Math.random() * (canvas.width - enemyPixelWidth);
-        enemies.push({ x, y: -enemyPixelHeight, width: enemyPixelWidth, height: enemyPixelHeight });
+        enemies.push({ x, y: -enemyPixelHeight, width: enemyPixelWidth, height: enemyPixelHeight, color: 'red' });
     }
 
     function detectCollisions() {
