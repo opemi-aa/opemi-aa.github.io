@@ -179,7 +179,7 @@
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start; /* Align items to the start (left) */
             align-items: center;
             transition: background-color var(--transition-speed);
         }
@@ -282,6 +282,7 @@
         .nav-links {
             display: flex;
             gap: 1.5rem;
+            margin-left: 2rem; /* Add space between logo and nav links */
         }
 
         .nav-links a {
@@ -308,6 +309,15 @@
 
         .nav-links a:hover {
             color: var(--primary);
+        }
+
+        @keyframes blink {
+            0%, 100% { color: var(--primary); }
+            50% { color: var(--secondary); }
+        }
+
+        .nav-links a {
+            animation: blink 2s infinite alternate;
         }
 
         .container {
