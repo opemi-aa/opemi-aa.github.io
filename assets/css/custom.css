@@ -896,7 +896,7 @@
 
         /* Hide vertical scrollbar, allow horizontal if needed */
         html {
-            overflow-y: hidden;
+            overflow-y: auto;
             overflow-x: auto;
         }
 
