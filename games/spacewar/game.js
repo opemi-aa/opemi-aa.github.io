@@ -1,200 +1,167 @@
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
 
-// Player
-const player = {
-    x: canvas.width / 2,
-    y: canvas.height - 50,
-    width: 50,
-    height: 50,
-    color: 'white',
-    speed: 5,
-    dx: 0
-};
+    let player, bullets, enemies, score, gameOver, enemyIntervalId;
 
-// Bullets
-let bullets = [];
-const bulletSpeed = 7;
+    const playerWidth = 50, playerHeight = 50, playerSpeed = 5;
+    const bulletSpeed = 7;
+    const enemyWidth = 50, enemyHeight = 50, enemySpeed = 2;
+    const enemySpawnInterval = 2000;
 
-// Enemies
-let enemies = [];
-const enemyWidth = 50;
-const enemyHeight = 50;
-const enemySpeed = 2;
-let enemySpawnInterval = 2000; // 2 seconds
-let enemyIntervalId;
-
-// Game state
-let score = 0;
-let gameOver = false;
-
-function drawPlayer() {
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-}
-
-function drawBullets() {
-    for (let i = 0; i < bullets.length; i++) {
-        ctx.fillStyle = 'yellow';
-        ctx.fillRect(bullets[i].x, bullets[i].y, 5, 10);
-    }
-}
-
-function drawEnemies() {
-    for (let i = 0; i < enemies.length; i++) {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(enemies[i].x, enemies[i].y, enemyWidth, enemyHeight);
-    }
-}
-
-function movePlayer() {
-    player.x += player.dx;
-
-    // Wall detection
-    if (player.x < 0) {
-        player.x = 0;
+    function init() {
+        player = {
+            x: canvas.width / 2 - playerWidth / 2,
+            y: canvas.height - playerHeight - 20,
+            width: playerWidth,
+            height: playerHeight,
+            color: 'white',
+            speed: playerSpeed,
+            dx: 0
+        };
+        bullets = [];
+        enemies = [];
+        score = 0;
+        gameOver = false;
+        if (enemyIntervalId) clearInterval(enemyIntervalId);
+        enemyIntervalId = setInterval(spawnEnemy, enemySpawnInterval);
+        update();
     }
 
-    if (player.x + player.width > canvas.width) {
-        player.x = canvas.width - player.width;
+    function drawPlayer() {
+        ctx.fillStyle = player.color;
+        ctx.fillRect(player.x, player.y, player.width, player.height);
     }
-}
 
-function moveBullets() {
-    for (let i = 0; i < bullets.length; i++) {
-        bullets[i].y -= bulletSpeed;
-        if (bullets[i].y < 0) {
-            bullets.splice(i, 1);
-            i--;
+    function drawBullets() {
+        bullets.forEach(bullet => {
+            ctx.fillStyle = 'yellow';
+            ctx.fillRect(bullet.x, bullet.y, 5, 10);
+        });
+    }
+
+    function drawEnemies() {
+        enemies.forEach(enemy => {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(enemy.x, enemy.y, enemyWidth, enemyHeight);
+        });
+    }
+
+    function movePlayer() {
+        player.x += player.dx;
+        if (player.x < 0) player.x = 0;
+        if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+    }
+
+    function moveBullets() {
+        bullets.forEach((bullet, index) => {
+            bullet.y -= bulletSpeed;
+            if (bullet.y < 0) bullets.splice(index, 1);
+        });
+    }
+
+    function moveEnemies() {
+        enemies.forEach((enemy, index) => {
+            enemy.y += enemySpeed;
+            if (enemy.y > canvas.height) enemies.splice(index, 1);
+        });
+    }
+
+    function spawnEnemy() {
+        const x = Math.random() * (canvas.width - enemyWidth);
+        enemies.push({ x, y: -enemyHeight });
+    }
+
+    function detectCollisions() {
+        // Bullets and enemies
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            for (let j = enemies.length - 1; j >= 0; j--) {
+                if (bullets[i] && enemies[j] &&
+                    bullets[i].x < enemies[j].x + enemyWidth &&
+                    bullets[i].x + 5 > enemies[j].x &&
+                    bullets[i].y < enemies[j].y + enemyHeight &&
+                    bullets[i].y + 10 > enemies[j].y
+                ) {
+                    bullets.splice(i, 1);
+                    enemies.splice(j, 1);
+                    score++;
+                    break; 
+                }
+            }
         }
-    }
-}
 
-function moveEnemies() {
-    for (let i = 0; i < enemies.length; i++) {
-        enemies[i].y += enemySpeed;
-        if (enemies[i].y > canvas.height) {
-            enemies.splice(i, 1);
-            i--;
-        }
-    }
-}
-
-function spawnEnemy() {
-    const x = Math.random() * (canvas.width - enemyWidth);
-    const y = -enemyHeight;
-    enemies.push({ x, y });
-}
-
-function detectCollisions() {
-    // Bullets and enemies
-    for (let i = 0; i < bullets.length; i++) {
-        for (let j = 0; j < enemies.length; j++) {
+        // Player and enemies
+        for (let i = enemies.length - 1; i >= 0; i--) {
             if (
-                bullets[i].x < enemies[j].x + enemyWidth &&
-                bullets[i].x + 5 > enemies[j].x &&
-                bullets[i].y < enemies[j].y + enemyHeight &&
-                bullets[i].y + 10 > enemies[j].y
+                player.x < enemies[i].x + enemyWidth &&
+                player.x + player.width > enemies[i].x &&
+                player.y < enemies[i].y + enemyHeight &&
+                player.y + player.height > enemies[i].y
             ) {
-                bullets.splice(i, 1);
-                i--;
-                enemies.splice(j, 1);
-                j--;
-                score++;
+                gameOver = true;
+                clearInterval(enemyIntervalId);
+                return;
             }
         }
     }
 
-    // Player and enemies
-    for (let i = 0; i < enemies.length; i++) {
-        if (
-            player.x < enemies[i].x + enemyWidth &&
-            player.x + player.width > enemies[i].x &&
-            player.y < enemies[i].y + enemyHeight &&
-            player.y + player.height > enemies[i].y
-        ) {
-            gameOver = true;
-            clearInterval(enemyIntervalId);
-        }
+    function drawScore() {
+        ctx.fillStyle = 'white';
+        ctx.font = '20px Arial';
+        ctx.fillText(`Score: ${score}`, 10, 30);
     }
-}
 
-function drawScore() {
-    ctx.fillStyle = 'white';
-    ctx.font = '20px Arial';
-    ctx.fillText(`Score: ${score}`, 10, 20);
-}
-
-function clear() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function update() {
-    if (gameOver) {
+    function showGameOver() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = 'white';
         ctx.font = '40px Arial';
-        ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+        ctx.textAlign = 'center';
+        ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 40);
         ctx.font = '20px Arial';
-        ctx.fillText('Press Enter to Restart', canvas.width / 2 - 95, canvas.height / 2 + 40);
-        return;
+        ctx.fillText(`Final Score: ${score}`, canvas.width / 2, canvas.height / 2);
+        ctx.fillText('Press Enter to Restart', canvas.width / 2, canvas.height / 2 + 40);
     }
 
-    clear();
+    function update() {
+        if (gameOver) {
+            showGameOver();
+            return;
+        }
 
-    drawPlayer();
-    drawBullets();
-    drawEnemies();
-    drawScore();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawPlayer();
+        drawBullets();
+        drawEnemies();
+        drawScore();
+        movePlayer();
+        moveBullets();
+        moveEnemies();
+        detectCollisions();
 
-    movePlayer();
-    moveBullets();
-    moveEnemies();
-
-    detectCollisions();
-
-    requestAnimationFrame(update);
-}
-
-function restartGame() {
-    gameOver = false;
-    score = 0;
-    player.x = canvas.width / 2;
-    player.y = canvas.height - 50;
-    bullets = [];
-    enemies = [];
-    clearInterval(enemyIntervalId);
-    enemyIntervalId = setInterval(spawnEnemy, enemySpawnInterval);
-    update();
-}
-
-function keyDown(e) {
-    if (gameOver && e.key === 'Enter') {
-        restartGame();
-        return;
+        requestAnimationFrame(update);
     }
 
-    if (e.key === 'ArrowRight' || e.key === 'Right') {
-        player.dx = player.speed;
-    } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
-        player.dx = -player.speed;
-    } else if (e.key === ' ') {
-        bullets.push({ x: player.x + player.width / 2 - 2.5, y: player.y });
+    function keyDown(e) {
+        if (gameOver && e.key === 'Enter') {
+            init();
+            return;
+        }
+        if (e.key === 'ArrowRight' || e.key === 'd') player.dx = player.speed;
+        else if (e.key === 'ArrowLeft' || e.key === 'a') player.dx = -player.speed;
+        else if (e.key === ' ') {
+            bullets.push({ x: player.x + player.width / 2 - 2.5, y: player.y });
+        }
     }
-}
 
-function keyUp(e) {
-    if (
-        e.key === 'ArrowRight' ||
-        e.key === 'Right' ||
-        e.key === 'ArrowLeft' ||
-        e.key === 'Left'
-    ) {
-        player.dx = 0;
+    function keyUp(e) {
+        if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'ArrowLeft' || e.key === 'a') {
+            player.dx = 0;
+        }
     }
-}
 
-document.addEventListener('keydown', keyDown);
-document.addEventListener('keyup', keyUp);
+    document.addEventListener('keydown', keyDown);
+    document.addEventListener('keyup', keyUp);
 
-enemyIntervalId = setInterval(spawnEnemy, enemySpawnInterval);
-update();
+    init();
+});

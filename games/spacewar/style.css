@@ -1,10 +1,21 @@
 body {
-    background-color: #000;
+    background-color: transparent;
     color: #fff;
     text-align: center;
 }
 
+.game-title {
+    margin-bottom: 1rem;
+}
+
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 canvas {
-    background-color: #000;
-    border: 1px solid #fff;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 20px rgba(0, 220, 130, 0.5);
 }
