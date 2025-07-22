@@ -71,11 +71,6 @@ document.addEventListener('DOMContentLoaded', function() {
     cursorDot.classList.add('cursor-dot');
     document.body.appendChild(cursorDot);
 
-    // Remove the single cursorTrail element
-    // const cursorTrail = document.createElement('div');
-    // cursorTrail.classList.add('cursor-trail');
-    // document.body.appendChild(cursorTrail);
-
     document.addEventListener('mousemove', function(e) {
         cursorDot.style.left = e.clientX + 'px';
         cursorDot.style.top = e.clientY + 'px';
@@ -93,4 +88,26 @@ document.addEventListener('DOMContentLoaded', function() {
             trailDot.remove();
         }, 500); // Adjust delay for desired trail length
     });
+
+    // Navigation button handlers
+    const gameButton = document.getElementById('gameButton');
+    if (gameButton) {
+        gameButton.addEventListener('click', () => {
+            window.location.href = '/games/';
+        });
+    }
+
+    const gameMenuButton = document.getElementById('gameMenuButton');
+    if (gameMenuButton) {
+        gameMenuButton.addEventListener('click', () => {
+            window.location.href = '/games/';
+        });
+    }
+
+    const homeButton = document.getElementById('homeButton');
+    if (homeButton) {
+        homeButton.addEventListener('click', () => {
+            window.location.href = '/';
+        });
+    }
 });
