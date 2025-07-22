@@ -165,9 +165,6 @@
         body {
             margin: 0;
             background-color: #1a1a2e; /* Dark background */
-            display: flex;
-            justify-content: center;
-            align-items: center;
             font-family: sans-serif;
             color: white;
         }
