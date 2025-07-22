@@ -1,4 +1,3 @@
-
 const dotsContainer = document.getElementById('dots-container');
 const numberOfDots = 50; // Adjust as needed
 
@@ -47,4 +46,22 @@ for (let i = 0; i < numberOfDots; i++) {
 window.addEventListener('resize', () => {
     // For simplicity, we'll just let existing dots finish and new ones spawn correctly.
     // A more complex solution might reposition active dots.
+});
+
+// Scroll to top button functionality
+const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        scrollToTopBtn.style.display = "block";
+    } else {
+        scrollToTopBtn.style.display = "none";
+    }
+};
+
+// When the user clicks on the button, scroll to the top of the document
+scrollToTopBtn.addEventListener("click", function() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 });

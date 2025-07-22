@@ -1003,6 +1003,28 @@
             width: 8px; /* Slightly thinner */
         }
 
+        /* Scroll to Top Button */
+        #scrollToTopBtn {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            bottom: 20px; /* 20px from the bottom */
+            right: 30px; /* 30px from the right */
+            z-index: 99; /* High z-index to be on top */
+            border: none; /* Remove borders */
+            outline: none; /* Remove outline */
+            background-color: var(--primary); /* Set a background color */
+            color: white; /* Text color */
+            cursor: pointer; /* Add a mouse pointer on hover */
+            padding: 15px; /* Some padding */
+            border-radius: 10px; /* Rounded corners */
+            font-size: 18px; /* Increase font size */
+            transition: opacity 0.3s;
+        }
+
+        #scrollToTopBtn:hover {
+            background-color: #555; /* Add a dark-grey background on hover */
+        }
+
         ::-webkit-scrollbar-track {
             background-color: rgba(0, 0, 0, 0.05); /* Very light, almost invisible track */
             border-radius: 10px;
