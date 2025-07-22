@@ -1028,7 +1028,7 @@
             position: fixed; /* Fixed position */
             top: 20px; /* 20px from the top */
             left: 20px; /* 20px from the left */
-            z-index: 1001; /* Higher than mume-header */
+            z-index: 9999; /* Very high z-index to be on top of everything */
             border: none; /* Remove borders */
             outline: none; /* Remove outline */
             background-color: var(--primary); /* Set a background color */
