@@ -39,3 +39,13 @@ Hey there 👋, and welcome to my little corner of the web! I’m the.opemi.aa �
     </li>
   {% endfor %}
 </ul>
+
+* * *
+### **Games**
+* * *
+
+<ul>
+  <li>
+    <a href="/games/snake/">Play Snake Game</a>
+  </li>
+</ul>

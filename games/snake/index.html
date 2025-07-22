@@ -1,0 +1,61 @@
+---
+layout: default
+title: Snake Game
+---
+
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #282c34; /* Dark background for the game page */
+    color: white;
+    font-family: 'Press Start 2P', cursive; /* Pixel font for retro feel */
+  }
+  canvas {
+    background-color: #1a1a1a;
+    border: 5px solid #00ff00; /* Green border */
+    display: block;
+    margin: 20px auto;
+  }
+  #game-container {
+    text-align: center;
+  }
+  #score {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #00ff00;
+  }
+  #game-over {
+    font-size: 2.5em;
+    color: #ff0000;
+    margin-top: 20px;
+    display: none;
+  }
+  button {
+    background-color: #00ff00;
+    color: #1a1a1a;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-family: 'Press Start 2P', cursive;
+  }
+  button:hover {
+    background-color: #00cc00;
+  }
+</style>
+
+<div id="game-container">
+  <div id="score">Score: 0</div>
+  <canvas id="gameCanvas" width="400" height="400"></canvas>
+  <div id="game-over">Game Over!</div>
+  <button id="restartButton">Restart Game</button>
+</div>
+
+<script src="{{ '/games/snake/snake.js' | relative_url }}"></script>
