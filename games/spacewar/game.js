@@ -13,15 +13,16 @@ const player = {
 };
 
 // Bullets
-const bullets = [];
+let bullets = [];
 const bulletSpeed = 7;
 
 // Enemies
-const enemies = [];
+let enemies = [];
 const enemyWidth = 50;
 const enemyHeight = 50;
 const enemySpeed = 2;
 let enemySpawnInterval = 2000; // 2 seconds
+let enemyIntervalId;
 
 // Game state
 let score = 0;
@@ -113,6 +114,7 @@ function detectCollisions() {
             player.y + player.height > enemies[i].y
         ) {
             gameOver = true;
+            clearInterval(enemyIntervalId);
         }
     }
 }
@@ -132,6 +134,8 @@ function update() {
         ctx.fillStyle = 'white';
         ctx.font = '40px Arial';
         ctx.fillText('Game Over', canvas.width / 2 - 100, canvas.height / 2);
+        ctx.font = '20px Arial';
+        ctx.fillText('Press Enter to Restart', canvas.width / 2 - 95, canvas.height / 2 + 40);
         return;
     }
 
@@ -151,7 +155,24 @@ function update() {
     requestAnimationFrame(update);
 }
 
+function restartGame() {
+    gameOver = false;
+    score = 0;
+    player.x = canvas.width / 2;
+    player.y = canvas.height - 50;
+    bullets = [];
+    enemies = [];
+    clearInterval(enemyIntervalId);
+    enemyIntervalId = setInterval(spawnEnemy, enemySpawnInterval);
+    update();
+}
+
 function keyDown(e) {
+    if (gameOver && e.key === 'Enter') {
+        restartGame();
+        return;
+    }
+
     if (e.key === 'ArrowRight' || e.key === 'Right') {
         player.dx = player.speed;
     } else if (e.key === 'ArrowLeft' || e.key === 'Left') {
@@ -175,5 +196,5 @@ function keyUp(e) {
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 
-setInterval(spawnEnemy, enemySpawnInterval);
+enemyIntervalId = setInterval(spawnEnemy, enemySpawnInterval);
 update();
