@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const maxScore = 15; // Score to win
     const aiSpeed = 3.5; // AI paddle speed
 
-    let player1 = {
+    let playerLeft = {
         x: 0,
         y: canvas.height / 2 - paddleHeight / 2,
         score: 0,
         dy: 0
     };
 
-    let player2 = {
+    let playerRight = {
         x: canvas.width - paddleWidth,
         y: canvas.height / 2 - paddleHeight / 2,
         score: 0,
@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let gameOver = false;
     let winner = null;
+    let isPlayer1OnLeft = true; // Track which player is on the left
 
     function drawRect(x, y, width, height, color) {
         ctx.fillStyle = color;
@@ -63,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         drawCourt();
 
         // Draw paddles
-        drawRect(player1.x, player1.y, paddleWidth, paddleHeight, 'white');
-        drawRect(player2.x, player2.y, paddleWidth, paddleHeight, 'white');
+        drawRect(playerLeft.x, playerLeft.y, paddleWidth, paddleHeight, 'white');
+        drawRect(playerRight.x, playerRight.y, paddleWidth, paddleHeight, 'white');
 
         // Draw ball
         drawCircle(ball.x, ball.y, ballSize, 'yellow');
@@ -76,25 +77,25 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Move player 1 paddle
-        player1.y += player1.dy;
-        // Prevent player 1 paddle from going off screen
-        if (player1.y < 0) player1.y = 0;
-        if (player1.y + paddleHeight > canvas.height) player1.y = canvas.height - paddleHeight;
+        // Move player paddle (always the one on the left)
+        playerLeft.y += playerLeft.dy;
+        // Prevent player paddle from going off screen
+        if (playerLeft.y < 0) playerLeft.y = 0;
+        if (playerLeft.y + paddleHeight > canvas.height) playerLeft.y = canvas.height - paddleHeight;
 
-        // AI for player 2 paddle
+        // AI for the right paddle
         if (ball.dy < 0) { // Ball moving up
-            if (player2.y + paddleHeight / 2 > ball.y) {
-                player2.y -= aiSpeed;
+            if (playerRight.y + paddleHeight / 2 > ball.y) {
+                playerRight.y -= aiSpeed;
             }
         } else { // Ball moving down
-            if (player2.y + paddleHeight / 2 < ball.y) {
-                player2.y += aiSpeed;
+            if (playerRight.y + paddleHeight / 2 < ball.y) {
+                playerRight.y += aiSpeed;
             }
         }
-        // Prevent player 2 paddle from going off screen
-        if (player2.y < 0) player2.y = 0;
-        if (player2.y + paddleHeight > canvas.height) player2.y = canvas.height - paddleHeight;
+        // Prevent AI paddle from going off screen
+        if (playerRight.y < 0) playerRight.y = 0;
+        if (playerRight.y + paddleHeight > canvas.height) playerRight.y = canvas.height - paddleHeight;
 
         // Move ball
         ball.x += ball.dx;
@@ -106,42 +107,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Ball collision with paddles
-        // Player 1 paddle
+        // Left paddle
         if (
-            ball.x - ballSize < player1.x + paddleWidth &&
-            ball.y + ballSize > player1.y &&
-            ball.y - ballSize < player1.y + paddleHeight
+            ball.x - ballSize < playerLeft.x + paddleWidth &&
+            ball.y + ballSize > playerLeft.y &&
+            ball.y - ballSize < playerLeft.y + paddleHeight
         ) {
             ball.dx *= -1;
         }
 
-        // Player 2 paddle
+        // Right paddle
         if (
-            ball.x + ballSize > player2.x &&
-            ball.y + ballSize > player2.y &&
-            ball.y - ballSize < player2.y + paddleHeight
+            ball.x + ballSize > playerRight.x &&
+            ball.y + ballSize > playerRight.y &&
+            ball.y - ballSize < playerRight.y + paddleHeight
         ) {
             ball.dx *= -1;
         }
 
         // Ball out of bounds (scoring)
         if (ball.x - ballSize < 0) {
-            player2.score++;
-            player2ScoreElement.innerText = player2.score;
+            playerRight.score++;
+            player2ScoreElement.innerText = playerRight.score;
             resetBall();
         } else if (ball.x + ballSize > canvas.width) {
-            player1.score++;
-            player1ScoreElement.innerText = player1.score;
+            playerLeft.score++;
+            player1ScoreElement.innerText = playerLeft.score;
             resetBall();
         }
 
         // Check for game over
-        if (player1.score >= maxScore) {
+        if (playerLeft.score >= maxScore) {
             gameOver = true;
-            winner = 'Player 1';
-        } else if (player2.score >= maxScore) {
+            winner = isPlayer1OnLeft ? 'Player 1' : 'Player 2';
+        } else if (playerRight.score >= maxScore) {
             gameOver = true;
-            winner = 'Player 2';
+            winner = isPlayer1OnLeft ? 'Player 2' : 'Player 1';
         }
 
         draw();
@@ -167,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 40);
         }
         ctx.font = '20px Arial';
-        ctx.fillText(`Player 1: ${player1.score} - Player 2: ${player2.score}`, canvas.width / 2, canvas.height / 2);
+        ctx.fillText(`Player 1: ${player1ScoreElement.innerText} - Player 2: ${player2ScoreElement.innerText}`, canvas.width / 2, canvas.height / 2);
         ctx.fillText('Press Enter to Restart', canvas.width / 2, canvas.height / 2 + 40);
     }
 
@@ -176,20 +177,18 @@ document.addEventListener('DOMContentLoaded', () => {
             init();
             return;
         }
-        switch (e.key) {
-            case 'ArrowUp': player2.dy = -paddleSpeed; break;
-            case 'ArrowDown': player2.dy = paddleSpeed; break;
-            case 'w': player1.dy = -paddleSpeed; break;
-            case 's': player1.dy = paddleSpeed; break;
+        // Player 1 controls (always on the left)
+        if (e.key === 'ArrowUp') {
+            playerLeft.dy = -paddleSpeed;
+        } else if (e.key === 'ArrowDown') {
+            playerLeft.dy = paddleSpeed;
         }
     }
 
     function keyUp(e) {
-        switch (e.key) {
-            case 'ArrowUp':
-            case 'ArrowDown': player2.dy = 0; break;
-            case 'w':
-            case 's': player1.dy = 0; break;
+        // Player 1 controls (always on the left)
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+            playerLeft.dy = 0;
         }
     }
 
@@ -197,10 +196,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keyup', keyUp);
 
     function init() {
-        player1.score = 0;
-        player2.score = 0;
-        player1ScoreElement.innerText = player1.score;
-        player2ScoreElement.innerText = player2.score;
+        // Swap sides for the next game
+        isPlayer1OnLeft = !isPlayer1OnLeft;
+
+        // Reset scores
+        playerLeft.score = 0;
+        playerRight.score = 0;
+
+        // Assign player and AI to correct paddles based on isPlayer1OnLeft
+        if (isPlayer1OnLeft) {
+            player1ScoreElement.innerText = playerLeft.score;
+            player2ScoreElement.innerText = playerRight.score;
+        } else {
+            // If Player 1 is on the right, swap the score elements for display
+            player1ScoreElement.innerText = playerRight.score;
+            player2ScoreElement.innerText = playerLeft.score;
+        }
+
         gameOver = false;
         winner = null;
         resetBall();
