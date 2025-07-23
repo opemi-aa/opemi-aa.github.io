@@ -41,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let humanPaddle; // Reference to the paddle controlled by human
     let aiPaddle;    // Reference to the paddle controlled by AI
+    let animationFrameId; // To control requestAnimationFrame
 
     function drawRect(x, y, width, height, color) {
         ctx.fillStyle = color;
@@ -78,102 +79,103 @@ document.addEventListener('DOMContentLoaded', () => {
     function update() {
         if (gameOver) {
             showGameOver();
-            return;
+            return; // Stop the loop when game is over
         }
-        if (gamePaused) { 
-            draw(); // Redraw current state
+
+        if (!gamePaused) { // Only run game logic if not paused
+            // Move human paddle
+            humanPaddle.y += humanPaddle.dy;
+            // Prevent human paddle from going off screen
+            if (humanPaddle.y < 0) humanPaddle.y = 0;
+            if (humanPaddle.y + paddleHeight > canvas.height) humanPaddle.y = canvas.height - paddleHeight;
+
+            // AI for the AI paddle (with slight inaccuracy)
+            const targetY = ball.y - paddleHeight / 2; // Aim for the center of the paddle
+            const aiCenter = aiPaddle.y + paddleHeight / 2;
+
+            if (aiCenter < targetY - 10) { // If ball is significantly below AI center
+                aiPaddle.y += aiSpeed;
+            } else if (aiCenter > targetY + 10) { // If ball is significantly above AI center
+                aiPaddle.y -= aiSpeed;
+            }
+            // Add a random chance for AI to make a slightly wrong move
+            if (Math.random() < 0.05) { // 5% chance to add a random small offset
+                aiPaddle.y += (Math.random() - 0.5) * 20; 
+            }
+
+            // Prevent AI paddle from going off screen
+            if (aiPaddle.y < 0) aiPaddle.y = 0;
+            if (aiPaddle.y + paddleHeight > canvas.height) aiPaddle.y = canvas.height - paddleHeight;
+
+            // Move ball
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Ball collision with top/bottom walls
+            if (ball.y + ballSize > canvas.height || ball.y - ballSize < 0) {
+                ball.dy *= -1;
+            }
+
+            // Ball collision with paddles
+            // Left paddle
+            if (
+                ball.x - ballSize < playerLeftPaddle.x + paddleWidth &&
+                ball.y + ballSize > playerLeftPaddle.y &&
+                ball.y - ballSize < playerLeftPaddle.y + paddleHeight
+            ) {
+                ball.dx *= -1;
+            }
+
+            // Right paddle
+            if (
+                ball.x + ballSize > playerRightPaddle.x &&
+                ball.y + ballSize > playerRightPaddle.y &&
+                ball.y - ballSize < playerRightPaddle.y + paddleHeight
+            ) {
+                ball.dx *= -1;
+            }
+
+            // Ball out of bounds (scoring)
+            if (ball.x - ballSize < 0) { // Ball went past left paddle
+                if (isPlayer1OnLeft) { // Player 1 is on left, so Player 2 (AI) scored
+                    player2LogicalScore++;
+                } else { // Player 2 is on left, so Player 1 (AI) scored
+                    player1LogicalScore++;
+                }
+                updateScoreDisplay();
+                resetBall();
+            } else if (ball.x + ballSize > canvas.width) { // Ball went past right paddle
+                if (isPlayer1OnLeft) { // Player 1 is on left, so Player 1 scored
+                    player1LogicalScore++;
+                } else { // Player 2 is on left, so Player 2 scored
+                    player2LogicalScore++;
+                }
+                updateScoreDisplay();
+                resetBall();
+            }
+
+            // Check for game over
+            if (player1LogicalScore >= maxScore) {
+                gameOver = true;
+                winner = 'Player 1';
+            } else if (player2LogicalScore >= maxScore) {
+                gameOver = true;
+                winner = 'Player 2';
+            }
+        }
+
+        draw(); // Always draw the current state (game or paused screen)
+
+        if (gamePaused) { // If paused, draw the PAUSED overlay after drawing the game state
             ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = 'white';
             ctx.font = '40px Arial';
             ctx.textAlign = 'center';
             ctx.fillText('PAUSED', canvas.width / 2, canvas.height / 2);
-            requestAnimationFrame(update); // Keep requesting frames to show PAUSED screen
-            return;
         }
 
-        // Move human paddle
-        humanPaddle.y += humanPaddle.dy;
-        // Prevent human paddle from going off screen
-        if (humanPaddle.y < 0) humanPaddle.y = 0;
-        if (humanPaddle.y + paddleHeight > canvas.height) humanPaddle.y = canvas.height - paddleHeight;
-
-        // AI for the AI paddle (with slight inaccuracy)
-        const targetY = ball.y - paddleHeight / 2; // Aim for the center of the paddle
-        const aiCenter = aiPaddle.y + paddleHeight / 2;
-
-        if (aiCenter < targetY - 10) { // If ball is significantly below AI center
-            aiPaddle.y += aiSpeed;
-        } else if (aiCenter > targetY + 10) { // If ball is significantly above AI center
-            aiPaddle.y -= aiSpeed;
-        }
-        // Add a random chance for AI to make a slightly wrong move
-        if (Math.random() < 0.05) { // 5% chance to add a random small offset
-            aiPaddle.y += (Math.random() - 0.5) * 20; 
-        }
-
-        // Prevent AI paddle from going off screen
-        if (aiPaddle.y < 0) aiPaddle.y = 0;
-        if (aiPaddle.y + paddleHeight > canvas.height) aiPaddle.y = canvas.height - paddleHeight;
-
-        // Move ball
-        ball.x += ball.dx;
-        ball.y += ball.dy;
-
-        // Ball collision with top/bottom walls
-        if (ball.y + ballSize > canvas.height || ball.y - ballSize < 0) {
-            ball.dy *= -1;
-        }
-
-        // Ball collision with paddles
-        // Left paddle
-        if (
-            ball.x - ballSize < playerLeftPaddle.x + paddleWidth &&
-            ball.y + ballSize > playerLeftPaddle.y &&
-            ball.y - ballSize < playerLeftPaddle.y + paddleHeight
-        ) {
-            ball.dx *= -1;
-        }
-
-        // Right paddle
-        if (
-            ball.x + ballSize > playerRightPaddle.x &&
-            ball.y + ballSize > playerRightPaddle.y &&
-            ball.y - ballSize < playerRightPaddle.y + paddleHeight
-        ) {
-            ball.dx *= -1;
-        }
-
-        // Ball out of bounds (scoring)
-        if (ball.x - ballSize < 0) { // Ball went past left paddle
-            if (isPlayer1OnLeft) { // Player 1 is on left, so Player 2 (AI) scored
-                player2LogicalScore++;
-            } else { // Player 2 is on left, so Player 1 (AI) scored
-                player1LogicalScore++;
-            }
-            updateScoreDisplay();
-            resetBall();
-        } else if (ball.x + ballSize > canvas.width) { // Ball went past right paddle
-            if (isPlayer1OnLeft) { // Player 1 is on left, so Player 1 scored
-                player1LogicalScore++;
-            } else { // Player 2 is on left, so Player 2 scored
-                player2LogicalScore++;
-            }
-            updateScoreDisplay();
-            resetBall();
-        }
-
-        // Check for game over
-        if (player1LogicalScore >= maxScore) {
-            gameOver = true;
-            winner = 'Player 1';
-        } else if (player2LogicalScore >= maxScore) {
-            gameOver = true;
-            winner = 'Player 2';
-        }
-
-        draw();
-        requestAnimationFrame(update);
+        animationFrameId = requestAnimationFrame(update); // Always request next frame unless game is over
     }
 
     function resetBall() {
@@ -203,17 +205,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Enter') {
             if (gameOver) {
                 init(); // Restart game
-            } else {
-                gamePaused = !gamePaused; // Toggle pause
-                if (!gamePaused) {
-                    // If unpausing, immediately request next frame to resume game loop
-                    requestAnimationFrame(update);
+            } else { // Game is not over, so toggle pause
+                gamePaused = !gamePaused; 
+                if (gamePaused) {
+                    cancelAnimationFrame(animationFrameId); // Stop the loop when pausing
+                } else {
+                    animationFrameId = requestAnimationFrame(update); // Resume the loop when unpausing
                 }
             }
             return; // Consume Enter key press
         }
 
-        if (!gamePaused && !gameOver) { // Only allow controls if not paused and not game over
+        // Only allow controls if not paused and not game over
+        if (!gamePaused && !gameOver) {
             if (e.key === 'ArrowUp') {
                 humanPaddle.dy = -paddleSpeed;
             } else if (e.key === 'ArrowDown') {
@@ -223,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function keyUp(e) {
+        // Only reset dy if the key released is one of the control keys
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             humanPaddle.dy = 0;
         }
@@ -259,13 +264,19 @@ document.addEventListener('DOMContentLoaded', () => {
         playerLeftPaddle.y = canvas.height / 2 - paddleHeight / 2;
         playerRightPaddle.y = canvas.height / 2 - paddleHeight / 2;
 
+        // Reset paddle dy to 0
+        playerLeftPaddle.dy = 0;
+        playerRightPaddle.dy = 0;
+
         updateScoreDisplay();
 
         gameOver = false;
         gamePaused = false; // Ensure game is not paused on init
         winner = null;
         resetBall();
-        requestAnimationFrame(update); // Start the game loop
+        // Ensure any previous animation frame is cancelled before starting a new one
+        if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(update); // Start the game loop
     }
 
     init();
