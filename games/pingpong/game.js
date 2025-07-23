@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Game script loaded!");
+    console.log("Game script loaded! Version 2"); // Added a new comment for versioning
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const player1ScoreElement = document.getElementById('player1Score');
-    const player2ScoreElement = document.getElementById('player2Score');
+    const player2ScoreElement = document('player2Score');
 
     // Game variables
     const paddleWidth = 10;
