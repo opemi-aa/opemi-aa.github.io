@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Game script loaded!");
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const player1ScoreElement = document.getElementById('player1Score');
@@ -202,11 +203,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function keyDown(e) {
+        console.log("Key Down detected: ", e.key);
         if (e.key === 'Enter') {
+            console.log("Enter key pressed. gameOver:", gameOver, "gamePaused:", gamePaused);
             if (gameOver) {
                 init(); // Restart game
             } else { // Game is not over, so toggle pause
                 gamePaused = !gamePaused; 
+                console.log("Game Paused:", gamePaused);
                 if (gamePaused) {
                     cancelAnimationFrame(animationFrameId); // Stop the loop when pausing
                 } else {
@@ -218,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Only allow controls if not paused and not game over
         if (!gamePaused && !gameOver) {
+            console.log("Controls active. Key:", e.key);
             if (e.key === 'ArrowUp') {
                 humanPaddle.dy = -paddleSpeed;
             } else if (e.key === 'ArrowDown') {
@@ -227,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function keyUp(e) {
+        console.log("Key Up detected: ", e.key);
         // Only reset dy if the key released is one of the control keys
         if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             humanPaddle.dy = 0;
@@ -244,8 +250,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function init() {
+        console.log("Initializing game. isPlayer1OnLeft before swap:", isPlayer1OnLeft);
         // Swap sides for the next game
         isPlayer1OnLeft = !isPlayer1OnLeft;
+        console.log("isPlayer1OnLeft after swap:", isPlayer1OnLeft);
 
         // Assign human and AI paddles based on the swap
         if (isPlayer1OnLeft) {
@@ -255,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
             humanPaddle = playerRightPaddle;
             aiPaddle = playerLeftPaddle;
         }
+        console.log("Human paddle assigned:", humanPaddle === playerLeftPaddle ? "Left" : "Right");
 
         // Reset logical scores
         player1LogicalScore = 0;
@@ -277,6 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Ensure any previous animation frame is cancelled before starting a new one
         if (animationFrameId) cancelAnimationFrame(animationFrameId);
         animationFrameId = requestAnimationFrame(update); // Start the game loop
+        console.log("Game initialized and update loop started.");
     }
 
     init();
