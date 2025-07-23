@@ -9,6 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const paddleHeight = 100;
     const ballSize = 10;
     const paddleSpeed = 5;
+    const initialBallSpeed = 3; // Slower ball speed
+    const maxScore = 15; // Score to win
+    const aiSpeed = 3.5; // AI paddle speed
 
     let player1 = {
         x: 0,
@@ -27,11 +30,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let ball = {
         x: canvas.width / 2,
         y: canvas.height / 2,
-        dx: 5, // Ball speed in x direction
-        dy: 5  // Ball speed in y direction
+        dx: initialBallSpeed, // Ball speed in x direction
+        dy: initialBallSpeed  // Ball speed in y direction
     };
 
     let gameOver = false;
+    let winner = null;
 
     function drawRect(x, y, width, height, color) {
         ctx.fillStyle = color;
@@ -72,13 +76,23 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Move paddles
+        // Move player 1 paddle
         player1.y += player1.dy;
-        player2.y += player2.dy;
-
-        // Prevent paddles from going off screen
+        // Prevent player 1 paddle from going off screen
         if (player1.y < 0) player1.y = 0;
         if (player1.y + paddleHeight > canvas.height) player1.y = canvas.height - paddleHeight;
+
+        // AI for player 2 paddle
+        if (ball.dy < 0) { // Ball moving up
+            if (player2.y + paddleHeight / 2 > ball.y) {
+                player2.y -= aiSpeed;
+            }
+        } else { // Ball moving down
+            if (player2.y + paddleHeight / 2 < ball.y) {
+                player2.y += aiSpeed;
+            }
+        }
+        // Prevent player 2 paddle from going off screen
         if (player2.y < 0) player2.y = 0;
         if (player2.y + paddleHeight > canvas.height) player2.y = canvas.height - paddleHeight;
 
@@ -92,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Ball collision with paddles
+        // Player 1 paddle
         if (
             ball.x - ballSize < player1.x + paddleWidth &&
             ball.y + ballSize > player1.y &&
@@ -100,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ball.dx *= -1;
         }
 
+        // Player 2 paddle
         if (
             ball.x + ballSize > player2.x &&
             ball.y + ballSize > player2.y &&
@@ -119,6 +135,15 @@ document.addEventListener('DOMContentLoaded', () => {
             resetBall();
         }
 
+        // Check for game over
+        if (player1.score >= maxScore) {
+            gameOver = true;
+            winner = 'Player 1';
+        } else if (player2.score >= maxScore) {
+            gameOver = true;
+            winner = 'Player 2';
+        }
+
         draw();
         requestAnimationFrame(update);
     }
@@ -126,7 +151,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function resetBall() {
         ball.x = canvas.width / 2;
         ball.y = canvas.height / 2;
-        ball.dx *= -1; // Serve to the other side
+        ball.dx = initialBallSpeed * (Math.random() > 0.5 ? 1 : -1); // Random initial direction
+        ball.dy = initialBallSpeed * (Math.random() > 0.5 ? 1 : -1);
     }
 
     function showGameOver() {
@@ -135,7 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillStyle = 'white';
         ctx.font = '40px Arial';
         ctx.textAlign = 'center';
-        ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 40);
+        if (winner) {
+            ctx.fillText(`${winner} Wins!`, canvas.width / 2, canvas.height / 2 - 40);
+        } else {
+            ctx.fillText('Game Over', canvas.width / 2, canvas.height / 2 - 40);
+        }
         ctx.font = '20px Arial';
         ctx.fillText(`Player 1: ${player1.score} - Player 2: ${player2.score}`, canvas.width / 2, canvas.height / 2);
         ctx.fillText('Press Enter to Restart', canvas.width / 2, canvas.height / 2 + 40);
@@ -172,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         player1ScoreElement.innerText = player1.score;
         player2ScoreElement.innerText = player2.score;
         gameOver = false;
+        winner = null;
         resetBall();
         update();
     }
