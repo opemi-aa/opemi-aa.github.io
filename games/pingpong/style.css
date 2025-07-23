@@ -1,0 +1,32 @@
+body {
+    background-color: transparent;
+    color: #fff;
+    text-align: center;
+}
+
+.game-title {
+    margin-bottom: 1rem;
+}
+
+.canvas-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: none;
+}
+
+canvas {
+    background-color: rgba(0, 0, 0, 0.5); 
+    border: 1px solid var(--primary);
+    box-shadow: 0 0 20px rgba(0, 220, 130, 0.5);
+    cursor: none;
+}
+
+.score-container {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
