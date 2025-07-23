@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const player1ScoreElement = document.getElementById('player1Score');
-    const player2ScoreElement = document('player2Score');
+    const player2ScoreElement = document.getElementById('player2Score'); // FIX: Corrected getElementById
 
     // Game variables
     const paddleWidth = 10;
