@@ -1,32 +1,37 @@
 body {
-    background-color: transparent;
-    color: #fff;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: transparent; /* Ensure transparent background */
+    color: #0f0;
+    font-family: 'Press Start 2P', cursive;
+    overflow: hidden; /* Prevent scrollbars due to animations */
 }
 
 .game-title {
-    margin-bottom: 1rem;
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+    margin-bottom: 20px;
 }
 
 .canvas-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-    cursor: none;
+    border: 2px solid #0f0;
+    box-shadow: 0 0 20px #0f0;
+    position: relative;
+    overflow: hidden;
 }
 
 canvas {
-    background-color: rgba(0, 0, 0, 0.5); 
-    border: 1px solid var(--primary);
-    box-shadow: 0 0 20px rgba(0, 220, 130, 0.5);
-    cursor: none;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for the game area */
+    display: block;
 }
 
 .score-container {
-    margin-top: 1rem;
-    font-size: 1.5rem;
-    display: flex;
-    justify-content: center;
-    gap: 50px;
+    margin-top: 20px;
+    font-size: 1.5em;
+    color: #0f0;
+    text-shadow: 0 0 8px #0f0;
 }
