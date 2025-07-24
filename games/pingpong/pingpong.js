@@ -159,7 +159,10 @@ function draw() {
 function endGame(winner) {
     gamePaused = true;
     gameStarted = false;
-    drawText(`${winner} Wins! Press Enter to Retry`, canvas.width / 2 - 250, canvas.height / 2);
+    drawText('Game Over!', canvas.width / 2 - 100, canvas.height / 2 - 60);
+    drawText(`${winner} Wins!`, canvas.width / 2 - 100, canvas.height / 2 - 20);
+    drawText(`Final Score: Player 1: ${playerScore} | Player 2: ${aiScore}`, canvas.width / 2 - 250, canvas.height / 2 + 40);
+    drawText('Press Enter to Retry', canvas.width / 2 - 180, canvas.height / 2 + 100);
     // Swap sides for next game
     playerSide = playerSide === 'left' ? 'right' : 'left';
     playerScore = 0;
