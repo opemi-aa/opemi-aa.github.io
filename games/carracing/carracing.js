@@ -1,19 +1,26 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const CAR_WIDTH = 30;
-const CAR_HEIGHT = 50;
+const PIXEL_SIZE = 5; // Size of each pixel in the car pattern
+const CAR_PATTERN = [
+    [1, 0, 1], // x 0 x
+    [0, 0, 0], // 0 0 0
+    [1, 0, 1], // x 0 x
+    [0, 0, 0]  // 0 0 0
+];
+
+const CAR_WIDTH = PIXEL_SIZE * CAR_PATTERN[0].length;
+const CAR_HEIGHT = PIXEL_SIZE * CAR_PATTERN.length;
 const LANE_WIDTH = canvas.width / 3;
-const PLAYER_SPEED = 5;
-const AI_SPEED_MIN = 2;
-const AI_SPEED_MAX = 4;
+const PLAYER_SPEED = 5; // Speed of player car movement (left/right)
+const AI_SPEED_MIN = 2; // Min speed of AI cars (downwards on screen)
+const AI_SPEED_MAX = 4; // Max speed of AI cars (downwards on screen)
+const TRACK_SPEED = 5; // Speed at which the track moves downwards
 const SCORE_INCREMENT_INTERVAL = 100; // ms
 
 let playerCar = {
     x: canvas.width / 2 - CAR_WIDTH / 2,
-    y: canvas.height - CAR_HEIGHT - 10,
-    width: CAR_WIDTH,
-    height: CAR_HEIGHT,
+    y: canvas.height - CAR_HEIGHT - 20, // Fixed position at bottom
     color: 'white'
 };
 
@@ -22,33 +29,49 @@ let gamePaused = false;
 let gameOver = false;
 let score = 0;
 let lastScoreIncrementTime = 0;
+let trackLineOffset = 0; // For animating dashed lines
 
-// Function to draw a rectangle (for cars and track lines)
-function drawRect(x, y, width, height, color) {
+// Function to draw a single pixel (square)
+function drawPixel(x, y, color) {
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, width, height);
+    ctx.fillRect(x, y, PIXEL_SIZE, PIXEL_SIZE);
+}
+
+// Function to draw a car using the pattern
+function drawCarPattern(carX, carY, color) {
+    for (let row = 0; row < CAR_PATTERN.length; row++) {
+        for (let col = 0; col < CAR_PATTERN[row].length; col++) {
+            if (CAR_PATTERN[row][col] === 1) {
+                drawPixel(carX + col * PIXEL_SIZE, carY + row * PIXEL_SIZE, color);
+            }
+        }
+    }
 }
 
 // Function to draw the track lines
 function drawTrack() {
-    // Left lane line
-    drawRect(LANE_WIDTH, 0, 5, canvas.height, 'gray');
-    // Right lane line
-    drawRect(LANE_WIDTH * 2 - 5, 0, 5, canvas.height, 'gray');
+    // Left and Right solid lane lines
+    drawRect(LANE_WIDTH - 2.5, 0, 5, canvas.height, 'gray');
+    drawRect(LANE_WIDTH * 2 - 2.5, 0, 5, canvas.height, 'gray');
 
-    // Middle dashed lines
-    const dashLength = 20;
+    // Middle dashed lines (animated)
+    const dashLength = 30;
     const dashSpace = 20;
-    for (let i = 0; i < canvas.height; i += dashLength + dashSpace) {
+    const totalDashSegment = dashLength + dashSpace;
+
+    // Update offset for animation
+    trackLineOffset = (trackLineOffset + TRACK_SPEED) % totalDashSegment;
+
+    for (let i = -totalDashSegment + trackLineOffset; i < canvas.height; i += totalDashSegment) {
         drawRect(canvas.width / 2 - 2.5, i, 5, dashLength, 'white');
     }
 }
 
 // Function to draw cars
 function drawCars() {
-    drawRect(playerCar.x, playerCar.y, playerCar.width, playerCar.height, playerCar.color);
+    drawCarPattern(playerCar.x, playerCar.y, playerCar.color);
     aiCars.forEach(car => {
-        drawRect(car.x, car.y, car.width, car.height, car.color);
+        drawCarPattern(car.x, car.y, car.color);
     });
 }
 
@@ -56,7 +79,8 @@ function drawCars() {
 function spawnAICar() {
     const lane = Math.floor(Math.random() * 3); // 0, 1, or 2
     const x = lane * LANE_WIDTH + (LANE_WIDTH / 2) - (CAR_WIDTH / 2);
-    const y = -CAR_HEIGHT - (Math.random() * canvas.height / 2); // Spawn off-screen top
+    // Spawn off-screen top, relative to track movement
+    const y = -CAR_HEIGHT - (Math.random() * canvas.height * 0.5); 
     aiCars.push({
         x: x,
         y: y,
@@ -71,14 +95,13 @@ function spawnAICar() {
 function update() {
     if (gamePaused || gameOver) return;
 
-    // Move AI cars
+    // Move AI cars (relative to track moving down)
     aiCars.forEach((car, index) => {
-        car.y += car.speed;
+        car.y += car.speed; // AI cars move down the screen
 
-        // Remove cars that go off screen
+        // Remove cars that go off screen and respawn
         if (car.y > canvas.height) {
             aiCars.splice(index, 1);
-            // Optionally spawn a new car immediately to keep density
             spawnAICar();
         }
 
@@ -118,7 +141,7 @@ function draw() {
 // Helper to draw text
 function drawText(text, x, y, color, fontSize = '30px') {
     ctx.fillStyle = color;
-    ctx.font = `${fontSize} Arial`;
+    ctx.font = `${fontSize} 'Press Start 2P'`; // Use retro font
     ctx.textAlign = 'center';
     ctx.fillText(text, x, y);
 }
@@ -151,21 +174,20 @@ document.addEventListener('keydown', function(e) {
         gamePaused = !gamePaused;
     } else if (!gamePaused) {
         if (e.key === 'ArrowLeft') {
-            playerCar.x -= PLAYER_SPEED * 5; // Move faster between lanes
+            playerCar.x -= LANE_WIDTH; // Move one lane left
         } else if (e.key === 'ArrowRight') {
-            playerCar.x += PLAYER_SPEED * 5;
+            playerCar.x += LANE_WIDTH; // Move one lane right
         }
     }
 
-    // Keep player car within bounds
+    // Keep player car within bounds (within the 3 lanes)
     if (playerCar.x < 0) playerCar.x = 0;
-    if (playerCar.x + playerCar.width > canvas.width) playerCar.x = canvas.width - playerCar.width;
+    if (playerCar.x + CAR_WIDTH > canvas.width) playerCar.x = canvas.width - CAR_WIDTH;
 });
 
 // Reset game state
 function resetGame() {
     playerCar.x = canvas.width / 2 - CAR_WIDTH / 2;
-    playerCar.y = canvas.height - CAR_HEIGHT - 10;
     aiCars = [];
     score = 0;
     gameOver = false;
@@ -173,6 +195,7 @@ function resetGame() {
     lastScoreIncrementTime = Date.now();
     document.getElementById('score').innerText = `Score: ${score}`;
     spawnAICar(); // Spawn initial AI car
+    spawnAICar(); // Spawn a second AI car for more challenge
 }
 
 // Initial setup
