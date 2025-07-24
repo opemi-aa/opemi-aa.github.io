@@ -1,7 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const PIXEL_SIZE = 5; // Size of each pixel in the car pattern
+const PIXEL_SIZE = 10; // Increased size of each pixel in the car pattern for visibility
 const CAR_PATTERN = [
     [1, 0, 1], // x 0 x
     [0, 0, 0], // 0 0 0
@@ -11,15 +11,15 @@ const CAR_PATTERN = [
 
 const CAR_WIDTH = PIXEL_SIZE * CAR_PATTERN[0].length;
 const CAR_HEIGHT = PIXEL_SIZE * CAR_PATTERN.length;
-const LANE_WIDTH = canvas.width / 3;
+const LANE_WIDTH = canvas.width / 3; // Canvas width is 400, so LANE_WIDTH will be ~133.33
 const PLAYER_SPEED = 5; // Speed of player car movement (left/right)
-const AI_SPEED_MIN = 2; // Min speed of AI cars (downwards on screen)
-const AI_SPEED_MAX = 4; // Max speed of AI cars (downwards on screen)
+const AI_SPEED_MIN = 2;
+const AI_SPEED_MAX = 4;
 const TRACK_SPEED = 5; // Speed at which the track moves downwards
 const SCORE_INCREMENT_INTERVAL = 100; // ms
 
 let playerCar = {
-    x: canvas.width / 2 - CAR_WIDTH / 2,
+    x: LANE_WIDTH + (LANE_WIDTH / 2) - (CAR_WIDTH / 2), // Start in center of middle lane
     y: canvas.height - CAR_HEIGHT - 20, // Fixed position at bottom
     color: 'white'
 };
@@ -46,6 +46,12 @@ function drawCarPattern(carX, carY, color) {
             }
         }
     }
+}
+
+// Function to draw a rectangle (for track lines)
+function drawRect(x, y, width, height, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, width, height);
 }
 
 // Function to draw the track lines
@@ -174,20 +180,32 @@ document.addEventListener('keydown', function(e) {
         gamePaused = !gamePaused;
     } else if (!gamePaused) {
         if (e.key === 'ArrowLeft') {
-            playerCar.x -= LANE_WIDTH; // Move one lane left
+            // Calculate target X based on current lane and move towards it
+            let currentLane = Math.round(playerCar.x / LANE_WIDTH);
+            currentLane = Math.max(0, Math.min(2, currentLane)); // Ensure within 0-2
+
+            if (currentLane > 0) {
+                playerCar.x = (currentLane - 1) * LANE_WIDTH + (LANE_WIDTH / 2) - (CAR_WIDTH / 2);
+            }
         } else if (e.key === 'ArrowRight') {
-            playerCar.x += LANE_WIDTH; // Move one lane right
+            // Calculate target X based on current lane and move towards it
+            let currentLane = Math.round(playerCar.x / LANE_WIDTH);
+            currentLane = Math.max(0, Math.min(2, currentLane)); // Ensure within 0-2
+
+            if (currentLane < 2) {
+                playerCar.x = (currentLane + 1) * LANE_WIDTH + (LANE_WIDTH / 2) - (CAR_WIDTH / 2);
+            }
         }
     }
 
-    // Keep player car within bounds (within the 3 lanes)
+    // Keep player car within overall canvas bounds (not just lanes)
     if (playerCar.x < 0) playerCar.x = 0;
     if (playerCar.x + CAR_WIDTH > canvas.width) playerCar.x = canvas.width - CAR_WIDTH;
 });
 
 // Reset game state
 function resetGame() {
-    playerCar.x = canvas.width / 2 - CAR_WIDTH / 2;
+    playerCar.x = LANE_WIDTH + (LANE_WIDTH / 2) - (CAR_WIDTH / 2); // Reset to middle lane
     aiCars = [];
     score = 0;
     gameOver = false;
