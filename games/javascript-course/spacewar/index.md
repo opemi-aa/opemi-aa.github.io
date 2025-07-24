@@ -3,6 +3,8 @@ layout: default
 title: Simple Space War Game Course
 ---
 
+<div class="course-frame">
+
 # Simple Space War Game Course: A Beginner's Guide
 
 Welcome to the second module of our "Simple JavaScript Games Course"! In this section, we'll build a basic Space War game. Similar to the Snake game, our goal is to understand core JavaScript game development concepts using simple shapes and logic.

@@ -3,6 +3,8 @@ layout: default
 title: Simple Snake Game Course
 ---
 
+<div class="course-frame">
+
 # Simple Snake Game Course: A Beginner's Guide
 
 Welcome to the first module of our "Simple JavaScript Games Course"! In this section, we'll build a classic Snake game from scratch. Our focus will be on understanding the fundamental concepts of game development using plain JavaScript, HTML, and CSS, without relying on complex libraries or frameworks.
