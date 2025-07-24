@@ -25,7 +25,7 @@ body {
 }
 
 canvas {
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background for the game area */
+    background-color: transparent; /* Semi-transparent background for the game area */
     display: block;
 }
 

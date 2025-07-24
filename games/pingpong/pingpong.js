@@ -51,41 +51,51 @@ function moveBall() {
     if (playerSide === 'left') {
         if (ballX < PADDLE_WIDTH && ballY > playerPaddleY && ballY < playerPaddleY + PADDLE_HEIGHT) {
             ballSpeedX *= -1;
-            playerScore++;
-            if (playerScore >= WINNING_SCORE) {
-                endGame('Player');
-            }
         }
     } else { // playerSide === 'right'
         if (ballX > canvas.width - PADDLE_WIDTH - BALL_SIZE && ballY > playerPaddleY && ballY < playerPaddleY + PADDLE_HEIGHT) {
             ballSpeedX *= -1;
-            playerScore++;
-            if (playerScore >= WINNING_SCORE) {
-                endGame('Player');
-            }
         }
     }
 
     if (playerSide === 'left') { // AI on right
         if (ballX > canvas.width - PADDLE_WIDTH - BALL_SIZE && ballY > aiPaddleY && ballY < aiPaddleY + PADDLE_HEIGHT) {
             ballSpeedX *= -1;
-            aiScore++;
-            if (aiScore >= WINNING_SCORE) {
-                endGame('AI');
-            }
         }
     } else { // AI on left
         if (ballX < PADDLE_WIDTH && ballY > aiPaddleY && ballY < aiPaddleY + PADDLE_HEIGHT) {
             ballSpeedX *= -1;
-            aiScore++;
-            if (aiScore >= WINNING_SCORE) {
-                endGame('AI');
-            }
         }
     }
 
     // Ball out of bounds (scoring)
-    if (ballX < 0 || ballX > canvas.width - BALL_SIZE) {
+    if (ballX < 0) {
+        // Ball went out on the left side
+        if (playerSide === 'left') {
+            aiScore++;
+            if (aiScore >= WINNING_SCORE) {
+                endGame('Player 2');
+            }
+        } else {
+            playerScore++;
+            if (playerScore >= WINNING_SCORE) {
+                endGame('Player 1');
+            }
+        }
+        resetBall();
+    } else if (ballX > canvas.width - BALL_SIZE) {
+        // Ball went out on the right side
+        if (playerSide === 'left') {
+            playerScore++;
+            if (playerScore >= WINNING_SCORE) {
+                endGame('Player 1');
+            }
+        } else {
+            aiScore++;
+            if (aiScore >= WINNING_SCORE) {
+                endGame('Player 2');
+            }
+        }
         resetBall();
     }
 }
@@ -137,7 +147,7 @@ function draw() {
     drawCircle(ballX, ballY, BALL_SIZE, 'white');
 
     // Update score display
-    document.getElementById('score').innerText = `Player: ${playerScore} | AI: ${aiScore}`;
+    document.getElementById('score').innerText = `Player 1: ${playerScore} | Player 2: ${aiScore}`;
 
     if (!gameStarted) {
         drawText('Press Enter to Start', canvas.width / 2 - 150, canvas.height / 2);
