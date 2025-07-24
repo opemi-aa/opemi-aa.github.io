@@ -2185,6 +2185,240 @@
     margin-bottom: 0.5em;
 }
 
+/* Game Menu Section Styling for games/index.html */
+.game-menu-section {
+    text-align: center;
+    margin-bottom: 4rem; /* Space below the game menu section */
+}
+
+.game-menu-section h1 {
+    color: var(--primary); /* Use primary color for the game menu heading */
+    font-size: 2.5em;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 0 10px rgba(0, 220, 130, 0.5);
+}
+
+.game-menu-section ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.game-menu-section li a {
+    color: var(--light);
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--darker);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.game-menu-section li a:hover {
+    background-color: rgba(0, 220, 130, 0.1);
+    color: var(--primary);
+    box-shadow: 0 0 15px rgba(0, 220, 130, 0.5);
+    transform: translateY(-3px);
+}
+
+.centered-paragraph {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--light);
+    font-size: 1.1em;
+}
+
+/* Course Section Styling for games/index.html */
+.course-section {
+    margin-top: 4rem; /* Add space above the course section */
+    padding-top: 2rem;
+    border-top: 2px solid rgba(0, 220, 130, 0.3); /* A subtle green line separator */
+}
+
+.course-section h2 {
+    color: var(--primary); /* Use primary color for the course section heading */
+    font-size: 2em;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    text-shadow: 0 0 10px rgba(0, 220, 130, 0.5);
+}
+
+.course-section ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.course-section li a {
+    color: var(--light);
+    text-decoration: none;
+    font-size: 1.2em;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--darker);
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.course-section li a:hover {
+    background-color: rgba(0, 220, 130, 0.1);
+    color: var(--primary);
+    box-shadow: 0 0 15px rgba(0, 220, 130, 0.5);
+    transform: translateY(-3px);
+}
+
+/* Course Content Frame Styling */
+.course-frame {
+    background-color: #0d1117; /* Dark background */
+    border: 2px solid var(--primary); /* Green border */
+    border-radius: 10px;
+    padding: 2rem;
+    margin: 2rem auto; /* Center the frame */
+    max-width: 900px; /* Limit width for focused reading */
+    box-shadow: 0 0 20px rgba(0, 220, 130, 0.4); /* Green glow */
+    color: var(--light); /* Light text color */
+    line-height: 1.6;
+}
+
+.course-frame h1,
+.course-frame h2,
+.course-frame h3,
+.course-frame h4,
+.course-frame h5,
+.course-frame h6 {
+    color: #ff3e88; /* A vibrant secondary color for headings */
+    text-shadow: 0 0 8px rgba(255, 62, 136, 0.5);
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    border-bottom: 1px solid rgba(255, 62, 136, 0.3);
+    padding-bottom: 0.3em;
+}
+
+.course-frame h1 { font-size: 2.5em; }
+.course-frame h2 { font-size: 2em; }
+.course-frame h3 { font-size: 1.7em; }
+.course-frame h4 { font-size: 1.4em; }
+
+/* Code Block Styling */
+.course-frame pre {
+    background-color: #1a1a1a; /* Slightly lighter dark background for code */
+    border: 1px solid rgba(0, 220, 130, 0.5); /* Green border for code blocks */
+    border-left: 5px solid var(--primary); /* Stronger left border */
+    border-radius: 5px;
+    padding: 1em;
+    overflow-x: auto; /* Allow horizontal scrolling for long lines */
+    margin-bottom: 1.5em;
+    box-shadow: 0 0 10px rgba(0, 220, 130, 0.2);
+}
+
+.course-frame code {
+    font-family: 'Fira Code', 'JetBrains Mono', monospace; /* Monospace font for code */
+    color: #00dc82; /* Primary green for code text */
+    background-color: transparent; /* No background for inline code */
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}
+
+.course-frame pre code {
+    display: block; /* Ensure code inside pre takes full width */
+    padding: 0;
+    color: #00dc82; /* Green for code in blocks */
+}
+
+/* Specific highlighting for comments, keywords, strings in code */
+.course-frame pre .highlight .c, /* Comment */
+.course-frame pre .highlight .cm,
+.course-frame pre .highlight .c1,
+.course-frame pre .highlight .cs {
+    color: #6a737d; /* Gray for comments */
+}
+
+.course-frame pre .highlight .k, /* Keyword */
+.course-frame pre .highlight .kd,
+.course-frame pre .highlight .kp,
+.course-frame pre .highlight .kr,
+.course-frame pre .highlight .kv {
+    color: #ff3e88; /* Secondary color for keywords */
+}
+
+.course-frame pre .highlight .s, /* String */
+.course-frame pre .highlight .sa,
+.course-frame pre .highlight .sb,
+.course-frame pre .highlight .sc,
+.course-frame pre .highlight .dl,
+.course-frame pre .highlight .sd,
+.course-frame pre .highlight .s2,
+.course-frame pre .highlight .sh,
+.course-frame pre .highlight .sx,
+.course-frame pre .highlight .s1,
+.course-frame pre .highlight .ss {
+    color: #e3b341; /* Yellow/orange for strings */
+}
+
+.course-frame pre .highlight .nf, /* Function name */
+.course-frame pre .highlight .nc { /* Class name */
+    color: #79b8ff; /* Blue for function/class names */
+}
+
+.course-frame pre .highlight .nx, /* Other names */
+.course-frame pre .highlight .nv { /* Variable name */
+    color: #c9d1d9; /* Light gray for general names/variables */
+}
+
+.course-frame pre .highlight .mi, /* Integer */
+.course-frame pre .highlight .mf, /* Float */
+.course-frame pre .highlight .mh, /* Hex */
+.course-frame pre .highlight .il { /* Literal */
+    color: #79b8ff; /* Blue for numbers */
+}
+
+.course-frame pre .highlight .o, /* Operator */
+.course-frame pre .highlight .ow { /* Operator word */
+    color: #ff3e88; /* Secondary color for operators */
+}
+
+.course-frame pre .highlight .p { /* Punctuation */
+    color: #c9d1d9; /* Light gray for punctuation */
+}
+
+/* Ensure links within course content are styled */
+.course-frame a {
+    color: var(--secondary); /* Use secondary color for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.course-frame a:hover {
+    color: var(--primary); /* Primary color on hover */
+    text-decoration: underline;
+}
+
+/* Adjustments for lists within course content */
+.course-frame ul,
+.course-frame ol {
+    margin-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+.course-frame li {
+    margin-bottom: 0.5em;
+}
+
         .container .search-container {
             padding: 1.5rem 1rem;
             width: 100%;
