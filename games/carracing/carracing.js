@@ -1,7 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const PIXEL_SIZE = 10; // Increased size of each pixel in the car pattern for visibility
+const PIXEL_SIZE = 10; // Size of each pixel in the car pattern
 const CAR_PATTERN = [
     [1, 0, 1], // x 0 x
     [0, 0, 0], // 0 0 0
@@ -9,9 +9,9 @@ const CAR_PATTERN = [
     [0, 0, 0]  // 0 0 0
 ];
 
-const CAR_WIDTH = PIXEL_SIZE * CAR_PATTERN[0].length;
-const CAR_HEIGHT = PIXEL_SIZE * CAR_PATTERN.length;
-const LANE_WIDTH = canvas.width / 3; // Canvas width is 400, so LANE_WIDTH will be ~133.33
+const CAR_WIDTH = PIXEL_SIZE * CAR_PATTERN[0].length; // 3 * PIXEL_SIZE
+const CAR_HEIGHT = PIXEL_SIZE * CAR_PATTERN.length; // 4 * PIXEL_SIZE
+const LANE_WIDTH = canvas.width / 3;
 const PLAYER_SPEED = 5; // Speed of player car movement (left/right)
 const AI_SPEED_MIN = 2;
 const AI_SPEED_MAX = 4;
@@ -57,8 +57,8 @@ function drawRect(x, y, width, height, color) {
 // Function to draw the track lines
 function drawTrack() {
     // Left and Right solid lane lines
-    drawRect(LANE_WIDTH - 2.5, 0, 5, canvas.height, 'gray');
-    drawRect(LANE_WIDTH * 2 - 2.5, 0, 5, canvas.height, 'gray');
+    drawRect(LANE_WIDTH, 0, 5, canvas.height, 'gray'); // Left lane divider
+    drawRect(LANE_WIDTH * 2, 0, 5, canvas.height, 'gray'); // Right lane divider
 
     // Middle dashed lines (animated)
     const dashLength = 30;
@@ -198,7 +198,12 @@ document.addEventListener('keydown', function(e) {
         }
     }
 
-    // Keep player car within overall canvas bounds (not just lanes)
+    // Keep player car within overall canvas bounds (within the 3 lanes)
+    // Adjust playerCar.x to snap to lane center after movement
+    const playerLane = Math.round(playerCar.x / LANE_WIDTH);
+    playerCar.x = playerLane * LANE_WIDTH + (LANE_WIDTH / 2) - (CAR_WIDTH / 2);
+
+    // Ensure player car stays within canvas boundaries
     if (playerCar.x < 0) playerCar.x = 0;
     if (playerCar.x + CAR_WIDTH > canvas.width) playerCar.x = canvas.width - CAR_WIDTH;
 });
