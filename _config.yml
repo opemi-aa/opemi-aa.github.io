@@ -12,3 +12,5 @@ gems:
 
 whitelist:
 - jekyll-sitemap
+include:
+  - hack
