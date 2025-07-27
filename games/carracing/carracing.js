@@ -1,7 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const PIXEL_SIZE = 10; // Size of each pixel in the car pattern
+const PIXEL_SIZE = 10; // Increased size of each pixel in the car pattern for visibility
 const CAR_PATTERN = [
     [1, 0, 1], // x 0 x
     [0, 0, 0], // 0 0 0
