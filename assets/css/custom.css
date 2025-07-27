@@ -1045,6 +1045,29 @@
             background-color: var(--secondary);
         }
 
+        /* Hack Button */
+        #hackButton {
+            position: fixed;
+            top: 85px; /* Position below game button */
+            right: 20px;
+            z-index: 1001;
+            border: none;
+            outline: none;
+            background-color: var(--primary);
+            color: white;
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-decoration: none;
+            animation: gameButtonBlink 1s infinite alternate; /* Apply blinking animation */
+        }
+
+        #hackButton:hover {
+            background-color: var(--secondary);
+        }
+
         /* Home Button */
         #homeButton {
             position: fixed;
