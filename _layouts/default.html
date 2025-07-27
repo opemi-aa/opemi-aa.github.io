@@ -16,7 +16,7 @@
     {% if page.url == '/' or page.url == '/index.html' %}
       <h2 class="mume-header" id="mainindexhtml-nbspnbsp-contactcontacthtml"><a href="/index.html">Main</a>&#xA0;&#xA0;&#xA0;<a href="/posts/awscloud/index.html">awscloud</a>&#xA0;&#xA0;&#xA0;<a href="/posts/VulnHub/index.html">VulnHub</a>&#xA0;&#xA0;&#xA0;<a href="/posts/pwnedlabs/index.html">PwnedLabs</a>&#xA0;&#xA0;&#xA0;<a href="/posts/picoCTF/index.html">picoCTF</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Articles/index.html">Articles</a></h2>
       <button id="gameButton" title="Play Game">GAME</button>
-      <button id="hackButton" title="Hack Section" style="position: fixed; top: 70px; right: 20px; z-index: 1001; border: none; outline: none; background-color: var(--primary); color: white; cursor: pointer; padding: 10px 20px; border-radius: 10px; font-size: 1.5em; font-weight: bold; text-decoration: none;">HACK</button>
+      <button id="hackButton" title="Hack Section" class="gameButtonBlink" style="position: fixed; top: 85px; right: 20px; z-index: 1001; border: none; outline: none; background-color: var(--primary); color: white; cursor: pointer; padding: 10px 20px; border-radius: 10px; font-size: 1.5em; font-weight: bold; text-decoration: none;">HACK</button>
     {% elsif page.url contains '/games/' and page.url != '/games/' %}
       <button id="gameMenuButton" title="Game Menu">GAME MENU</button>
     {% else %}
