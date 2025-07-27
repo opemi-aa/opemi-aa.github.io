@@ -110,4 +110,11 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = '/';
         });
     }
+
+    const hackButton = document.getElementById('hackButton');
+    if (hackButton) {
+        hackButton.addEventListener('click', () => {
+            window.location.href = '/hack/';
+        });
+    }
 });
