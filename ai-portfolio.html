@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opeyemi Ariyo — AI Vibe Coder & Automation Engineer</title>
+  <meta name="description" content="Building production AI apps and n8n automations through prompt engineering. 445+ qualified leads generated. Zero hand-coding." />
+
+  <!-- =============================================
+       OPEN GRAPH — controls previews on
+       Facebook, LinkedIn, WhatsApp, Slack, iMessage
+  ============================================= -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://opemi-aa.github.io/ai-portfolio.html" />
+  <meta property="og:title"       content="Opeyemi Ariyo — AI Vibe Coder & Automation Engineer" />
+  <meta property="og:description" content="Building production AI apps and n8n automations through prompt engineering. 445+ qualified leads generated. Zero hand-coding." />
+  <meta property="og:image"       content="https://opemi-aa.github.io/preview.png" />
+  <meta property="og:image:width"  content="1829" />
+  <meta property="og:image:height" content="866" />
+  <meta property="og:site_name"   content="Opeyemi Ariyo Portfolio" />
+
+  <!-- =============================================
+       TWITTER / X CARD — controls the preview card
+       on X (Twitter). "summary_large_image" = big
+       banner-style card with image.
+  ============================================= -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:site"        content="@opemi_aa" />
+  <meta name="twitter:creator"     content="@opemi_aa" />
+  <meta name="twitter:title"       content="Opeyemi Ariyo — AI Vibe Coder & Automation Engineer" />
+  <meta name="twitter:description" content="Building production AI apps and n8n automations through prompt engineering. 445+ qualified leads generated. Zero hand-coding." />
+  <meta name="twitter:image"       content="https://opemi-aa.github.io/preview.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ===========================
+       RESET & CUSTOM PROPERTIES
+    =========================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:        #070711;
+      --surface:   #0d0d1a;
+      --card:      #111127;
+      --card-hover:#16163a;
+      --border:    rgba(124,58,237,0.18);
+      --purple:    #7c3aed;
+      --purple-lt: #a78bfa;
+      --cyan:      #00d4ff;
+      --lime:      #a3e635;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --fira:      'Fira Code', monospace;
+      --inter:     'Inter', sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--inter);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ===========================
+       SCROLLBAR
+    =========================== */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    /* ===========================
+       NAV
+    =========================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 0.85rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(7,7,17,0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      border: 2px solid var(--purple);
+      object-fit: cover;
+      box-shadow: 0 0 12px rgba(124,58,237,0.45);
+      flex-shrink: 0;
+    }
+
+    .nav-logo {
+      font-family: var(--fira);
+      font-size: 0.88rem;
+      color: var(--lime);
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+    .nav-logo span { color: var(--purple-lt); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      background: linear-gradient(135deg, var(--purple), #5b21b6) !important;
+      color: #fff !important;
+      padding: 0.42rem 1.1rem !important;
+      border-radius: 6px;
+      transition: opacity 0.2s, transform 0.2s !important;
+    }
+    .nav-cta:hover { opacity: 0.88 !important; transform: translateY(-1px); }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    /* Mobile hamburger */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0.3rem;
+    }
+    .nav-toggle span {
+      display: block; width: 22px; height: 2px;
+      background: var(--muted); border-radius: 2px;
+      transition: background 0.2s;
+    }
+
+    /* ===========================
+       HERO
+    =========================== */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #neural-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1;
+      background:
+        radial-gradient(ellipse at 60% 50%, rgba(124,58,237,0.13) 0%, transparent 65%),
+        radial-gradient(ellipse at 15% 70%, rgba(0,212,255,0.07) 0%, transparent 55%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      max-width: 900px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--fira);
+      font-size: 0.72rem;
+      color: var(--lime);
+      border: 1px solid rgba(163,230,53,0.3);
+      background: rgba(163,230,53,0.06);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.1em;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--lime);
+      animation: ping 1.6s ease-in-out infinite;
+    }
+    @keyframes ping {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.5); }
+    }
+
+    .hero-avatar-wrap {
+      margin: 0 auto 1.8rem;
+      width: 145px; height: 145px;
+      position: relative;
+    }
+    .hero-avatar-ring {
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(var(--purple), var(--cyan), var(--lime), var(--purple));
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hero-avatar-inner {
+      position: relative; z-index: 1;
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      border: 3px solid var(--bg);
+      overflow: hidden;
+      background: var(--card);
+    }
+    .hero-avatar-inner img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .hero-name {
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      font-weight: 900;
+      line-height: 1.06;
+      margin-bottom: 0.55rem;
+      background: linear-gradient(135deg, #e2e8f0 0%, var(--purple-lt) 50%, var(--cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-size: clamp(0.95rem, 2.2vw, 1.25rem);
+      color: var(--muted);
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .typewriter-wrap {
+      font-size: clamp(1rem, 2.5vw, 1.45rem);
+      font-weight: 600;
+      color: var(--cyan);
+      font-family: var(--fira);
+      margin-bottom: 2.5rem;
+      min-height: 2.2em;
+    }
+    .typewriter-cursor {
+      display: inline-block;
+      width: 2px; height: 1.1em;
+      background: var(--cyan);
+      vertical-align: middle;
+      margin-left: 2px;
+      animation: blink 0.9s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.78rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.25s;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--purple), #5b21b6);
+      color: #fff;
+      box-shadow: 0 4px 22px rgba(124,58,237,0.38);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 32px rgba(124,58,237,0.55); }
+
+    .btn-outline {
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      background: rgba(0,212,255,0.05);
+    }
+    .btn-outline:hover { background: rgba(0,212,255,0.12); transform: translateY(-3px); }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0.5rem;
+      color: var(--muted); font-size: 0.65rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .scroll-mouse {
+      width: 20px; height: 32px;
+      border: 1.5px solid var(--muted);
+      border-radius: 10px; position: relative;
+    }
+    .scroll-mouse::after {
+      content: '';
+      position: absolute;
+      top: 5px; left: 50%; transform: translateX(-50%);
+      width: 3px; height: 7px;
+      background: var(--purple-lt);
+      border-radius: 2px;
+      animation: scrollBob 1.7s ease-in-out infinite;
+    }
+    @keyframes scrollBob {
+      0%, 100% { top: 5px; opacity: 1; }
+      75% { top: 15px; opacity: 0.1; }
+    }
+
+    /* ===========================
+       SHARED SECTION STYLES
+    =========================== */
+    .section-wrap {
+      padding: 6rem 2.5rem;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .full-bleed {
+      background: var(--surface);
+    }
+    .full-bleed-dark {
+      background: linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+    }
+
+    .section-label {
+      font-family: var(--fira);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lime);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 0.9rem;
+      background: linear-gradient(135deg, var(--text) 0%, var(--purple-lt) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 0.97rem;
+      max-width: 560px;
+      margin-bottom: 3.5rem;
+      line-height: 1.75;
+    }
+
+    /* ===========================
+       ABOUT / VIBE CODING
+    =========================== */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 1.15rem;
+      font-size: 0.97rem;
+    }
+    .about-text strong { color: var(--text); }
+    .hl { color: var(--cyan); font-weight: 600; }
+
+    /* Terminal box */
+    .terminal-box {
+      background: #08081a;
+      border: 1px solid rgba(124,58,237,0.28);
+      border-radius: 14px;
+      overflow: hidden;
+      font-family: var(--fira);
+      font-size: 0.8rem;
+      box-shadow: 0 0 40px rgba(124,58,237,0.12);
+    }
+    .terminal-header {
+      background: rgba(124,58,237,0.14);
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      border-bottom: 1px solid rgba(124,58,237,0.18);
+    }
+    .t-dot { width: 11px; height: 11px; border-radius: 50%; }
+    .t-dot:nth-child(1) { background: #ff5f57; }
+    .t-dot:nth-child(2) { background: #ffbd2e; }
+    .t-dot:nth-child(3) { background: #28c940; }
+    .t-title { color: var(--muted); font-size: 0.68rem; margin-left: 0.5rem; }
+    .terminal-body { padding: 1.3rem 1.2rem; line-height: 2.1; }
+    .t-prompt { color: var(--lime); }
+    .t-cmd { color: var(--text); }
+    .t-comment { color: var(--muted); }
+    .t-out { color: var(--cyan); }
+    .t-val { color: var(--purple-lt); }
+    .t-ok { color: var(--lime); }
+
+    /* Stats */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.4rem;
+      margin-top: 3.5rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.6rem 1rem;
+      text-align: center;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .stat-card:hover {
+      border-color: rgba(124,58,237,0.5);
+      transform: translateY(-5px);
+      box-shadow: 0 16px 50px rgba(124,58,237,0.14);
+    }
+    .stat-num {
+      font-size: 2.2rem; font-weight: 900;
+      font-family: var(--fira); color: var(--lime);
+      display: block; line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-lbl { color: var(--muted); font-size: 0.75rem; }
+
+    /* ===========================
+       N8N AUTOMATIONS
+    =========================== */
+    .auto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .auto-card-full {
+      grid-column: 1 / -1;
+    }
+    .suite-workflows {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .suite-workflow {
+      background: rgba(7,7,17,0.6);
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 10px;
+      padding: 1.2rem;
+    }
+    .suite-workflow-num {
+      font-family: var(--fira);
+      font-size: 0.65rem;
+      color: var(--purple-lt);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.45rem;
+    }
+    .suite-workflow h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+    }
+    .suite-workflow p {
+      font-size: 0.78rem !important;
+      color: var(--muted) !important;
+      line-height: 1.65 !important;
+      margin-bottom: 0 !important;
+    }
+
+    /* Workflow image preview */
+    .workflow-preview {
+      width: 100%;
+      height: 180px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.4rem;
+      position: relative;
+      cursor: pointer;
+      border: 1px solid rgba(124,58,237,0.2);
+      flex-shrink: 0;
+    }
+    .workflow-preview img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: transform 0.4s ease, filter 0.3s;
+      filter: brightness(0.85) saturate(1.1);
+    }
+    .workflow-preview:hover img {
+      transform: scale(1.04);
+      filter: brightness(1) saturate(1.2);
+    }
+    .workflow-preview-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(7,7,17,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .workflow-preview:hover .workflow-preview-overlay { opacity: 1; }
+    .workflow-preview-overlay span {
+      font-family: var(--fira);
+      font-size: 0.72rem;
+      color: #fff;
+      background: rgba(124,58,237,0.75);
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(167,139,250,0.4);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(7,7,17,0.94);
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      cursor: zoom-out;
+      backdrop-filter: blur(8px);
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 88vh;
+      border-radius: 12px;
+      border: 1px solid rgba(124,58,237,0.4);
+      box-shadow: 0 0 80px rgba(124,58,237,0.3);
+      cursor: default;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      width: 38px; height: 38px;
+      background: rgba(124,58,237,0.2);
+      border: 1px solid rgba(124,58,237,0.4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--text); font-size: 1.1rem;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(124,58,237,0.45); }
+    .lightbox-caption {
+      position: absolute;
+      bottom: 1.5rem; left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--fira);
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .auto-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2.2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+    }
+    .auto-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--lime));
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .auto-card:hover { border-color: rgba(124,58,237,0.5); transform: translateY(-6px); box-shadow: 0 24px 70px rgba(124,58,237,0.16); }
+    .auto-card:hover::before { opacity: 1; }
+
+    .auto-icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--purple), #4c1d95);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.2rem;
+      box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+    }
+
+    .auto-card h3 {
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 0.65rem; color: var(--text);
+    }
+    .auto-card p {
+      color: var(--muted); font-size: 0.88rem;
+      line-height: 1.75; margin-bottom: 1.2rem;
+    }
+
+    .source-list {
+      list-style: none; margin-bottom: 1.4rem;
+    }
+    .source-list li {
+      font-size: 0.82rem; color: var(--muted);
+      padding: 0.18rem 0;
+      display: flex; align-items: flex-start; gap: 0.5rem;
+    }
+    .source-list li::before { content: '›'; color: var(--cyan); flex-shrink: 0; }
+
+    .metrics {
+      display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.5rem;
+    }
+    .metric-chip {
+      background: rgba(163,230,53,0.08);
+      border: 1px solid rgba(163,230,53,0.25);
+      color: var(--lime); font-size: 0.7rem;
+      font-family: var(--fira); padding: 0.25rem 0.7rem;
+      border-radius: 20px;
+    }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .tag {
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.28);
+      color: var(--purple-lt); font-size: 0.68rem;
+      padding: 0.2rem 0.55rem; border-radius: 4px;
+      font-family: var(--fira);
+    }
+    .tag-lime { background: rgba(163,230,53,0.08); border-color: rgba(163,230,53,0.3); color: var(--lime); }
+    .tag-cyan { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.3); color: var(--cyan); }
+
+    /* ===========================
+       PROJECTS
+    =========================== */
+    .proj-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.8rem;
+    }
+
+    .proj-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .proj-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(124,58,237,0.07) 0%, transparent 65%);
+      opacity: 0; transition: opacity 0.35s; pointer-events: none;
+    }
+    .proj-card:hover {
+      border-color: rgba(124,58,237,0.45);
+      transform: translateY(-6px);
+      box-shadow: 0 26px 75px rgba(124,58,237,0.18);
+    }
+    .proj-card:hover::after { opacity: 1; }
+
+    .proj-num {
+      font-family: var(--fira); font-size: 0.68rem;
+      color: rgba(167,139,250,0.5); letter-spacing: 0.08em;
+      margin-bottom: 0.55rem;
+    }
+    .proj-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+    .proj-role { font-size: 0.72rem; color: var(--cyan); font-family: var(--fira); margin-bottom: 0.75rem; }
+    .proj-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.72; flex: 1; margin-bottom: 1.1rem; }
+
+    .feat-list { list-style: none; margin-bottom: 1.2rem; }
+    .feat-list li {
+      font-size: 0.79rem; color: var(--muted);
+      padding: 0.18rem 0;
+      display: flex; align-items: flex-start; gap: 0.45rem;
+    }
+    .feat-list li::before { content: '✓'; color: var(--lime); font-size: 0.68rem; margin-top: 0.12rem; flex-shrink: 0; }
+
+    .proj-footer {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: auto;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+
+    .proj-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; color: var(--purple-lt);
+      text-decoration: none; font-weight: 600;
+      transition: color 0.2s, gap 0.2s;
+    }
+    .proj-link:hover { color: var(--cyan); gap: 0.65rem; }
+    .proj-link svg { width: 11px; height: 11px; }
+    .proj-link-disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+
+    /* ===========================
+       SKILLS
+    =========================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+    }
+    .skill-group {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.6rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .skill-group:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-4px); }
+    .skill-icon { font-size: 1.7rem; margin-bottom: 0.55rem; }
+    .skill-group h4 {
+      font-size: 0.78rem; font-weight: 700;
+      color: var(--cyan); text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 1rem;
+    }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .skill-pill {
+      background: rgba(124,58,237,0.1);
+      border: 1px solid rgba(124,58,237,0.24);
+      color: var(--text); font-size: 0.7rem;
+      padding: 0.22rem 0.6rem; border-radius: 20px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .skill-pill:hover { background: rgba(124,58,237,0.22); border-color: var(--purple); }
+
+    /* ===========================
+       CONTACT
+    =========================== */
+    .contact-inner {
+      max-width: 680px; margin: 0 auto;
+      text-align: center;
+    }
+    .contact-glow-box {
+      background: var(--card);
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      margin-top: 2rem;
+      box-shadow: 0 0 80px rgba(124,58,237,0.1);
+    }
+    .contact-email {
+      display: inline-block;
+      font-size: 1.05rem; color: var(--cyan);
+      text-decoration: none; font-family: var(--fira);
+      border: 1px solid rgba(0,212,255,0.3);
+      padding: 0.85rem 2.2rem;
+      border-radius: 8px; margin-bottom: 2rem;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .contact-email:hover { background: rgba(0,212,255,0.07); box-shadow: 0 0 30px rgba(0,212,255,0.15); }
+
+    .social-links {
+      display: flex; gap: 1rem;
+      justify-content: center; flex-wrap: wrap;
+    }
+    .social-link {
+      display: flex; align-items: center; gap: 0.5rem;
+      color: var(--muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+      padding: 0.55rem 1.3rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .social-link:hover {
+      color: var(--text); border-color: var(--purple);
+      background: rgba(124,58,237,0.1); transform: translateY(-2px);
+    }
+    .social-link svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ===========================
+       FOOTER
+    =========================== */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 1.6rem 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: var(--fira);
+    }
+    footer .hl { color: var(--purple-lt); }
+
+    /* ===========================
+       SCROLL ANIMATIONS
+    =========================== */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+    .reveal-d4 { transition-delay: 0.4s; }
+
+    /* ===========================
+       RESPONSIVE
+    =========================== */
+    @media (max-width: 980px) {
+      .about-grid, .auto-grid, .proj-grid { grid-template-columns: 1fr; }
+      .suite-workflows { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+    }
+    @media (max-width: 520px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .section-wrap { padding: 4rem 1.25rem; }
+      .contact-glow-box { padding: 2rem 1.25rem; }
+    }
+
+    /* ===========================
+       GLOW ANIMATIONS
+    =========================== */
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(124,58,237,0.2); }
+      50% { box-shadow: 0 0 45px rgba(124,58,237,0.45); }
+    }
+    .glow { animation: glowPulse 3s ease-in-out infinite; }
+
+    /* mobile nav open */
+    .nav-links.open {
+      display: flex !important;
+      flex-direction: column;
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      background: rgba(7,7,17,0.97);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem 1.5rem;
+      gap: 1rem;
+      z-index: 300;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== NAV ========== -->
+<nav id="navbar">
+  <div class="nav-left">
+    <img src="professional.jpg" alt="Opeyemi Ariyo" class="nav-avatar" />
+    <div class="nav-logo"><span>// </span>opeyemi.ariyo</div>
+  </div>
+
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">About</a></li>
+    <li><a href="#automations">n8n</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+
+  <div class="nav-toggle" id="navToggle" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section id="hero">
+  <canvas id="neural-canvas"></canvas>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Available for AI &amp; Automation Projects</div>
+
+    <div class="hero-avatar-wrap">
+      <div class="hero-avatar-ring"></div>
+      <div class="hero-avatar-inner">
+        <img src="professional.jpg" alt="Opeyemi Ariyo" />
+      </div>
+    </div>
+
+    <h1 class="hero-name">Opeyemi Ariyo</h1>
+    <p class="hero-title">AI Vibe Coder &amp; Automation Engineer</p>
+
+    <div class="typewriter-wrap">
+      <span id="typewriter-text"></span><span class="typewriter-cursor"></span>
+    </div>
+
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">View My Work</a>
+      <a href="#contact" class="btn btn-outline">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-mouse"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<div class="full-bleed-dark">
+<div id="about" class="section-wrap">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="section-label">// methodology</div>
+      <h2 class="section-title">Vibe Coding:<br/>The AI-First Way</h2>
+      <p>
+        I build production-grade applications through <strong>iterative prompt engineering</strong> —
+        a methodology I call "vibe coding." Instead of writing every line from scratch,
+        I collaborate with <span class="hl">AI agents</span> to architect, implement,
+        and refine complex software through carefully crafted conversational prompts.
+      </p>
+      <p>
+        This isn't just using AI as a tool — it's a fundamentally <strong>different way of thinking</strong>
+        about software development. The result? Faster delivery, higher quality, and
+        solutions that would take traditional developers weeks, built in a fraction of the time.
+      </p>
+      <p>
+        Every project here was built using this methodology — from a full AI consulting
+        company website to an automated lead generation engine producing
+        <span class="hl">445+ qualified leads</span> with zero manual prospecting.
+      </p>
+    </div>
+
+    <div class="reveal reveal-d2">
+      <div class="terminal-box glow">
+        <div class="terminal-header">
+          <div class="t-dot"></div>
+          <div class="t-dot"></div>
+          <div class="t-dot"></div>
+          <span class="t-title">vibe_coding.sh — opeyemi@ai-studio</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-prompt">$</span> <span class="t-cmd">define vibe_coding</span></div>
+          <div class="t-comment"># Build software through AI conversation</div>
+          <br/>
+          <div><span class="t-prompt">→</span> <span class="t-out">methodology:</span> <span class="t-val">prompt-driven-development</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">tool:</span> <span class="t-val">Claude AI + Claude Code</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">hand_coded:</span> <span class="t-val">0%</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">ai_assisted:</span> <span class="t-val">100%</span></div>
+          <br/>
+          <div><span class="t-prompt">$</span> <span class="t-cmd">./run_results.sh</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">leads_generated:</span> <span class="t-val">445+</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">sites_shipped:</span> <span class="t-val">production</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">tests_passing:</span> <span class="t-val">229</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">manual_work:</span> <span class="t-val">0</span></div>
+          <div><span class="t-prompt">→</span> <span class="t-out">status:</span> <span class="t-ok">THRIVING ✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card reveal reveal-d1">
+      <span class="stat-num" data-target="4">0</span>
+      <div class="stat-lbl">Production Projects</div>
+    </div>
+    <div class="stat-card reveal reveal-d2">
+      <span class="stat-num" data-target="445" data-suffix="+">0</span>
+      <div class="stat-lbl">Leads Generated</div>
+    </div>
+    <div class="stat-card reveal reveal-d3">
+      <span class="stat-num" data-target="229">0</span>
+      <div class="stat-lbl">Tests Passing</div>
+    </div>
+    <div class="stat-card reveal reveal-d4">
+      <span class="stat-num" data-target="100" data-suffix="%">0</span>
+      <div class="stat-lbl">AI-Built Code</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== N8N AUTOMATIONS ========== -->
+<div>
+<div id="automations" class="section-wrap">
+  <div class="section-label">// n8n automations</div>
+  <h2 class="section-title">Automated Systems</h2>
+  <p class="section-sub">Production automation workflows running 24/7 — zero manual work after deployment.</p>
+
+  <div class="auto-grid">
+    <!-- Card 1 -->
+    <div class="auto-card reveal">
+      <div class="workflow-preview" data-full="twitter-workflow.png" data-caption="Twitter/X Content Creator — n8n workflow">
+        <img src="twitter-workflow.png" alt="Twitter/X Content Creator workflow" />
+        <div class="workflow-preview-overlay"><span>🔍 View Workflow</span></div>
+      </div>
+      <div class="auto-icon">📡</div>
+      <h3>Twitter/X Content Creator</h3>
+      <p>
+        Automated daily tweet generation system that pulls trending content from 12 RSS sources,
+        uses Gemini AI to craft engaging posts, and publishes on schedule — completely hands-free.
+      </p>
+      <ul class="source-list">
+        <li>Hacker News, TechCrunch, Reddit AI subreddits</li>
+        <li>Google Trends + 8 additional RSS feeds</li>
+        <li>Gemini AI generates audience-optimised copy</li>
+        <li>Posts daily at 9 AM, saves to Google Sheets</li>
+      </ul>
+      <div class="metrics">
+        <span class="metric-chip">12 RSS Sources</span>
+        <span class="metric-chip">Daily at 9 AM</span>
+        <span class="metric-chip">0 Manual Posts</span>
+      </div>
+      <div class="tags">
+        <span class="tag">n8n</span>
+        <span class="tag">Gemini AI</span>
+        <span class="tag">Google Sheets</span>
+        <span class="tag">RSS</span>
+        <span class="tag">Twitter API</span>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="auto-card reveal reveal-d2">
+      <div class="workflow-preview" data-full="lead-gen.png" data-caption="AI Agency Lead Generation Engine — n8n workflow">
+        <img src="lead-gen.png" alt="AI Agency Lead Generation Engine workflow" />
+        <div class="workflow-preview-overlay"><span>🔍 View Workflow</span></div>
+      </div>
+      <div class="auto-icon">🎯</div>
+      <h3>AI Agency Lead Generation Engine</h3>
+      <p>
+        Multi-source lead generation system that automatically finds, qualifies, scores, and enriches
+        potential clients — then emails a daily digest of hot leads (score 8+) straight to your inbox.
+      </p>
+      <ul class="source-list">
+        <li>Reddit (5 subs), RemoteOK, Product Hunt</li>
+        <li>Google Maps local business scraping</li>
+        <li>Gemini AI scores leads 1–10 + outreach hooks</li>
+        <li>Apollo.io enrichment: email, phone, LinkedIn</li>
+        <li>Airtable CRM + Gmail daily digest</li>
+      </ul>
+      <div class="metrics">
+        <span class="metric-chip">445+ Leads</span>
+        <span class="metric-chip">AI-Scored 1–10</span>
+        <span class="metric-chip">Auto-Enriched</span>
+        <span class="metric-chip">0 Prospecting</span>
+      </div>
+      <div class="tags">
+        <span class="tag">n8n</span>
+        <span class="tag">Gemini AI</span>
+        <span class="tag">Airtable</span>
+        <span class="tag">Apollo.io</span>
+        <span class="tag">Gmail</span>
+        <span class="tag">SerpAPI</span>
+      </div>
+    </div>
+
+    <!-- Card 3 — Booking Agent -->
+    <div class="auto-card auto-card-full reveal">
+      <div style="display:flex;gap:2rem;align-items:flex-start;flex-wrap:wrap;">
+        <div style="flex:1;min-width:260px;">
+          <div class="workflow-preview" style="height:200px;margin-bottom:1.4rem;" data-full="booking-agent.png" data-caption="Smart Booking Agent — n8n workflow">
+            <img src="booking-agent.png" alt="Smart Booking Agent workflow" />
+            <div class="workflow-preview-overlay"><span>🔍 View Workflow</span></div>
+          </div>
+        </div>
+        <div style="flex:1.4;min-width:280px;">
+          <div class="auto-icon">📅</div>
+          <h3>Smart Booking Agent</h3>
+          <p>
+            A natural-language booking agent built in n8n that handles the entire scheduling workflow
+            from a single chat message — zero manual steps, zero back-and-forth.
+          </p>
+          <ul class="source-list">
+            <li>Understands natural language ("book a call with John at 3pm")</li>
+            <li>Checks Google Calendar for conflicts in real-time</li>
+            <li>Creates the calendar event automatically</li>
+            <li>Sends confirmation email directly to the client</li>
+            <li>Logs every booking to a CRM Google Sheet</li>
+          </ul>
+          <div class="metrics">
+            <span class="metric-chip">1 Chat Message</span>
+            <span class="metric-chip">0 Manual Work</span>
+            <span class="metric-chip">Full Pipeline</span>
+          </div>
+          <div class="tags">
+            <span class="tag">n8n</span>
+            <span class="tag">Google Calendar</span>
+            <span class="tag">Gmail</span>
+            <span class="tag">Google Sheets</span>
+            <span class="tag">NLP</span>
+            <span class="tag">CRM</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 — Security Ops Suite (full width) -->
+    <div class="auto-card auto-card-full reveal">
+      <div style="display:flex;align-items:flex-start;gap:1.2rem;flex-wrap:wrap;margin-bottom:1rem;">
+        <div class="auto-icon" style="flex-shrink:0;">🛡️</div>
+        <div>
+          <h3 style="margin-bottom:0.3rem;">Security Operations Automation Suite</h3>
+          <p style="margin-bottom:0;">
+            Three integrated n8n workflows that connect security tools for automated incident response and AI-powered threat intelligence —
+            turning manual SOC work into hands-free, real-time operations.
+          </p>
+        </div>
+      </div>
+
+      <div class="suite-workflows">
+        <div class="suite-workflow">
+          <div class="workflow-preview" style="height:130px;margin-bottom:0.9rem;" data-full="wazuh-iris.png" data-caption="Wazuh → DFIR-IRIS Case Creator — n8n workflow">
+            <img src="wazuh-iris.png" alt="Wazuh to DFIR-IRIS workflow" />
+            <div class="workflow-preview-overlay"><span>🔍 View</span></div>
+          </div>
+          <div class="suite-workflow-num">Workflow 01</div>
+          <h4>Wazuh → DFIR-IRIS Case Creator</h4>
+          <p>
+            Auto-creates incident cases when Wazuh detects high-severity alerts. On malware detection via VirusTotal,
+            a case is instantly opened in DFIR-IRIS with full context — agent details, rule description, severity, and timestamp.
+            100% documentation compliance. Zero manual entry.
+          </p>
+        </div>
+        <div class="suite-workflow">
+          <div class="workflow-preview" style="height:130px;margin-bottom:0.9rem;" data-full="gophish-splunk.png" data-caption="GoPhish → Splunk Phishing Intelligence — n8n workflow">
+            <img src="gophish-splunk.png" alt="GoPhish to Splunk workflow" />
+            <div class="workflow-preview-overlay"><span>🔍 View</span></div>
+          </div>
+          <div class="suite-workflow-num">Workflow 02</div>
+          <h4>GoPhish → Splunk Phishing Intelligence</h4>
+          <p>
+            Bridges security awareness training and live monitoring. When users click phishing simulation links or
+            submit credentials, events with risk levels and recommended SOC actions are forwarded to Splunk in real-time —
+            enabling correlation between test failures and endpoint activity.
+          </p>
+        </div>
+        <div class="suite-workflow">
+          <div class="workflow-preview" style="height:130px;margin-bottom:0.9rem;" data-full="vulnerability-triage.png" data-caption="Nessus → AI Vulnerability Triage — n8n workflow">
+            <img src="vulnerability-triage.png" alt="Nessus AI Vulnerability Triage workflow" />
+            <div class="workflow-preview-overlay"><span>🔍 View</span></div>
+          </div>
+          <div class="suite-workflow-num">Workflow 03</div>
+          <h4>Nessus → AI Vulnerability Triage</h4>
+          <p>
+            Pulls scan results, filters critical/high CVEs, and sends each to Google Gemini for analysis.
+            AI determines if exploits exist in the wild, explains the attack vector, and assigns patch timelines
+            (24hrs / 7 days / 30 days). Reports auto-forwarded to Splunk and DFIR-IRIS.
+          </p>
+        </div>
+      </div>
+
+      <div class="metrics" style="margin-top:1.5rem;">
+        <span class="metric-chip">3 Workflows</span>
+        <span class="metric-chip">100% Doc Compliance</span>
+        <span class="metric-chip">Real-Time Response</span>
+        <span class="metric-chip">AI Triage</span>
+        <span class="metric-chip">0 Manual Entry</span>
+      </div>
+      <div class="tags">
+        <span class="tag">n8n</span>
+        <span class="tag">Wazuh</span>
+        <span class="tag">Splunk</span>
+        <span class="tag">DFIR-IRIS</span>
+        <span class="tag">Nessus</span>
+        <span class="tag">GoPhish</span>
+        <span class="tag">Google Gemini</span>
+        <span class="tag">VirusTotal</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== PROJECTS ========== -->
+<div class="full-bleed">
+<div id="projects" class="section-wrap">
+  <div class="section-label">// dev projects</div>
+  <h2 class="section-title">Built with Vibe Coding</h2>
+  <p class="section-sub">Production apps shipped through AI-first methodology — no traditional hand-coding.</p>
+
+  <div class="proj-grid">
+    <!-- 01 -->
+    <div class="proj-card reveal">
+      <div class="proj-num">01 / 04</div>
+      <h3>Intent Solutions Website</h3>
+      <div class="proj-role">Lead Developer / AI Prompt Engineer</div>
+      <p>
+        Complete redesign of a professional AI consulting company's marketing website.
+        100% built through conversational prompts with Claude AI — zero traditional coding.
+      </p>
+      <ul class="feat-list">
+        <li>Video background hero (astronaut / space theme)</li>
+        <li>10+ service pages with responsive mega menu</li>
+        <li>Animated teal waves, pricing tiers, testimonials</li>
+        <li>Netlify Forms + Google Calendar booking</li>
+        <li>Full mobile responsiveness across all pages</li>
+      </ul>
+      <div class="tags" style="margin-bottom:1rem;">
+        <span class="tag">Astro.js</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">Netlify</span>
+        <span class="tag">JavaScript</span>
+      </div>
+      <div class="proj-footer">
+        <a href="https://intentsolutions.io" class="proj-link" target="_blank" rel="noopener">
+          View Live
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 10L10 2M5 2h5v5"/></svg>
+        </a>
+        <span class="tag tag-lime">Production</span>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="proj-card reveal reveal-d2">
+      <div class="proj-num">02 / 04</div>
+      <h3>Hustle Stats App</h3>
+      <div class="proj-role">Developer / QA Engineer / AI Prompt Engineer</div>
+      <p>
+        Vibe coded UI/UX enhancements and quality assurance for a youth soccer statistics platform
+        targeting high school athletes (ages 13–18). All changes delivered through AI prompts — zero traditional hand-coding.
+      </p>
+      <ul class="feat-list">
+        <li>Video background hero + youth athlete color palette</li>
+        <li>Fixed 46 ESLint warnings (unused imports)</li>
+        <li>Resolved Client SDK vs Admin SDK API mismatches</li>
+        <li>229 unit tests passing — 0 TypeScript errors</li>
+        <li>28-point QA checklist across 3 breakpoints</li>
+      </ul>
+      <div class="tags" style="margin-bottom:1rem;">
+        <span class="tag">Next.js 15</span>
+        <span class="tag">React 19</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Firebase</span>
+        <span class="tag">Playwright</span>
+      </div>
+      <div class="proj-footer">
+        <a href="https://hustlestats.io" class="proj-link" target="_blank" rel="noopener">
+          View Live
+          <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 10L10 2M5 2h5v5"/></svg>
+        </a>
+        <span class="tag tag-lime">Production</span>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="proj-card reveal">
+      <div class="proj-num">03 / 04</div>
+      <h3>AI Prompt Engineering System</h3>
+      <div class="proj-role">Prompt Engineer</div>
+      <p>
+        Built a meta-prompt training framework to teach AI models how to generate clean,
+        effective prompts for Claude Code. Establishes the standards for vibe coding methodology.
+      </p>
+      <ul class="feat-list">
+        <li>Meta-prompt template for training AI assistants</li>
+        <li>Standardised prompt format for code changes</li>
+        <li>Curated BAD vs GOOD prompt example library</li>
+        <li>Principle: Tell AI WHAT to do, not HOW</li>
+        <li>Verification-step inclusion standard</li>
+      </ul>
+      <div class="tags" style="margin-bottom:1rem;">
+        <span class="tag">Claude Sonnet</span>
+        <span class="tag">Claude Code</span>
+        <span class="tag">Prompt Eng.</span>
+      </div>
+      <div class="proj-footer">
+        <span class="proj-link proj-link-disabled">System / Framework</span>
+        <span class="tag tag-cyan">Methodology</span>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="proj-card reveal reveal-d2">
+      <div class="proj-num">04 / 04</div>
+      <h3>AI-Generated Resume</h3>
+      <div class="proj-role">Content Creator / Prompt Engineer</div>
+      <p>
+        Used AI-assisted document generation to create a fully tailored Prompt Engineer resume —
+        demonstrating vibe coding beyond software into professional content creation.
+      </p>
+      <ul class="feat-list">
+        <li>PDF generation via LaTeX typesetting</li>
+        <li>DOCX version via docx-js for easy editing</li>
+        <li>Claude AI for content optimisation</li>
+        <li>Tailored for Prompt Engineer positions</li>
+        <li>Highlights vibe coding methodology throughout</li>
+      </ul>
+      <div class="tags" style="margin-bottom:1rem;">
+        <span class="tag">LaTeX</span>
+        <span class="tag">docx-js</span>
+        <span class="tag">Claude AI</span>
+      </div>
+      <div class="proj-footer">
+        <span class="proj-link proj-link-disabled">Document / PDF</span>
+        <span class="tag" style="background:rgba(124,58,237,0.1);border-color:rgba(124,58,237,0.3);color:var(--purple-lt)">Delivered</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== SKILLS ========== -->
+<div>
+<div id="skills" class="section-wrap">
+  <div class="section-label">// skills</div>
+  <h2 class="section-title">What I Bring</h2>
+  <p class="section-sub">Capabilities honed across production projects — bridging AI, automation, and full-stack development.</p>
+
+  <div class="skills-grid">
+    <div class="skill-group reveal">
+      <div class="skill-icon">🤖</div>
+      <h4>AI / Vibe Coding</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Prompt Engineering</span>
+        <span class="skill-pill">Claude AI</span>
+        <span class="skill-pill">Gemini AI</span>
+        <span class="skill-pill">Claude Code</span>
+        <span class="skill-pill">LLM Design</span>
+        <span class="skill-pill">Context Management</span>
+        <span class="skill-pill">Iterative Refinement</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal reveal-d1">
+      <div class="skill-icon">⚡</div>
+      <h4>n8n Automation</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">n8n Workflows</span>
+        <span class="skill-pill">API Integration</span>
+        <span class="skill-pill">RSS Processing</span>
+        <span class="skill-pill">CRM Automation</span>
+        <span class="skill-pill">Lead Scoring</span>
+        <span class="skill-pill">Rate Limit Handling</span>
+        <span class="skill-pill">Error Recovery</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal reveal-d2">
+      <div class="skill-icon">🎨</div>
+      <h4>Frontend Dev</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Astro.js</span>
+        <span class="skill-pill">Next.js</span>
+        <span class="skill-pill">React</span>
+        <span class="skill-pill">TypeScript</span>
+        <span class="skill-pill">Tailwind CSS</span>
+        <span class="skill-pill">CSS Animations</span>
+        <span class="skill-pill">Mobile-First</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal">
+      <div class="skill-icon">🔧</div>
+      <h4>Backend / APIs</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Firebase</span>
+        <span class="skill-pill">Firestore</span>
+        <span class="skill-pill">API Routes</span>
+        <span class="skill-pill">Apollo.io</span>
+        <span class="skill-pill">Airtable</span>
+        <span class="skill-pill">SerpAPI</span>
+        <span class="skill-pill">Google APIs</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal reveal-d1">
+      <div class="skill-icon">🧪</div>
+      <h4>Quality Assurance</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">Playwright (E2E)</span>
+        <span class="skill-pill">Vitest</span>
+        <span class="skill-pill">Manual QA</span>
+        <span class="skill-pill">Bug Identification</span>
+        <span class="skill-pill">Responsive Testing</span>
+        <span class="skill-pill">TypeScript Safety</span>
+      </div>
+    </div>
+
+    <div class="skill-group reveal reveal-d2">
+      <div class="skill-icon">🎯</div>
+      <h4>Design</h4>
+      <div class="skill-pills">
+        <span class="skill-pill">UI/UX Design</span>
+        <span class="skill-pill">Design Systems</span>
+        <span class="skill-pill">Color Palettes</span>
+        <span class="skill-pill">Video Backgrounds</span>
+        <span class="skill-pill">Accessibility</span>
+        <span class="skill-pill">Typography</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== CONTACT ========== -->
+<div class="full-bleed">
+<div id="contact" class="section-wrap">
+  <div class="contact-inner">
+    <div class="section-label" style="text-align:center;">// contact</div>
+    <h2 class="section-title" style="text-align:center;">Let's Build Something</h2>
+    <p class="section-sub" style="margin:0 auto 0; text-align:center;">
+      Open to AI consulting, automation projects, and vibe coding collaborations.
+    </p>
+
+    <div class="contact-glow-box">
+      <a href="mailto:the.opemi.aa@gmail.com" class="contact-email">
+        the.opemi.aa@gmail.com
+      </a>
+
+      <div class="social-links">
+        <a href="https://linkedin.com/in/opeyemi-ariyo" class="social-link" target="_blank" rel="noopener">
+          <!-- LinkedIn icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/opemi-aa" class="social-link" target="_blank" rel="noopener">
+          <!-- GitHub icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          GitHub
+        </a>
+        <a href="https://youtube.com/@the.opemiaa" class="social-link" target="_blank" rel="noopener">
+          <!-- YouTube icon -->
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#070711"/></svg>
+          YouTube
+        </a>
+        <a href="https://opemi-aa.github.io" class="social-link" target="_blank" rel="noopener">
+          <!-- Globe icon -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Blog
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <span class="hl">Opeyemi Ariyo</span> &nbsp;·&nbsp; 100% vibe coded with Claude AI &nbsp;·&nbsp; 2025
+</footer>
+
+<!-- LIGHTBOX (must be in DOM before the script runs) -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-close" id="lightboxClose">✕</div>
+  <img id="lightboxImg" src="" alt="Workflow screenshot" />
+  <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+/* ================================
+   1. NEURAL NETWORK CANVAS
+================================ */
+(function () {
+  const canvas = document.getElementById('neural-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, nodes, raf;
+
+  const COLORS = [
+    { r:124, g:58,  b:237 },  // purple
+    { r:0,   g:212, b:255 },  // cyan
+    { r:163, g:230, b:53  },  // lime
+  ];
+
+  function resize() {
+    W = canvas.width  = canvas.parentElement.offsetWidth;
+    H = canvas.height = canvas.parentElement.offsetHeight;
+  }
+
+  function makeNodes() {
+    nodes = Array.from({ length: 65 }, () => {
+      const c = COLORS[Math.floor(Math.random() * COLORS.length)];
+      return {
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.42,
+        vy: (Math.random() - 0.5) * 0.42,
+        r: Math.random() * 2.2 + 1.4,
+        pulse: Math.random() * Math.PI * 2,
+        cr: c.r, cg: c.g, cb: c.b,
+      };
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy; n.pulse += 0.018;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+
+    // connections
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const a = nodes[i], b = nodes[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 155) {
+          const alpha = (1 - dist / 155) * 0.32;
+          const g = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+          g.addColorStop(0, `rgba(${a.cr},${a.cg},${a.cb},${alpha})`);
+          g.addColorStop(1, `rgba(${b.cr},${b.cg},${b.cb},${alpha})`);
+          ctx.beginPath();
+          ctx.strokeStyle = g;
+          ctx.lineWidth = 0.65;
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // nodes
+    nodes.forEach(n => {
+      const pr = n.r + Math.sin(n.pulse) * 0.7;
+      // glow halo
+      const glow = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, pr * 5);
+      glow.addColorStop(0, `rgba(${n.cr},${n.cg},${n.cb},0.22)`);
+      glow.addColorStop(1, `rgba(${n.cr},${n.cg},${n.cb},0)`);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, pr * 5, 0, Math.PI * 2);
+      ctx.fillStyle = glow;
+      ctx.fill();
+      // core dot
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, pr, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${n.cr},${n.cg},${n.cb},0.92)`;
+      ctx.fill();
+    });
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  function init() {
+    resize(); makeNodes(); draw();
+  }
+
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(raf);
+    init();
+  });
+
+  init();
+})();
+
+/* ================================
+   2. TYPEWRITER
+================================ */
+(function () {
+  const el = document.getElementById('typewriter-text');
+  const phrases = [
+    'Building apps through AI prompts',
+    'Shipping n8n automations',
+    'Vibe coding production software',
+    'Turning ideas into systems',
+    'Prompt engineer. Builder.',
+    'Zero hand-coding. 100% shipped.',
+  ];
+  let pi = 0, ci = 0, deleting = false, pause = 0;
+
+  function tick() {
+    const phrase = phrases[pi];
+    if (!deleting) {
+      el.textContent = phrase.slice(0, ++ci);
+      if (ci === phrase.length) { deleting = true; pause = 55; }
+    } else {
+      if (pause-- > 0) { }
+      else {
+        el.textContent = phrase.slice(0, --ci);
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; }
+      }
+    }
+    setTimeout(tick, deleting && pause <= 0 ? 42 : 72);
+  }
+  tick();
+})();
+
+/* ================================
+   3. SCROLL REVEAL
+================================ */
+(function () {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+/* ================================
+   4. COUNTER ANIMATION
+================================ */
+(function () {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        const target = +el.dataset.target;
+        const suffix = el.dataset.suffix || '';
+        const duration = 1500, step = 16;
+        const inc = target / (duration / step);
+        let count = 0;
+        const t = setInterval(() => {
+          count = Math.min(count + inc, target);
+          el.textContent = Math.round(count) + suffix;
+          if (count >= target) clearInterval(t);
+        }, step);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.6 });
+
+  document.querySelectorAll('[data-target]').forEach(el => io.observe(el));
+})();
+
+/* ================================
+   5. MOBILE NAV
+================================ */
+(function () {
+  const toggle = document.getElementById('navToggle');
+  const links  = document.getElementById('navLinks');
+  if (!toggle) return;
+
+  toggle.addEventListener('click', () => {
+    links.classList.toggle('open');
+  });
+
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => links.classList.remove('open'));
+  });
+})();
+
+/* ================================
+   6. NAV SCROLL STYLE
+================================ */
+(function () {
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(7,7,17,0.97)'
+      : 'rgba(7,7,17,0.82)';
+  }, { passive: true });
+})();
+
+/* ================================
+   7. LIGHTBOX
+================================ */
+(function () {
+  const lb    = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightboxImg');
+  const lbCap = document.getElementById('lightboxCaption');
+  const lbClose = document.getElementById('lightboxClose');
+
+  document.querySelectorAll('.workflow-preview').forEach(el => {
+    el.addEventListener('click', () => {
+      lbImg.src = el.dataset.full;
+      lbCap.textContent = el.dataset.caption || '';
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function close() {
+    lb.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  lbClose.addEventListener('click', close);
+  lb.addEventListener('click', e => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+})();
+</script>
+
+</body>
+</html>
