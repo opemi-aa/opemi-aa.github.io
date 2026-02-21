@@ -8,6 +8,15 @@ title: Ping Pong
     <canvas id="gameCanvas" width="800" height="600"></canvas>
 </div>
 <div class="score-container">
-    <p>Score: <span id="score">0</span></p>
+    <p>Score: <span id="score">0</span> &nbsp;|&nbsp; Best: <span id="highscore">--</span></p>
 </div>
+
+<div class="touch-controls">
+    <div class="paddle-controls">
+        <button class="paddle-btn" id="btn-up">↑</button>
+        <button class="paddle-btn enter-btn" id="btn-enter">START / PAUSE</button>
+        <button class="paddle-btn" id="btn-down">↓</button>
+    </div>
+</div>
+
 <script src="pingpong.js" defer></script>

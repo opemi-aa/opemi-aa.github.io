@@ -46,26 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for scroll events
     window.addEventListener('scroll', handleScrollAnimations);
 
-    // Background animations (Cyber Grid and Particles)
-    const body = document.body;
-    const cyberGrid = document.createElement('div');
-    cyberGrid.classList.add('cyber-grid');
-    body.prepend(cyberGrid);
-
-    const particlesContainer = document.createElement('div');
-    particlesContainer.classList.add('particles-container');
-    body.prepend(particlesContainer);
-
-    const numParticles = 50; // Number of particles
-    for (let i = 0; i < numParticles; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${Math.random() * 100}%`;
-        particle.style.animationDelay = `${Math.random() * 5}s`; // Random delay for varied animation
-        particlesContainer.appendChild(particle);
-    }
-
     // Cursor Effect
     const cursorDot = document.createElement('div');
     cursorDot.classList.add('cursor-dot');

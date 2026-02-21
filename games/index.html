@@ -3,26 +3,322 @@ layout: default
 title: Games
 ---
 
-<div class="game-menu-section">
-  <h1 id="game-menu">Game Menu</h1>
+<div class="game-hub">
+  <div class="game-hub-header">
+    <h1>◈ GAME HUB</h1>
+    <p class="hub-subtitle">High scores saved in your browser · Touch controls on mobile</p>
+  </div>
 
-  <p class="centered-paragraph">Welcome to the game menu. Please select a game to play:</p>
+  <div class="game-cards-grid">
 
-  <ul>
-    <li><a href="/games/snake/">Snake</a></li>
-    <li><a href="/games/spacewar/">Space War</a></li>
-    <li><a href="/games/pingpong/">Ping Pong</a></li>
-    <li><a href="/games/carracing/">Car Racing</a></li>
-  </ul>
+    <!-- Snake -->
+    <div class="game-card" onclick="window.location.href='/games/snake/'">
+      <div class="game-card-preview">
+        <canvas id="preview-snake" width="400" height="200"></canvas>
+        <div class="game-card-overlay"><span class="play-badge">▶ PLAY</span></div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-title-row">
+          <h2>🐍 Snake</h2>
+          <div class="game-high-score" id="hs-snake">Best: --</div>
+        </div>
+        <p class="game-card-desc">Eat food, grow longer, don't crash into yourself.</p>
+        <div class="game-card-controls">
+          <span class="ctrl-badge">↑↓←→</span> Move &nbsp;·&nbsp; <span class="ctrl-badge">Enter</span> Restart &nbsp;·&nbsp; <span class="ctrl-badge">Touch</span> D-Pad
+        </div>
+      </div>
+    </div>
+
+    <!-- Space War -->
+    <div class="game-card" onclick="window.location.href='/games/spacewar/'">
+      <div class="game-card-preview">
+        <canvas id="preview-spacewar" width="400" height="200"></canvas>
+        <div class="game-card-overlay"><span class="play-badge">▶ PLAY</span></div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-title-row">
+          <h2>🚀 Space War</h2>
+          <div class="game-high-score" id="hs-spacewar">Best: --</div>
+        </div>
+        <p class="game-card-desc">Pixel shooter — dodge incoming enemies and blast them away.</p>
+        <div class="game-card-controls">
+          <span class="ctrl-badge">A/D</span> Move &nbsp;·&nbsp; <span class="ctrl-badge">Space</span> Fire &nbsp;·&nbsp; <span class="ctrl-badge">Touch</span> Buttons
+        </div>
+      </div>
+    </div>
+
+    <!-- Ping Pong -->
+    <div class="game-card" onclick="window.location.href='/games/pingpong/'">
+      <div class="game-card-preview">
+        <canvas id="preview-pingpong" width="400" height="200"></canvas>
+        <div class="game-card-overlay"><span class="play-badge">▶ PLAY</span></div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-title-row">
+          <h2>🏓 Ping Pong</h2>
+          <div class="game-high-score" id="hs-pingpong">Best: --</div>
+        </div>
+        <p class="game-card-desc">vs AI — first to 15 points wins. Sides swap each round.</p>
+        <div class="game-card-controls">
+          <span class="ctrl-badge">↑↓</span> Paddle &nbsp;·&nbsp; <span class="ctrl-badge">Enter</span> Start/Pause &nbsp;·&nbsp; <span class="ctrl-badge">Touch</span> Buttons
+        </div>
+      </div>
+    </div>
+
+    <!-- Car Racing -->
+    <div class="game-card" onclick="window.location.href='/games/carracing/'">
+      <div class="game-card-preview">
+        <canvas id="preview-carracing" width="400" height="200"></canvas>
+        <div class="game-card-overlay"><span class="play-badge">▶ PLAY</span></div>
+      </div>
+      <div class="game-card-body">
+        <div class="game-card-title-row">
+          <h2>🏎️ Car Racing</h2>
+          <div class="game-high-score" id="hs-carracing">Best: --</div>
+        </div>
+        <p class="game-card-desc">Dodge oncoming traffic — survive as long as possible.</p>
+        <div class="game-card-controls">
+          <span class="ctrl-badge">←→</span> Change Lane &nbsp;·&nbsp; <span class="ctrl-badge">Enter</span> Pause &nbsp;·&nbsp; <span class="ctrl-badge">Touch</span> Buttons
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<div class="course-section">
-  <h2 id="game-development-courses">Game Development Courses</h2>
+<script>
+// ---- High Scores ----
+function loadHighScores() {
+  [['snake', 'hs-snake'], ['spacewar', 'hs-spacewar'], ['pingpong', 'hs-pingpong'], ['carracing', 'hs-carracing']].forEach(([key, id]) => {
+    const score = localStorage.getItem('highscore_' + key);
+    const el = document.getElementById(id);
+    if (el) el.textContent = score ? 'Best: ' + score : 'Best: --';
+  });
+}
 
-  <p class="centered-paragraph">Learn how to create simple games with JavaScript:</p>
+// ---- Canvas Previews ----
 
-  <ul>
-    <li><a href="/games/javascript-course/snake/">Simple Snake Game Course</a></li>
-    <li><a href="/games/javascript-course/spacewar/">Simple Space War Game Course</a></li>
-  </ul>
-</div>
+function drawSnakePreview() {
+  const canvas = document.getElementById('preview-snake');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const G = 20;
+
+  const snake = [
+    {x:9,y:5},{x:8,y:5},{x:7,y:5},{x:6,y:5},
+    {x:5,y:5},{x:5,y:6},{x:5,y:7},{x:6,y:7},{x:7,y:7}
+  ];
+  const foods = [{x:13,y:4},{x:3,y:8},{x:16,y:7},{x:11,y:2}];
+  let t = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // Grid dots
+    ctx.fillStyle = 'rgba(0,220,130,0.06)';
+    for (let x = 0; x < W; x += G) for (let y = 0; y < H; y += G) ctx.fillRect(x, y, 1, 1);
+
+    // Pulse food
+    foods.forEach(f => {
+      const pulse = 0.7 + 0.3 * Math.sin(t * 0.06);
+      ctx.fillStyle = `rgba(255,62,136,${pulse})`;
+      ctx.beginPath();
+      ctx.arc(f.x * G + G/2, f.y * G + G/2, G/2 - 2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    // Snake body (fade tail)
+    snake.forEach((seg, i) => {
+      const a = 1 - (i / snake.length) * 0.5;
+      ctx.fillStyle = `rgba(0,220,130,${a})`;
+      ctx.fillRect(seg.x * G + 1, seg.y * G + 1, G - 2, G - 2);
+    });
+    // Snake eyes
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(snake[0].x * G + 5, snake[0].y * G + 5, 3, 3);
+
+    t++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function drawSpaceWarPreview() {
+  const canvas = document.getElementById('preview-spacewar');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const PX = 7;
+
+  const stars = Array.from({length: 50}, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    speed: 0.4 + Math.random() * 1.2, size: Math.random() < 0.2 ? 2 : 1
+  }));
+  const bullets = [{x: 193, y: 130}, {x: 193, y: 90}];
+  const enemies = [
+    {x: 80,  y: 20, ox: 80},
+    {x: 200, y: 50, ox: 200},
+    {x: 300, y: 15, ox: 300}
+  ];
+  let frame = 0;
+
+  function drawShip(x, y, color, flip) {
+    ctx.fillStyle = color;
+    [[1,0],[0,1],[1,1],[2,1],[1,2],[0,3],[2,3]].forEach(([px, py]) => {
+      const ry = flip ? y + (3 - py) * PX : y + py * PX;
+      ctx.fillRect(x + px * PX, ry, PX, PX);
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // Stars
+    stars.forEach(s => {
+      s.y += s.speed;
+      if (s.y > H) { s.y = 0; s.x = Math.random() * W; }
+      ctx.fillStyle = `rgba(255,255,255,${0.2 + s.size * 0.25})`;
+      ctx.fillRect(s.x, s.y, s.size, s.size);
+    });
+    // Player ship
+    drawShip(185, H - 55, '#ffffff', true);
+    // Bullets
+    bullets.forEach(b => {
+      b.y -= 3.5;
+      if (b.y < 0) b.y = H - 55;
+      ctx.fillStyle = '#ffff55';
+      ctx.fillRect(b.x, b.y, 4, 10);
+    });
+    // Enemy ships
+    enemies.forEach((e, i) => {
+      e.y += 0.6;
+      if (e.y > H + 30) e.y = -30;
+      e.x = e.ox + Math.sin(frame * 0.025 + i * 1.5) * 18;
+      drawShip(e.x, e.y, '#ff3e88', false);
+    });
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function drawPingPongPreview() {
+  const canvas = document.getElementById('preview-pingpong');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  let bx = W/2, by = H/2, vx = 2.8, vy = 1.6;
+  let lY = H/2 - 30, rY = H/2 - 30;
+  const PW = 8, PH = 60, R = 7;
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // Dashed center line
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.setLineDash([10, 12]);
+    ctx.beginPath(); ctx.moveTo(W/2, 0); ctx.lineTo(W/2, H); ctx.stroke();
+    ctx.setLineDash([]);
+    // Center circle
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.beginPath(); ctx.arc(W/2, H/2, 35, 0, Math.PI*2); ctx.stroke();
+
+    // Move ball
+    bx += vx; by += vy;
+    if (by < R || by > H - R) vy *= -1;
+    if (bx < 20 + PW && by > lY && by < lY + PH) { vx = Math.abs(vx); }
+    if (bx > W - 20 - PW && by > rY && by < rY + PH) { vx = -Math.abs(vx); }
+    if (bx < 0 || bx > W) { bx = W/2; by = H/2; }
+
+    // AI paddles track ball
+    lY += (by - lY - PH/2) * 0.07;
+    rY += (by - rY - PH/2) * 0.07;
+    lY = Math.max(0, Math.min(H - PH, lY));
+    rY = Math.max(0, Math.min(H - PH, rY));
+
+    // Paddles
+    ctx.fillStyle = '#00dc82';
+    ctx.fillRect(12, lY, PW, PH);
+    ctx.fillRect(W - 20, rY, PW, PH);
+    // Ball
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath(); ctx.arc(bx, by, R, 0, Math.PI*2); ctx.fill();
+    // Score labels
+    ctx.fillStyle = 'rgba(255,255,255,0.2)';
+    ctx.font = 'bold 36px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('0', W/4, 45);
+    ctx.fillText('0', 3*W/4, 45);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function drawCarRacingPreview() {
+  const canvas = document.getElementById('preview-carracing');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const LW = W / 3;
+  const PX = 8;
+  const CW = PX * 3, CH = PX * 4;
+  const PAT = [[1,0,1],[0,0,0],[1,0,1],[0,0,0]];
+
+  let lineOff = 0;
+  const ai = [
+    {lane: 0, y: -CH - 30, speed: 1.4},
+    {lane: 2, y: -CH - 110, speed: 1.9},
+    {lane: 1, y: -CH - 70, speed: 1.6}
+  ];
+
+  function drawCar(x, y, color) {
+    ctx.fillStyle = color;
+    PAT.forEach((row, r) => row.forEach((cell, c) => {
+      if (cell) ctx.fillRect(x + c * PX, y + r * PX, PX, PX);
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    // Road bg
+    ctx.fillStyle = '#111827';
+    ctx.fillRect(0, 0, W, H);
+    // Lane borders
+    ctx.strokeStyle = 'rgba(200,200,200,0.25)';
+    ctx.lineWidth = 2;
+    [LW, LW*2].forEach(x => {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    });
+    // Animated dashes
+    lineOff = (lineOff + 2) % 50;
+    ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([25, 25]);
+    ctx.lineDashOffset = -lineOff;
+    [LW/2, LW*1.5, LW*2.5].forEach(x => {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    });
+    ctx.setLineDash([]);
+
+    // AI cars
+    ai.forEach(car => {
+      car.y += car.speed;
+      if (car.y > H + CH) car.y = -CH - Math.random() * 80;
+      drawCar(car.lane * LW + (LW - CW) / 2, car.y, '#ff3e88');
+    });
+    // Player
+    drawCar(LW + (LW - CW) / 2, H - CH - 15, '#00dc82');
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadHighScores();
+  drawSnakePreview();
+  drawSpaceWarPreview();
+  drawPingPongPreview();
+  drawCarRacingPreview();
+});
+</script>

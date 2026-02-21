@@ -1,7 +1,39 @@
 body {
-    background-color: transparent;
     color: #fff;
     text-align: center;
+}
+
+.game-controls-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+
+#pauseButton {
+    background: rgba(0, 220, 130, 0.12);
+    border: 1px solid rgba(0, 220, 130, 0.4);
+    border-radius: 8px;
+    color: var(--primary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    padding: 0.4rem 1.2rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+#pauseButton:hover {
+    background: rgba(0, 220, 130, 0.25);
+    border-color: var(--primary);
+}
+
+#pauseButton.paused {
+    background: rgba(255, 62, 136, 0.15);
+    border-color: rgba(255, 62, 136, 0.5);
+    color: var(--secondary);
 }
 
 .game-title {
@@ -16,7 +48,6 @@ body {
 }
 
 canvas {
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--primary);
-    box-shadow: 0 0 20px rgba(0, 220, 130, 0.5);
 }

@@ -5,33 +5,60 @@ body {
     justify-content: center;
     min-height: 100vh;
     margin: 0;
-    background-color: transparent; /* Ensure transparent background */
-    color: white;
+    background-color: #0d1117;
+    color: #00dc82;
     font-family: 'Press Start 2P', cursive;
-    overflow: hidden; /* Prevent scrollbars due to animations */
+    overflow: hidden;
 }
 
 .game-title {
-    color: white;
-    text-shadow: 0 0 10px white;
+    color: #00dc82;
+    text-shadow: 0 0 10px #00dc82, 0 0 20px rgba(0, 220, 130, 0.5);
     margin-bottom: 20px;
 }
 
 .canvas-container {
-    border: 2px solid white;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    border: 2px solid #00dc82;
     position: relative;
     overflow: hidden;
 }
 
 canvas {
-    background-color: transparent; /* Transparent background for the game area */
+    background-color: transparent;
     display: block;
 }
 
 .score-container {
     margin-top: 20px;
     font-size: 1.5em;
-    color: white;
-    text-shadow: 0 0 8px white;
+    color: #00dc82;
+    text-shadow: 0 0 8px #00dc82;
+}
+
+.touch-controls {
+    margin-top: 15px;
+}
+
+.action-controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.action-btn {
+    background: transparent;
+    border: 2px solid #00dc82;
+    color: #00dc82;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.8em;
+    padding: 12px 20px;
+    cursor: pointer;
+    text-shadow: 0 0 6px #00dc82;
+    box-shadow: 0 0 10px rgba(0, 220, 130, 0.3);
+    transition: background 0.1s, box-shadow 0.1s;
+}
+
+.action-btn:active {
+    background: rgba(0, 220, 130, 0.15);
+    box-shadow: 0 0 20px rgba(0, 220, 130, 0.6);
 }

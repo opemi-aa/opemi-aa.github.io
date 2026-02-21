@@ -1,28 +1,73 @@
 body {
-    background-color: transparent;
-    color: #fff;
+    background-color: #0d1117;
+    color: #00dc82;
     text-align: center;
+    font-family: 'Press Start 2P', cursive;
 }
 
 .game-title {
-    margin-bottom: 1rem;
+    color: #00dc82;
+    text-shadow: 0 0 10px #00dc82, 0 0 22px rgba(0, 220, 130, 0.4);
+    margin-bottom: 1.2rem;
 }
 
 .canvas-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: none; 
+    display: inline-block;
+    border: 2px solid #00dc82;
 }
 
 canvas {
-    background-color: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--primary);
-    box-shadow: 0 0 20px rgba(0, 220, 130, 0.5);
-    cursor: none; 
+    display: block;
+    background-color: #0d1117;
 }
 
 .score-container {
     margin-top: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    color: #00dc82;
+    text-shadow: 0 0 8px #00dc82;
+}
+
+/* ── D-pad touch controls ── */
+.touch-controls {
+    margin-top: 16px;
+}
+
+.dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 52px);
+    grid-template-rows: repeat(3, 52px);
+    gap: 4px;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.dpad-btn {
+    background: rgba(0, 220, 130, 0.08);
+    border: 2px solid rgba(0, 220, 130, 0.45);
+    color: #00dc82;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.08s, box-shadow 0.08s, transform 0.05s;
+    box-shadow: 0 0 6px rgba(0, 220, 130, 0.15);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.dpad-btn:active {
+    background: rgba(0, 220, 130, 0.28);
+    box-shadow: 0 0 16px rgba(0, 220, 130, 0.55);
+    transform: scale(0.88);
+    outline: none;
+}
+
+.dpad-center {
+    background: rgba(0, 220, 130, 0.03);
+    border-color: rgba(0, 220, 130, 0.12);
+    cursor: default;
+    pointer-events: none;
 }

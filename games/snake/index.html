@@ -8,6 +8,21 @@ title: Snake Game
     <canvas id="gameCanvas" width="800" height="600"></canvas>
 </div>
 <div class="score-container">
-    <p>Score: <span id="score">0</span></p>
+    <p>Score: <span id="score">0</span> &nbsp;|&nbsp; Best: <span id="highscore">--</span></p>
 </div>
+
+<div class="touch-controls">
+    <div class="dpad">
+        <div></div>
+        <button class="dpad-btn" id="btn-up">↑</button>
+        <div></div>
+        <button class="dpad-btn" id="btn-left">←</button>
+        <div class="dpad-btn dpad-center"></div>
+        <button class="dpad-btn" id="btn-right">→</button>
+        <div></div>
+        <button class="dpad-btn" id="btn-down">↓</button>
+        <div></div>
+    </div>
+</div>
+
 <script src="snake.js" defer></script>

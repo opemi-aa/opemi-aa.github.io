@@ -1,37 +1,74 @@
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    margin: 0;
-    background-color: transparent; /* Ensure transparent background */
-    color: #0f0;
+    background-color: #0d1117;
+    color: #00dc82;
+    text-align: center;
     font-family: 'Press Start 2P', cursive;
-    overflow: hidden; /* Prevent scrollbars due to animations */
 }
 
 .game-title {
-    color: #0f0;
-    text-shadow: 0 0 10px #0f0;
-    margin-bottom: 20px;
+    color: #00dc82;
+    text-shadow: 0 0 10px #00dc82, 0 0 22px rgba(0, 220, 130, 0.4);
+    margin-bottom: 1.2rem;
 }
 
 .canvas-container {
-    border: 2px solid #0f0;
-    box-shadow: 0 0 20px #0f0;
-    position: relative;
-    overflow: hidden;
+    display: inline-block;
+    border: 2px solid #00dc82;
 }
 
 canvas {
-    background-color: transparent; /* Semi-transparent background for the game area */
     display: block;
+    background-color: #0d1117;
 }
 
 .score-container {
-    margin-top: 20px;
-    font-size: 1.5em;
-    color: #0f0;
-    text-shadow: 0 0 8px #0f0;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #00dc82;
+    text-shadow: 0 0 8px #00dc82;
+}
+
+/* ── Touch controls ── */
+.touch-controls {
+    margin-top: 16px;
+}
+
+.paddle-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+}
+
+.paddle-btn {
+    background: rgba(0, 220, 130, 0.08);
+    border: 2px solid rgba(0, 220, 130, 0.45);
+    color: #00dc82;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.3rem;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.08s, box-shadow 0.08s, transform 0.05s;
+    box-shadow: 0 0 6px rgba(0, 220, 130, 0.15);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.paddle-btn:active {
+    background: rgba(0, 220, 130, 0.28);
+    box-shadow: 0 0 16px rgba(0, 220, 130, 0.55);
+    transform: scale(0.88);
+    outline: none;
+}
+
+.enter-btn {
+    font-size: 0.55rem;
+    width: auto;
+    padding: 0 18px;
+    height: 52px;
 }
