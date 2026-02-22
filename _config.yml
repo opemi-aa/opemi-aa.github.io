@@ -1,12 +1,14 @@
 plugins:
   - jekyll-sitemap
   - jekyll-seo-tag
-# Forcing rebuild by removing remote_theme temporarily
 title: root💀the.opemi.aa-sec:~#
 description: On a mission to save planet earth! Hack. Eat. Sleep. Repeat.
 show_downloads: false
 show_repo: false
 
+excerpt_separator: "<!--more-->"
+
 collections:
   hack:
     output: true
+    permalink: /hack/:name.html

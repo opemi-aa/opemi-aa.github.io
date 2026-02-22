@@ -1,6 +1,7 @@
 ---
 layout: default
 title: Hack Lab
+excerpt: "Hands-on XSS challenges in a safe sandbox."
 ---
 
 <div class="hack-hero">
