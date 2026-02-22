@@ -7,6 +7,9 @@ title: Home
      HERO
 ════════════════════════════════════════════ -->
 <section class="hero animate-on-scroll">
+  <div class="hero-photo-wrap">
+    <img src="/professional.jpg" alt="Opeyemi Ariyo" class="hero-photo">
+  </div>
   <div class="hero-content">
     <div class="hero-badge">// CYBERSECURITY BLOG</div>
     <h1 class="hero-name">Opeyemi Ariyo</h1>
@@ -15,9 +18,11 @@ title: Home
       <span class="role-pill">Red Teamer</span>
       <span class="role-pill pill-secondary">Bug Bounty</span>
       <span class="role-pill">CTF Player</span>
+      <span class="role-pill pill-ai">AI Automation Engineer</span>
     </div>
     <div class="hero-cta">
-      <a href="/posts/VulnHub/" class="hp-btn hp-btn-primary">View Writeups ↗</a>
+      <a href="/writeups/" class="hp-btn hp-btn-primary">View Writeups ↗</a>
+      <a href="/ai-portfolio.html" class="hp-btn hp-btn-ai">🤖 AI Portfolio ↗</a>
       <a href="#about"         class="hp-btn hp-btn-outline">About Me ↓</a>
     </div>
   </div>
@@ -38,13 +43,18 @@ title: Home
   </div>
   <div class="stat-divider"></div>
   <div class="stat-item">
-    <span class="stat-num">1</span>
-    <span class="stat-label">Certification</span>
+    <span class="stat-num">5</span>
+    <span class="stat-label">Certifications</span>
   </div>
   <div class="stat-divider"></div>
   <div class="stat-item">
     <span class="stat-num">4</span>
     <span class="stat-label">Games Built</span>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat-item">
+    <span class="stat-num">3+</span>
+    <span class="stat-label">Labs</span>
   </div>
 </section>
 
@@ -71,11 +81,9 @@ title: Home
           <span class="profile-val">Red Teaming · Bug Bounty · CTFs</span>
         </div>
         <div class="profile-row">
-          <span class="profile-key">Certification</span>
+          <span class="profile-key">Certifications</span>
           <span class="profile-val">
-            <a href="/assets/opeyemi%20ariyo%20red%20team%20analyst.pdf" target="_blank" class="cert-badge">
-              ★ CRTA
-            </a>
+            <a href="#certs" class="cert-badge">★ 5 Certs — view below</a>
           </span>
         </div>
       </div>
@@ -100,46 +108,84 @@ title: Home
   <div class="section-label">// WHAT I WRITE ABOUT</div>
   <div class="focus-grid">
 
-    <a href="/posts/awscloud/" class="focus-card">
+    <a href="/writeups/" class="focus-card">
       <div class="focus-icon">☁️</div>
       <div class="focus-title">AWS Cloud</div>
       <div class="focus-desc">Cloud security, IAM abuse, and AWS attack/defend scenarios.</div>
       <div class="focus-arrow">→</div>
     </a>
 
-    <a href="/posts/VulnHub/" class="focus-card">
+    <a href="/writeups/" class="focus-card">
       <div class="focus-icon">💻</div>
       <div class="focus-title">VulnHub</div>
       <div class="focus-desc">Step-by-step machine writeups covering enumeration to root.</div>
       <div class="focus-arrow">→</div>
     </a>
 
-    <a href="/posts/pwnedlabs/" class="focus-card">
+    <a href="/writeups/" class="focus-card">
       <div class="focus-icon">🔓</div>
       <div class="focus-title">PwnedLabs</div>
       <div class="focus-desc">Cloud-focused attack labs and walkthroughs.</div>
       <div class="focus-arrow">→</div>
     </a>
 
-    <a href="/posts/picoCTF/" class="focus-card">
+    <a href="/writeups/" class="focus-card">
       <div class="focus-icon">🚩</div>
       <div class="focus-title">picoCTF</div>
       <div class="focus-desc">Challenge solutions covering web, binary, crypto, and forensics.</div>
       <div class="focus-arrow">→</div>
     </a>
 
-    <a href="/posts/Articles/" class="focus-card">
+    <a href="/writeups/" class="focus-card">
       <div class="focus-icon">📝</div>
       <div class="focus-title">Articles</div>
       <div class="focus-desc">Security research, tool reviews, and learning notes.</div>
       <div class="focus-arrow">→</div>
     </a>
 
-    <a href="/hack/" class="focus-card focus-card-accent">
-      <div class="focus-icon">⚡</div>
-      <div class="focus-title">Hack Lab</div>
-      <div class="focus-desc">Live XSS demos and interactive exploit playground.</div>
-      <div class="focus-arrow">→</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CERTIFICATIONS
+════════════════════════════════════════════ -->
+<section class="certs-section" id="certs">
+  <div class="section-label">// CERTIFICATIONS</div>
+  <div class="certs-grid">
+
+    <a href="/assets/opeyemi%20ariyo%20red%20team%20analyst.pdf" target="_blank" class="cert-card">
+      <span class="cert-card-issuer-badge cert-issuer-alteredsec">Cyberwarfare Labs</span>
+      <div class="cert-card-name">CRTA</div>
+      <div class="cert-card-full">Certified Red Team Analyst</div>
+      <div class="cert-card-year">2025</div>
+    </a>
+
+    <a href="/au%20certs/ASCPExam20251020-31-1zfjiz.pdf" target="_blank" class="cert-card">
+      <span class="cert-card-issuer-badge cert-issuer-apisec">APIsec University</span>
+      <div class="cert-card-name">ASCP</div>
+      <div class="cert-card-full">API Security Certified Professional</div>
+      <div class="cert-card-year">2025</div>
+    </a>
+
+    <a href="/au%20certs/ACPExam20250827-6-ke8wqb.pdf" target="_blank" class="cert-card">
+      <span class="cert-card-issuer-badge cert-issuer-apisec">APIsec University</span>
+      <div class="cert-card-name">ACP</div>
+      <div class="cert-card-full">API Certified Professional</div>
+      <div class="cert-card-year">2025</div>
+    </a>
+
+    <a href="/au%20certs/CASAExam20250827-7-fgdmo9.pdf" target="_blank" class="cert-card">
+      <span class="cert-card-issuer-badge cert-issuer-apisec">APIsec University</span>
+      <div class="cert-card-name">CASA</div>
+      <div class="cert-card-full">Certified API Security Analyst</div>
+      <div class="cert-card-year">2025</div>
+    </a>
+
+    <a href="/au%20certs/APIsecUniversityAmbassador_Badge20250827-32-9lkhsk.pdf" target="_blank" class="cert-card">
+      <span class="cert-card-issuer-badge cert-issuer-apisec">APIsec University</span>
+      <div class="cert-card-name">Ambassador</div>
+      <div class="cert-card-full">APIsec University Ambassador</div>
+      <div class="cert-card-year">2025</div>
     </a>
 
   </div>
@@ -165,6 +211,6 @@ title: Home
     {% endfor %}
   </div>
   <div class="view-all-wrap">
-    <a href="/posts/Articles/" class="hp-btn hp-btn-outline">View All Posts →</a>
+    <a href="/writeups/" class="hp-btn hp-btn-outline">View All Posts →</a>
   </div>
 </section>

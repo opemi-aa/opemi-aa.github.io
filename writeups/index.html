@@ -1,0 +1,140 @@
+---
+layout: default
+title: Writeups
+---
+
+<section class="writeups-hero animate-on-scroll">
+  <div class="section-label">// WRITEUPS</div>
+  <h1 class="writeups-title">All Writeups</h1>
+  <p class="writeups-subtitle">CTF solutions, machine walkthroughs, cloud labs, and research notes — all in one place.</p>
+</section>
+
+<section class="writeups-body">
+
+  {% assign all_posts = site.posts %}
+
+  <!-- ── VulnHub ── -->
+  {% assign vulnhub_posts = all_posts | where_exp: "p", "p.url contains 'vulnhub' or p.categories contains 'VulnHub' or p.categories contains 'vulnhub' or p.categories contains 'metasploitable'" %}
+  <details class="writeup-section" open>
+    <summary class="writeup-summary">
+      <span class="ws-icon">💻</span>
+      <span class="ws-title">VulnHub</span>
+      <span class="ws-desc">Machine walkthroughs &amp; root shells</span>
+      <span class="ws-count">{{ vulnhub_posts | size }}</span>
+      <span class="ws-chevron">▾</span>
+    </summary>
+    <div class="writeup-list">
+      {% if vulnhub_posts.size > 0 %}
+        {% for post in vulnhub_posts %}
+        <details class="writeup-inline-post">
+          <summary class="writeup-item">
+            <span class="wi-title">{{ post.title }}</span>
+            <span class="wi-date">{{ post.date | date: "%b %d, %Y" }}</span>
+            <span class="wi-expand">▾</span>
+          </summary>
+          <div class="writeup-post-body">{{ post.content }}</div>
+        </details>
+        {% endfor %}
+      {% else %}
+        <p class="writeup-empty">Posts coming soon — check back later.</p>
+      {% endif %}
+    </div>
+  </details>
+
+  <!-- ── AWS Cloud ── -->
+  {% assign aws_posts = all_posts | where_exp: "p", "p.categories contains 'AWS' or p.categories contains 'aws' or p.categories contains 'awscloud' or p.categories contains 'cloud'" %}
+  <details class="writeup-section">
+    <summary class="writeup-summary">
+      <span class="ws-icon">☁️</span>
+      <span class="ws-title">AWS Cloud</span>
+      <span class="ws-desc">Cloud security, IAM abuse, attack &amp; defend</span>
+      <span class="ws-count">{{ aws_posts | size }}</span>
+      <span class="ws-chevron">▾</span>
+    </summary>
+    <div class="writeup-list">
+      {% if aws_posts.size > 0 %}
+        {% for post in aws_posts %}
+        <a href="{{ post.url }}" class="writeup-item">
+          <span class="wi-title">{{ post.title }}</span>
+          <span class="wi-date">{{ post.date | date: "%b %d, %Y" }}</span>
+        </a>
+        {% endfor %}
+      {% else %}
+        <p class="writeup-empty">Posts coming soon — check back later.</p>
+      {% endif %}
+    </div>
+  </details>
+
+  <!-- ── PwnedLabs ── -->
+  {% assign pwned_posts = all_posts | where_exp: "p", "p.categories contains 'PwnedLabs' or p.categories contains 'pwnedlabs'" %}
+  <details class="writeup-section">
+    <summary class="writeup-summary">
+      <span class="ws-icon">🔓</span>
+      <span class="ws-title">PwnedLabs</span>
+      <span class="ws-desc">Cloud-focused attack lab walkthroughs</span>
+      <span class="ws-count">{{ pwned_posts | size }}</span>
+      <span class="ws-chevron">▾</span>
+    </summary>
+    <div class="writeup-list">
+      {% if pwned_posts.size > 0 %}
+        {% for post in pwned_posts %}
+        <a href="{{ post.url }}" class="writeup-item">
+          <span class="wi-title">{{ post.title }}</span>
+          <span class="wi-date">{{ post.date | date: "%b %d, %Y" }}</span>
+        </a>
+        {% endfor %}
+      {% else %}
+        <p class="writeup-empty">Posts coming soon — check back later.</p>
+      {% endif %}
+    </div>
+  </details>
+
+  <!-- ── picoCTF ── -->
+  {% assign pico_posts = all_posts | where_exp: "p", "p.categories contains 'picoCTF' or p.categories contains 'picocTF' or p.categories contains 'CTF' or p.categories contains 'ctf'" %}
+  <details class="writeup-section">
+    <summary class="writeup-summary">
+      <span class="ws-icon">🚩</span>
+      <span class="ws-title">picoCTF</span>
+      <span class="ws-desc">Challenge solutions — web, binary, crypto, forensics</span>
+      <span class="ws-count">{{ pico_posts | size }}</span>
+      <span class="ws-chevron">▾</span>
+    </summary>
+    <div class="writeup-list">
+      {% if pico_posts.size > 0 %}
+        {% for post in pico_posts %}
+        <a href="{{ post.url }}" class="writeup-item">
+          <span class="wi-title">{{ post.title }}</span>
+          <span class="wi-date">{{ post.date | date: "%b %d, %Y" }}</span>
+        </a>
+        {% endfor %}
+      {% else %}
+        <p class="writeup-empty">Posts coming soon — check back later.</p>
+      {% endif %}
+    </div>
+  </details>
+
+  <!-- ── Linux / Articles ── -->
+  {% assign linux_posts = all_posts | where_exp: "p", "p.categories contains 'linux' or p.categories contains 'Linux' or p.categories contains 'Articles' or p.categories contains 'articles'" %}
+  <details class="writeup-section">
+    <summary class="writeup-summary">
+      <span class="ws-icon">📝</span>
+      <span class="ws-title">Articles &amp; Linux</span>
+      <span class="ws-desc">Security research, tool notes, and Linux tips</span>
+      <span class="ws-count">{{ linux_posts | size }}</span>
+      <span class="ws-chevron">▾</span>
+    </summary>
+    <div class="writeup-list">
+      {% if linux_posts.size > 0 %}
+        {% for post in linux_posts %}
+        <a href="{{ post.url }}" class="writeup-item">
+          <span class="wi-title">{{ post.title }}</span>
+          <span class="wi-date">{{ post.date | date: "%b %d, %Y" }}</span>
+        </a>
+        {% endfor %}
+      {% else %}
+        <p class="writeup-empty">Posts coming soon — check back later.</p>
+      {% endif %}
+    </div>
+  </details>
+
+</section>

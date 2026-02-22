@@ -10,19 +10,23 @@
 
     {% seo %}
   </head>
-  <body>
+  <body class="{% if page.url == "/" %}page-home{% else %}page-inner{% endif %}">
     <div class="floating-dots-container" id="dots-container"></div>
 
-    {% if page.url == '/' or page.url == '/index.html' %}
-      <h2 class="mume-header" id="mainindexhtml-nbspnbsp-contactcontacthtml"><a href="/index.html">Main</a>&#xA0;&#xA0;&#xA0;<a href="/posts/awscloud/index.html">awscloud</a>&#xA0;&#xA0;&#xA0;<a href="/posts/VulnHub/index.html">VulnHub</a>&#xA0;&#xA0;&#xA0;<a href="/posts/pwnedlabs/index.html">PwnedLabs</a>&#xA0;&#xA0;&#xA0;<a href="/posts/picoCTF/index.html">picoCTF</a>&#xA0;&#xA0;&#xA0;<a href="/posts/Articles/index.html">Articles</a></h2>
-      <button id="gameButton" title="Play Game">GAME</button>
-      <button id="hackButton" title="Hack Section" class="gameButtonBlink" style="position: fixed; top: 85px; right: 20px; z-index: 1001; border: none; outline: none; background-color: var(--primary); color: white; cursor: pointer; padding: 10px 20px; border-radius: 10px; font-size: 1.5em; font-weight: bold; text-decoration: none;">HACK</button>
-    {% elsif page.url contains '/games/' and page.url != '/games/' %}
-      <button id="gameMenuButton" title="Game Menu">GAME MENU</button>
-    {% elsif page.url contains '/hack/' and page.url != '/hack/' %}
-      <button id="homeButton" title="Back to Hack Lab" onclick="window.location.href='/hack/'">HACK LAB</button>
+    {% if page.url == "/" %}
+    <nav class="site-nav">
+      <div class="snav-links" id="snavLinks">
+        <a href="/writeups/" class="snav-link">Writeups</a>
+        <a href="/soc-lab/"  class="snav-link">SOC Lab</a>
+      </div>
+      <div class="snav-actions">
+        <a href="/hack/"  class="snav-action-btn snav-btn-hack">⚡ HACK</a>
+        <a href="/games/" class="snav-action-btn snav-btn-game">🎮 GAME</a>
+        <button class="snav-toggle" id="snavToggle" aria-label="Toggle navigation">&#9776;</button>
+      </div>
+    </nav>
     {% else %}
-      <button id="homeButton" title="Back to Home" onclick="window.location.href='/'">HOME</button>
+    <a href="{% if page.back_url %}{{ page.back_url }}{% else %}/{% endif %}" class="standalone-back-btn">{% if page.back_label %}{{ page.back_label }}{% else %}← Back{% endif %}</a>
     {% endif %}
 
     <div class="container">

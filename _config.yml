@@ -1,5 +1,4 @@
 plugins:
-  - jekyll-remote-theme
   - jekyll-sitemap
   - jekyll-seo-tag
 # Forcing rebuild by removing remote_theme temporarily

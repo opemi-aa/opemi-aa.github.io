@@ -69,32 +69,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500); // Adjust delay for desired trail length
     });
 
-    // Navigation button handlers
-    const gameButton = document.getElementById('gameButton');
-    if (gameButton) {
-        gameButton.addEventListener('click', () => {
-            window.location.href = '/games/';
+    // Mobile nav toggle
+    const snavToggle = document.getElementById('snavToggle');
+    const snavLinks  = document.getElementById('snavLinks');
+    if (snavToggle && snavLinks) {
+        snavToggle.addEventListener('click', () => {
+            snavLinks.classList.toggle('open');
         });
-    }
-
-    const gameMenuButton = document.getElementById('gameMenuButton');
-    if (gameMenuButton) {
-        gameMenuButton.addEventListener('click', () => {
-            window.location.href = '/games/';
+        // Close nav when a link is tapped
+        snavLinks.querySelectorAll('.snav-link').forEach(link => {
+            link.addEventListener('click', () => snavLinks.classList.remove('open'));
         });
-    }
-
-    const homeButton = document.getElementById('homeButton');
-    if (homeButton) {
-        homeButton.addEventListener('click', () => {
-            window.location.href = '/';
-        });
-    }
-
-    const hackButton = document.getElementById('hackButton');
-    if (hackButton) {
-        hackButton.addEventListener('click', () => {
-            window.location.href = '/hack/';
+        // Close nav on outside click
+        document.addEventListener('click', (e) => {
+            if (!snavToggle.contains(e.target) && !snavLinks.contains(e.target)) {
+                snavLinks.classList.remove('open');
+            }
         });
     }
 });
