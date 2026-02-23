@@ -1,6 +1,11 @@
 plugins:
+  - jekyll-remote-theme
   - jekyll-sitemap
   - jekyll-seo-tag
+
+url: "https://opemi-aa.github.io"
+baseurl: ""
+
 title: root💀the.opemi.aa-sec:~#
 description: On a mission to save planet earth! Hack. Eat. Sleep. Repeat.
 show_downloads: false

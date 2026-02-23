@@ -115,18 +115,25 @@ title: SOC Lab
 ════════════════════════════════════════════ -->
 <section class="soc-section animate-on-scroll">
   <div class="section-label">// RELATED WRITEUPS</div>
-  {% assign soc_posts = site.posts | where_exp: "p", "p.categories contains 'soc' or p.categories contains 'SOC' or p.categories contains 'splunk' or p.categories contains 'wazuh'" %}
-  {% if soc_posts.size > 0 %}
+  {% assign has_soc = false %}
+  {% for post in site.posts %}
+    {% if post.categories contains 'soc' or post.categories contains 'SOC' or post.categories contains 'splunk' or post.categories contains 'wazuh' %}
+      {% assign has_soc = true %}
+    {% endif %}
+  {% endfor %}
+  {% if has_soc %}
   <div class="post-card-grid">
-    {% for post in soc_posts %}
-    <a href="{{ post.url }}" class="post-card">
-      <div class="post-card-meta">
-        {% if post.categories[0] %}<span class="post-cat-badge">{{ post.categories[0] }}</span>{% endif %}
-        <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
-      </div>
-      <div class="post-card-title">{{ post.title }}</div>
-      <div class="post-card-arrow">→</div>
-    </a>
+    {% for post in site.posts %}
+      {% if post.categories contains 'soc' or post.categories contains 'SOC' or post.categories contains 'splunk' or post.categories contains 'wazuh' %}
+      <a href="{{ post.url }}" class="post-card">
+        <div class="post-card-meta">
+          {% if post.categories[0] %}<span class="post-cat-badge">{{ post.categories[0] }}</span>{% endif %}
+          <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
+        </div>
+        <div class="post-card-title">{{ post.title }}</div>
+        <div class="post-card-arrow">→</div>
+      </a>
+      {% endif %}
     {% endfor %}
   </div>
   {% else %}
