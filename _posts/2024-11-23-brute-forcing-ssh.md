@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: redirect
 title:  "Brute Forcing SSH Using Metasploit"
 date:   2024-11-23 00:00:00 +0000
 categories: metasploitable

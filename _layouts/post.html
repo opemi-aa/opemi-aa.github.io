@@ -2,8 +2,25 @@
 layout: default
 ---
 
-<div class="post-content">
-  <h1>{{ page.title }}</h1>
-  <p class="post-meta">{{ page.date | date: "%b %d, %Y" }}</p>
-  {{ content }}
-</div>
+<article class="post-article">
+
+  <header class="post-hero">
+    <div class="post-hero-meta">
+      {% for cat in page.categories %}
+      <span class="post-cat-tag">{{ cat }}</span>
+      {% endfor %}
+      <span class="post-date-tag">{{ page.date | date: "%b %d, %Y" }}</span>
+    </div>
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-hero-divider"></div>
+  </header>
+
+  <div class="post-body">
+    {{ content }}
+  </div>
+
+  <footer class="post-footer">
+    <a href="/writeups/" class="post-back-link">← Back to Writeups</a>
+  </footer>
+
+</article>

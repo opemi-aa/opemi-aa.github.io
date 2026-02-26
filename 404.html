@@ -1,0 +1,238 @@
+---
+permalink: /404.html
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Target Not Found · opemi.aa</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      height: 100%;
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.04) 3px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .err-wrap {
+      text-align: center;
+      padding: 2rem;
+      max-width: 560px;
+      width: 100%;
+      animation: fadeIn 0.6s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .err-code {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(5rem, 20vw, 9rem);
+      font-weight: 900;
+      color: #00dc82;
+      line-height: 1;
+      text-shadow: 0 0 40px rgba(0,220,130,0.35), 0 0 80px rgba(0,220,130,0.12);
+      letter-spacing: -2px;
+    }
+
+    .err-glitch {
+      position: relative;
+      display: inline-block;
+    }
+    .err-glitch::before,
+    .err-glitch::after {
+      content: '404';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Orbitron', sans-serif;
+      font-size: inherit;
+      font-weight: 900;
+      line-height: 1;
+    }
+    .err-glitch::before {
+      color: #ff3e88;
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+      transform: translateX(-3px);
+      animation: glitch-a 3.5s infinite steps(1);
+    }
+    .err-glitch::after {
+      color: #00b4d8;
+      clip-path: polygon(0 55%, 100% 55%, 100% 70%, 0 70%);
+      transform: translateX(3px);
+      animation: glitch-b 3.5s infinite steps(1);
+    }
+    @keyframes glitch-a {
+      0%,80%,100% { opacity: 0; }
+      82%          { opacity: 1; transform: translateX(-4px); }
+      84%          { opacity: 1; transform: translateX(2px); }
+      86%          { opacity: 0; }
+    }
+    @keyframes glitch-b {
+      0%,80%,100% { opacity: 0; }
+      83%          { opacity: 1; transform: translateX(4px); }
+      85%          { opacity: 1; transform: translateX(-2px); }
+      87%          { opacity: 0; }
+    }
+
+    .err-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #ff3e88;
+      margin: 1rem 0 0.5rem;
+    }
+
+    .err-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    /* Terminal block */
+    .err-terminal {
+      background: #090d12;
+      border: 1px solid rgba(0,220,130,0.15);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      text-align: left;
+    }
+    .err-terminal-bar {
+      display: flex;
+      gap: 6px;
+      padding: 0.6rem 0.9rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .err-terminal-bar span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .err-terminal-bar span:nth-child(1) { background: #ff5f57; }
+    .err-terminal-bar span:nth-child(2) { background: #febc2e; }
+    .err-terminal-bar span:nth-child(3) { background: #28c840; }
+    .err-terminal-body {
+      padding: 1rem 1.1rem;
+      font-size: 0.78rem;
+      line-height: 1.9;
+    }
+    .t-prompt { color: #00dc82; }
+    .t-cmd    { color: #c9d1d9; }
+    .t-err    { color: #ff3e88; }
+    .t-dim    { color: rgba(201,209,217,0.35); }
+    .t-ok     { color: #00dc82; }
+
+    /* Cursor blink */
+    .t-cursor {
+      display: inline-block;
+      width: 8px; height: 1em;
+      background: #00dc82;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+      margin-left: 2px;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; } 50% { opacity: 0; }
+    }
+
+    .err-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .err-btn {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-decoration: none;
+      padding: 0.65rem 1.5rem;
+      border-radius: 7px;
+      transition: all 0.2s ease;
+    }
+    .err-btn-primary {
+      color: #0d1117;
+      background: #00dc82;
+      border: 1px solid #00dc82;
+    }
+    .err-btn-primary:hover {
+      background: #00f090;
+      box-shadow: 0 0 20px rgba(0,220,130,0.35);
+    }
+    .err-btn-outline {
+      color: rgba(201,209,217,0.6);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .err-btn-outline:hover {
+      color: #c9d1d9;
+      border-color: rgba(255,255,255,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="err-wrap">
+    <div class="err-code">
+      <span class="err-glitch">404</span>
+    </div>
+    <div class="err-label">⛔ Error · Access Denied</div>
+    <div class="err-title">Target Not Found</div>
+
+    <div class="err-terminal">
+      <div class="err-terminal-bar">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="err-terminal-body">
+        <div><span class="t-prompt">root@opemi.aa</span><span class="t-dim">:~$</span> <span class="t-cmd">traceroute <span style="color:#f59e0b;">{{ page.url }}</span></span></div>
+        <div><span class="t-err">traceroute: unknown host — destination unreachable</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-prompt">root@opemi.aa</span><span class="t-dim">:~$</span> <span class="t-cmd">nmap -p 404 localhost</span></div>
+        <div><span class="t-dim">Starting Nmap 7.94...</span></div>
+        <div><span class="t-err">PORT    STATE  SERVICE</span></div>
+        <div><span class="t-err">404/tcp closed not-found</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-prompt">root@opemi.aa</span><span class="t-dim">:~$</span> <span class="t-cmd">cd /home<span class="t-cursor"></span></span></div>
+      </div>
+    </div>
+
+    <div class="err-actions">
+      <a href="/" class="err-btn err-btn-primary">← Return to Base</a>
+      <a href="/writeups/" class="err-btn err-btn-outline">View Writeups</a>
+    </div>
+  </div>
+</body>
+</html>

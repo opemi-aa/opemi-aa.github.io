@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: redirect
 title:  "Attacking SMB PSExec using metasploit"
 date:   2024-11-23 00:00:00 +0000
 categories: metasploitable

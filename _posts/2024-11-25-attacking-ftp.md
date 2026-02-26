@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: redirect
 title:  "Attacking FTP Using Metasploit"
 date:   2024-11-25 00:00:00 +0000
 categories: metasploitable
